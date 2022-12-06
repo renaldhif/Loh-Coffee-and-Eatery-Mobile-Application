@@ -53,8 +53,10 @@ class LandingPage extends StatelessWidget {
                 children: [
                   CustomButton(
                     title: 'Sign Up', 
-                    onPressed: (){}
-                    ),
+                    onPressed: (){
+                      Navigator.pushNamed(context, '/profilemenu');
+                    },
+                  ),
                   const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
