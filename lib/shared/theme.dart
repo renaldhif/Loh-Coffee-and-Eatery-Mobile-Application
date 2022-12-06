@@ -7,6 +7,7 @@ const Color secondaryColor = Color(0xFFF17532);
 const Color greyColor = Color(0xFF555555);
 const Color kUnavailableColor = Color(0xFFFAFAFA);
 const Color whiteColor = Color(0xFFFFFFFF);
+const Color backgroundColor = Color(0xFFE5E5E5);
 
 // Text Styles
 TextStyle mainTextStyle = GoogleFonts.inter(
