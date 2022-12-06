@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:loh_coffee_eatery/ui/pages/landing_page.dart';
-import 'package:loh_coffee_eatery/ui/pages/profile_menu_page.dart';
-import 'shared/theme.dart';
+import '/ui/pages/home_page_admin.dart';
+import '/ui/pages/landing_page.dart';
+import 'ui/pages/forgotpass_page.dart';
+import 'ui/pages/home_page.dart';
 import 'ui/pages/login_page.dart';
+import 'ui/pages/profile_menu_page.dart';
+import 'ui/pages/signup_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +22,11 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const LandingPage(),
           '/login':(context) => const LoginPage(),
-          '/profilemenu':(context) => const ProfileMenuPage(),
+          '/signup':(context) => const SignUpPage(),
+          '/forgotpassword' : (context) => const ForgotPasswordPage(),
+          '/profilemenu': (context) => const ProfileMenuPage(), 
+          '/home':(context) => const HomePage(),
+          '/home-admin':(context) => const HomePageAdmin(),
         },
       ),
     );
