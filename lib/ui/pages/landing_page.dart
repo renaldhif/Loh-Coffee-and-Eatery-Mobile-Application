@@ -26,7 +26,7 @@ class LandingPage extends StatelessWidget {
                     ),
                   ),
                 ),
-    
+
                 // Cover Image
                 SizedBox(
                   height: 595,
@@ -53,35 +53,38 @@ class LandingPage extends StatelessWidget {
                 children: [
                   CustomButton(
                     title: 'Sign Up', 
-                    onPressed: (){
-                      Navigator.pushNamed(context, '/profilemenu');
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/signup');
                     },
                   ),
                   const SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Already have an account? ',
-                          style: orangeTextStyle.copyWith(
-                            fontSize: 16,
-                            fontWeight: regular,
-                          ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Already have an account? ',
+                        style: orangeTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: regular,
                         ),
-                        TextButton(
-                          onPressed: (){},
-                          child: Text(
-                            'Sign In', style: greenTextStyle.copyWith(
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login');
+                        },
+                        child: Text(
+                          'Sign In',
+                          style: greenTextStyle.copyWith(
                             fontSize: 16,
                             fontWeight: bold,
-                            ),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
+            ),
           ],
         ),
       ),
