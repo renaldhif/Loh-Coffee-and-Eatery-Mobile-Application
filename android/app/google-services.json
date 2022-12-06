@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "571320088173",
+    "project_id": "loh-coffee-eatery",
+    "storage_bucket": "loh-coffee-eatery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571320088173:android:dc01bd666473bb8bbfb164",
+        "android_client_info": {
+          "package_name": "com.example.loh_coffee_eatery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571320088173-cbnr7ltrmf3ulv73dj9javb9jdp1t43e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjTN0aqXnj8migECJQbIEsjOTvZtoAVQ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571320088173-cbnr7ltrmf3ulv73dj9javb9jdp1t43e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
