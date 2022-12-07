@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loh_coffee_eatery/cubit/auth_cubit.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button.dart';
 import '/shared/theme.dart';
 
@@ -15,6 +17,37 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   // show hide password
   bool _isObsecure = true;
+
+  Widget submitButton(){
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if(state is AuthSuccess){
+          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+        }else if(state is AuthFailed){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(state.error),
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        if(state is AuthLoading){
+          return const Center(child: CircularProgressIndicator());
+        }
+        return CustomButton(
+          title: 'Login', 
+          onPressed: (){
+            context.read<AuthCubit>().signIn(
+              email: _emailController.text,
+              password: _passwordController.text,
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,12 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  CustomButton(
-                    title: 'Sign In',
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/home');
-                    },
-                  ),
+                  submitButton(),     
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '/ui/pages/home_page_admin.dart';
 import '/ui/pages/landing_page.dart';
+import 'cubit/auth_cubit.dart';
 import 'ui/pages/forgotpass_page.dart';
 import 'ui/pages/home_page.dart';
 import 'ui/pages/login_page.dart';
@@ -24,7 +26,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthCubit()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false, 
         routes: {

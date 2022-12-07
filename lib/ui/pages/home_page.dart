@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 5,),
                       width: 0.9 * MediaQuery.of(context).size.width,
-                      height: 130,
+                      height: 140,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(defaultRadius),
                         border: Border.all(
@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                                     overflow: TextOverflow.ellipsis,
                                     softWrap: false,
                                     style: greenTextStyle.copyWith(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: black,
                                     ),
                                   ),
@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     'Chicken, Rice, Spicy, Tea',
                                     style: greenTextStyle.copyWith(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontWeight: light,
                                     ),
                                   ),
