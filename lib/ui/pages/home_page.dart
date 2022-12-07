@@ -23,6 +23,20 @@ class _HomePageState extends State<HomePage> {
   void _changeSelectedIndex(int index) {
     setState(() {
       _selectedIndex = index;
+      switch(index){
+        // case 1:
+        //   Navigator.pushNamed(context, '/reserve');
+        //   break;
+        // case 2:
+        //   Navigator.pushNamed(context, '/order');
+        //   break;
+        // case 3:
+        //   Navigator.pushNamed(context, '/notification');
+        //   break;
+        case 4:
+          Navigator.pushReplacementNamed(context, '/profilemenu');
+          break;
+      }
     });
   }
 
@@ -89,7 +103,7 @@ class _HomePageState extends State<HomePage> {
 
                     // Menu Card
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5,),
+                      margin: const EdgeInsets.symmetric(vertical: 3,),
                       width: 0.9 * MediaQuery.of(context).size.width,
                       height: 140,
                       decoration: BoxDecoration(
@@ -162,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                                       // Add to Cart Button
                                       Container(
                                         width: 0.4 * MediaQuery.of(context).size.width,
-                                        height: 30,
+                                        height: 25,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(5),
                                           border: Border.all(
@@ -189,15 +203,12 @@ class _HomePageState extends State<HomePage> {
                                           ],
                                         ),
                                       ),
-                                      const Spacer(),
+                                      const SizedBox(width: 12,),
                                       // Favorite Button
-                                      const SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                        child: Icon(
-                                          Icons.favorite_border,
-                                          color: primaryColor,
-                                        ),
+                                      const Icon(
+                                        Icons.favorite_border_rounded,
+                                        color: primaryColor,
+                                        size: 30,
                                       ),
                                     ],
                                   ),

@@ -54,7 +54,7 @@ class LandingPage extends StatelessWidget {
                   CustomButton(
                     title: 'Sign Up', 
                     onPressed: () {
-                      Navigator.pushNamed(context, '/signup');
+                      Navigator.pushReplacementNamed(context, '/signup');
                     },
                   ),
                   const SizedBox(height: 5),
@@ -70,7 +70,7 @@ class LandingPage extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/login');
+                          Navigator.pushReplacementNamed(context, '/login');
                         },
                         child: Text(
                           'Sign In',
