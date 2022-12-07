@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                                     overflow: TextOverflow.ellipsis,
                                     softWrap: false,
                                     style: greenTextStyle.copyWith(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: black,
                                     ),
                                   ),
@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     'Chicken, Rice, Spicy, Tea',
                                     style: greenTextStyle.copyWith(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontWeight: light,
                                     ),
                                   ),
