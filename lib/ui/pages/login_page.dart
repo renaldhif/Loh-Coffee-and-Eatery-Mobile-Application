@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                   CustomButton(
                     title: 'Sign In',
                     onPressed: () {
-                      Navigator.pushNamed(context, '/home');
+                      Navigator.pushReplacementNamed(context, '/home');
                     },
                   ),
                   Row(
@@ -192,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/signup');
+                          Navigator.pushReplacementNamed(context, '/signup');
                         },
                         child: Text(
                           'Sign Up',
