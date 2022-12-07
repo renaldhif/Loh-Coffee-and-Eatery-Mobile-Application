@@ -24,19 +24,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false, 
-        routes: {
-          '/': (context) => const LandingPage(),
-          '/login':(context) => const LoginPage(),
-          '/signup':(context) => const SignUpPage(),
-          '/forgotpassword' : (context) => const ForgotPasswordPage(),
-          '/profilemenu': (context) => const ProfileMenuPage(), 
-          '/home':(context) => const HomePage(),
-          '/home-admin':(context) => const HomePageAdmin(),
-        },
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false, 
+      routes: {
+        '/': (context) => const LandingPage(),
+        '/login':(context) => const LoginPage(),
+        '/signup':(context) => const SignUpPage(),
+        '/forgotpassword' : (context) => const ForgotPasswordPage(),
+        '/profilemenu': (context) => const ProfileMenuPage(), 
+        '/home':(context) => const HomePage(),
+        '/home-admin':(context) => const HomePageAdmin(),
+      },
     );
   }
 }
