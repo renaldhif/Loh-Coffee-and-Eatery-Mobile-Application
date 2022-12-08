@@ -11,7 +11,7 @@ class HomePageAdmin extends StatefulWidget {
 class _HomePageAdminState extends State<HomePageAdmin> {
 
   // To change the selected value of bottom navigation bar
-  int _selectedIndex = 0;  
+  int _selectedIndex = 0;
   void _changeSelectedIndex(int index) {
     setState(() {
       _selectedIndex = index;
@@ -31,11 +31,11 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                 width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children:[ 
+                  children: [
                     Text(
-                      'Filter Menu', 
+                      'Filter Menu',
                       style: greenTextStyle.copyWith(
-                        fontSize: 22, 
+                        fontSize: 22,
                         fontWeight: black,
                       ),
                     ),
@@ -51,10 +51,11 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     // Menu Card
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5,),
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 5,
+                      ),
                       width: 0.9 * MediaQuery.of(context).size.width,
                       height: 130,
                       decoration: BoxDecoration(
@@ -75,13 +76,14 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        
+
                         // Menu Card Content
                         child: Row(
                           children: [
                             // Image
-                            ClipRRect (
-                              borderRadius: BorderRadius.circular(defaultRadius),
+                            ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(defaultRadius),
                               child: Image.asset(
                                 'assets/images/login_page.png',
                                 width: 0.3 * MediaQuery.of(context).size.width,
@@ -126,10 +128,12 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                                     children: [
                                       // Add to Cart Button
                                       Container(
-                                        width: 0.4 * MediaQuery.of(context).size.width,
+                                        width: 0.4 *
+                                            MediaQuery.of(context).size.width,
                                         height: 30,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                           border: Border.all(
                                             color: primaryColor,
                                             width: 1,
@@ -137,7 +141,8 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                                           color: whiteColor,
                                         ),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             const Icon(
                                               Icons.add,
@@ -180,38 +185,36 @@ class _HomePageAdminState extends State<HomePageAdmin> {
           ),
         ),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          //* TODO: Change into Admin Navigation Bar
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_rounded),
-            label: 'Reserve',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_bulleted_rounded),
-            label: 'Order List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_rounded),
-            label: 'Notification',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        selectedItemColor: primaryColor,
-        unselectedItemColor: greyColor,
-        showUnselectedLabels: true,
-        onTap: _changeSelectedIndex
-      ),
+          items: const [
+            //* TODO: Change into Admin Navigation Bar
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_rounded),
+              label: 'Reserve',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_rounded),
+              label: 'Order List',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_rounded),
+              label: 'Notification',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          selectedItemColor: primaryColor,
+          unselectedItemColor: greyColor,
+          showUnselectedLabels: true,
+          onTap: _changeSelectedIndex),
     );
   }
 }
