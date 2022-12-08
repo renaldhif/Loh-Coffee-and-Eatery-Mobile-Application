@@ -8,7 +8,7 @@ class UserService{
     try{
       await _userCollection.doc(user.id).set({
         'email': user.email,
-        'password': user.password,
+        //'password': user.password,
         'name': user.name,
         'dob': user.dob,
         'role': user.role
@@ -24,7 +24,7 @@ class UserService{
       return UserModel(
         id: documentSnapshot.id,
         email: documentSnapshot['email'],
-        password: documentSnapshot['password'],
+        //password: documentSnapshot['password'],
         name: documentSnapshot['name'],
         dob: documentSnapshot['dob'],
         role: documentSnapshot['role']

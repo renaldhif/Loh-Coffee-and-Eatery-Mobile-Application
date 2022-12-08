@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:loh_coffee_eatery/cubit/auth_cubit.dart';
 import '/ui/widgets/custom_button_red.dart';
 import '/shared/theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileMenuPage extends StatefulWidget {
   const ProfileMenuPage({super.key});
@@ -14,11 +16,11 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
   bool _isSwitched = false;
 
   // To change the selected value of bottom navigation bar
-  int _selectedIndex = 4;  
+  int _selectedIndex = 4;
   void _changeSelectedIndex(int index) {
     setState(() {
       _selectedIndex = index;
-      switch(index){
+      switch (index) {
         case 0:
           Navigator.pushReplacementNamed(context, '/home');
           break;
@@ -33,6 +35,36 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
         //   break;
       }
     });
+  }
+
+  Widget signOutButton() {
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        // TODO: implement listener
+        if(state is AuthFailed){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(state.error),
+            ),
+          );
+        }
+        else if(state is AuthInitial){
+          Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+        }
+      },
+      builder: (context, state) {
+        if(state is AuthLoading){
+          return const Center(child: CircularProgressIndicator());
+        }
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CustomButtonRed(title: 'Sign Out', onPressed: () {
+            context.read<AuthCubit>().signOut();
+          }),
+        );
+      },
+    );
   }
 
   @override
@@ -96,8 +128,8 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       ),
                       CircleAvatar(
                         backgroundImage: Image.network(
-                          'https://firebasestorage.googleapis.com/v0/b/loh-coffee-eatery.appspot.com/o/profilepics%2F460A2392-7E42-4C79-8E5D-C5035CD243D5.jpg?alt=media&token=3bde7f21-462b-4824-bf64-ae6c7761bbb1')
-                        .image,
+                                'https://firebasestorage.googleapis.com/v0/b/loh-coffee-eatery.appspot.com/o/profilepics%2F460A2392-7E42-4C79-8E5D-C5035CD243D5.jpg?alt=media&token=3bde7f21-462b-4824-bf64-ae6c7761bbb1')
+                            .image,
                         backgroundColor: kUnavailableColor,
                         radius: 30, //size
                       ),
@@ -301,8 +333,8 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         _isSwitched = value;
                       });
                     },
-                  value: _isSwitched,
-                  activeColor: primaryColor,
+                    value: _isSwitched,
+                    activeColor: primaryColor,
                   ),
                 ],
               ),
@@ -347,8 +379,8 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         _isSwitched = value;
                       });
                     },
-                  value: _isSwitched,
-                  activeColor: primaryColor,
+                    value: _isSwitched,
+                    activeColor: primaryColor,
                   ),
                 ],
               ),
@@ -397,48 +429,42 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 25),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomButtonRed(
-                title: 'Sign Out', 
-                onPressed: (){}
-              ),
-            ),
+            // Sign Out Button
+            signOutButton(),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_rounded),
-            label: 'Reserve',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_bulleted_rounded),
-            label: 'Order List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_rounded),
-            label: 'Notification',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        selectedItemColor: primaryColor,
-        unselectedItemColor: greyColor,
-        showUnselectedLabels: true,
-        onTap: _changeSelectedIndex
-      ),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_rounded),
+              label: 'Reserve',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_rounded),
+              label: 'Order List',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_rounded),
+              label: 'Notification',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          selectedItemColor: primaryColor,
+          unselectedItemColor: greyColor,
+          showUnselectedLabels: true,
+          onTap: _changeSelectedIndex),
     );
   }
 }
