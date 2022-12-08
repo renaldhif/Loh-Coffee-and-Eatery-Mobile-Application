@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:loh_coffee_eatery/cubit/auth_cubit.dart';
 import '/ui/widgets/custom_button_red.dart';
 import '/shared/theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileMenuPage extends StatefulWidget {
   const ProfileMenuPage({super.key});
@@ -33,6 +35,36 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
         //   break;
       }
     });
+  }
+
+  Widget signOutButton() {
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        // TODO: implement listener
+        if(state is AuthFailed){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(state.error),
+            ),
+          );
+        }
+        else if(state is AuthInitial){
+          Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+        }
+      },
+      builder: (context, state) {
+        if(state is AuthLoading){
+          return const Center(child: CircularProgressIndicator());
+        }
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CustomButtonRed(title: 'Sign Out', onPressed: () {
+            context.read<AuthCubit>().signOut();
+          }),
+        );
+      },
+    );
   }
 
   @override
@@ -403,10 +435,8 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
             ),
 
             const SizedBox(height: 25),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomButtonRed(title: 'Sign Out', onPressed: () {}),
-            ),
+            // Sign Out Button
+            signOutButton(),
           ],
         ),
       ),

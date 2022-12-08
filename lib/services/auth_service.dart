@@ -11,7 +11,7 @@ class AuthService{
       UserModel user = UserModel(
         id: userCredential.user!.uid, 
         email: email, 
-        password: password, 
+        //password: password, 
         name: name, 
         dob: dob,
         role: 'customer');
@@ -32,6 +32,14 @@ class AuthService{
         password: password);
       UserModel user = await UserService().getUserById(userCredential.user!.uid);
       return user;
+    }catch(e){
+      throw e;
+    }
+  }
+
+  Future<void> signOut() async{
+    try{
+      await _auth.signOut();
     }catch(e){
       throw e;
     }
