@@ -9,24 +9,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
- // Initial Selected Value
-  String dropdownvalue = 'All Menu';  
+  // Initial Selected Value
+  String dropdownvalue = 'All Menu';
   // List of items in our dropdown menu
-  var items = [   
+  var items = [
     'All Menu',
     'Based on your preferences',
     'Based on most loved menu'
   ];
 
   // To change the selected value of bottom navigation bar
-  int _selectedIndex = 0;  
+  int _selectedIndex = 0;
   void _changeSelectedIndex(int index) {
     setState(() {
       _selectedIndex = index;
-      switch(index){
-        // case 1:
-        //   Navigator.pushNamed(context, '/reserve');
-        //   break;
+      switch (index) {
+        case 1:
+          Navigator.pushReplacementNamed(context, '/addmenu');
+          break;
         // case 2:
         //   Navigator.pushNamed(context, '/order');
         //   break;
@@ -34,7 +34,8 @@ class _HomePageState extends State<HomePage> {
         //   Navigator.pushNamed(context, '/notification');
         //   break;
         case 4:
-          Navigator.pushReplacementNamed(context, '/profilemenu');
+          Navigator.pushNamed(context, '/profilemenu');
+          _selectedIndex = 0;
           break;
       }
     });
@@ -53,11 +54,11 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children:[ 
+                  children: [
                     Text(
-                      'Filter Menu', 
+                      'Filter Menu',
                       style: greenTextStyle.copyWith(
-                        fontSize: 22, 
+                        fontSize: 22,
                         fontWeight: black,
                       ),
                     ),
@@ -70,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                         icon: const Icon(
                           Icons.keyboard_arrow_down,
                           color: primaryColor,
-                        ),   
+                        ),
                         items: items.map((String items) {
                           return DropdownMenuItem(
                             value: items,
@@ -100,10 +101,11 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     // Menu Card
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 3,),
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 3,
+                      ),
                       width: 0.9 * MediaQuery.of(context).size.width,
                       height: 140,
                       decoration: BoxDecoration(
@@ -124,13 +126,14 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        
+
                         // Menu Card Content
                         child: Row(
                           children: [
                             // Image
-                            ClipRRect (
-                              borderRadius: BorderRadius.circular(defaultRadius),
+                            ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(defaultRadius),
                               child: Image.asset(
                                 'assets/images/login_page.png',
                                 width: 0.3 * MediaQuery.of(context).size.width,
@@ -175,10 +178,12 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       // Add to Cart Button
                                       Container(
-                                        width: 0.4 * MediaQuery.of(context).size.width,
+                                        width: 0.4 *
+                                            MediaQuery.of(context).size.width,
                                         height: 25,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                           border: Border.all(
                                             color: primaryColor,
                                             width: 1,
@@ -186,7 +191,8 @@ class _HomePageState extends State<HomePage> {
                                           color: whiteColor,
                                         ),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             const Icon(
                                               Icons.add,
@@ -203,7 +209,9 @@ class _HomePageState extends State<HomePage> {
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(width: 12,),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
                                       // Favorite Button
                                       const Icon(
                                         Icons.favorite_border_rounded,
@@ -227,35 +235,34 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_rounded),
-            label: 'Reserve',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_bulleted_rounded),
-            label: 'Order List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_rounded),
-            label: 'Notification',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        selectedItemColor: primaryColor,
-        unselectedItemColor: greyColor,
-        showUnselectedLabels: true,
-        onTap: _changeSelectedIndex
-      ),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_rounded),
+              label: 'Reserve',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_rounded),
+              label: 'Order List',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_rounded),
+              label: 'Notification',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          selectedItemColor: primaryColor,
+          unselectedItemColor: greyColor,
+          showUnselectedLabels: true,
+          onTap: _changeSelectedIndex),
     );
   }
 }

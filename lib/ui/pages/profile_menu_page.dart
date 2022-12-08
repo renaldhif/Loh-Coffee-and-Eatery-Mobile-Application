@@ -71,38 +71,42 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: whiteColor,
-        elevation: 1,
-        toolbarHeight: 100, //CHECK
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_circle_left_rounded,
-            color: primaryColor,
-            size: 55,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(30),
-          child: Container(
-            color: Colors.white,
-            child: Column(children: [
-              Text('Profile Menu',
-                  style: greenTextStyle.copyWith(
-                    fontSize: 40,
-                    fontWeight: bold,
-                  )),
-            ]),
-          ),
-        ),
-      ),
       body: Container(
         color: kUnavailableColor,
-        child: ListView(
-          children: [
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                color: whiteColor,
+                width: double.infinity,
+                margin: const EdgeInsets.only(top: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }, 
+                      icon: const Icon(
+                        Icons.arrow_circle_left_rounded,
+                        color: primaryColor,
+                        size: 55,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Text('Profile Menu',
+                        style: greenTextStyle.copyWith(
+                          fontSize: 40,
+                          fontWeight: bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             // profile detail
             const SizedBox(height: 15),
 
@@ -436,6 +440,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
           ],
         ),
       ),
+    ),
       bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(

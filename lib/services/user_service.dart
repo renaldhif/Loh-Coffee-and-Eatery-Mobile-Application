@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loh_coffee_eatery/models/user_model.dart';
 
 class UserService{
-  CollectionReference _userCollection = FirebaseFirestore.instance.collection('users');
+  final CollectionReference _userCollection = FirebaseFirestore.instance.collection('users');
 
   Future<void> addUser(UserModel user) async{
     try{
