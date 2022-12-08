@@ -14,11 +14,11 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
   bool _isSwitched = false;
 
   // To change the selected value of bottom navigation bar
-  int _selectedIndex = 4;  
+  int _selectedIndex = 4;
   void _changeSelectedIndex(int index) {
     setState(() {
       _selectedIndex = index;
-      switch(index){
+      switch (index) {
         case 0:
           Navigator.pushReplacementNamed(context, '/home');
           break;
@@ -39,38 +39,42 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: whiteColor,
-        elevation: 1,
-        toolbarHeight: 100, //CHECK
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_circle_left_rounded,
-            color: primaryColor,
-            size: 55,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(30),
-          child: Container(
-            color: Colors.white,
-            child: Column(children: [
-              Text('Profile Menu',
-                  style: greenTextStyle.copyWith(
-                    fontSize: 40,
-                    fontWeight: bold,
-                  )),
-            ]),
-          ),
-        ),
-      ),
       body: Container(
         color: kUnavailableColor,
-        child: ListView(
-          children: [
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                color: whiteColor,
+                width: double.infinity,
+                margin: const EdgeInsets.only(top: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }, 
+                      icon: const Icon(
+                        Icons.arrow_circle_left_rounded,
+                        color: primaryColor,
+                        size: 55,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Text('Profile Menu',
+                        style: greenTextStyle.copyWith(
+                          fontSize: 40,
+                          fontWeight: bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             // profile detail
             const SizedBox(height: 15),
 
@@ -96,8 +100,8 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       ),
                       CircleAvatar(
                         backgroundImage: Image.network(
-                          'https://firebasestorage.googleapis.com/v0/b/loh-coffee-eatery.appspot.com/o/profilepics%2F460A2392-7E42-4C79-8E5D-C5035CD243D5.jpg?alt=media&token=3bde7f21-462b-4824-bf64-ae6c7761bbb1')
-                        .image,
+                                'https://firebasestorage.googleapis.com/v0/b/loh-coffee-eatery.appspot.com/o/profilepics%2F460A2392-7E42-4C79-8E5D-C5035CD243D5.jpg?alt=media&token=3bde7f21-462b-4824-bf64-ae6c7761bbb1')
+                            .image,
                         backgroundColor: kUnavailableColor,
                         radius: 30, //size
                       ),
@@ -301,8 +305,8 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         _isSwitched = value;
                       });
                     },
-                  value: _isSwitched,
-                  activeColor: primaryColor,
+                    value: _isSwitched,
+                    activeColor: primaryColor,
                   ),
                 ],
               ),
@@ -347,8 +351,8 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         _isSwitched = value;
                       });
                     },
-                  value: _isSwitched,
-                  activeColor: primaryColor,
+                    value: _isSwitched,
+                    activeColor: primaryColor,
                   ),
                 ],
               ),
@@ -397,48 +401,45 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 25),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CustomButtonRed(
-                title: 'Sign Out', 
-                onPressed: (){}
-              ),
+              child: CustomButtonRed(title: 'Sign Out', onPressed: () {}),
             ),
           ],
         ),
       ),
+    ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_rounded),
-            label: 'Reserve',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_bulleted_rounded),
-            label: 'Order List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_rounded),
-            label: 'Notification',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        selectedItemColor: primaryColor,
-        unselectedItemColor: greyColor,
-        showUnselectedLabels: true,
-        onTap: _changeSelectedIndex
-      ),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_rounded),
+              label: 'Reserve',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_rounded),
+              label: 'Order List',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_rounded),
+              label: 'Notification',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          selectedItemColor: primaryColor,
+          unselectedItemColor: greyColor,
+          showUnselectedLabels: true,
+          onTap: _changeSelectedIndex),
     );
   }
 }
