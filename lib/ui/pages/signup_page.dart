@@ -161,22 +161,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
 
-                  // Forgot Password
-                  // Container(
-                  //   alignment: Alignment.centerRight,
-                  //   child: SizedBox(
-                  //     height: 30,
-                  //     child: TextButton(
-                  //       onPressed: (){},
-                  //       child: Text('Forgot Password?',
-                  //       style: greenTextStyle.copyWith(
-                  //         fontWeight: medium,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-
                   const SizedBox(
                     height: 15,
                   ), // Email
@@ -242,16 +226,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           firstDate: DateTime(1950),
                           lastDate: DateTime(2050),
                           builder: (context, child) {
-                            return Theme(
-                              data: ThemeData.light().copyWith(
-                                colorScheme: const ColorScheme.light(
-                                  primary: primaryColor,
+                            return FittedBox(
+                              child: Theme(
+                                data: ThemeData.light().copyWith(
+                                  colorScheme: const ColorScheme.light(
+                                    primary: primaryColor,
+                                  ),
+                                  buttonTheme: const ButtonThemeData(
+                                    textTheme: ButtonTextTheme.primary,
+                                  ),
                                 ),
-                                buttonTheme: const ButtonThemeData(
-                                  textTheme: ButtonTextTheme.primary,
-                                ),
+                                child: child!,
                               ),
-                              child: child!,
                             );
                           },
                         );
@@ -304,21 +290,22 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                     builder: (context, state) {
                       if (state is AuthLoading) {
-                        return Center(
-                          child: CircularProgressIndicator(),
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
                         );
                       }
                       return CustomButton(
                         title: 'Sign Up',
                         onPressed: () {
-                          //* TODO: Create Account
                           // Navigator.pushNamed(context, '/');
                           context.read<AuthCubit>().register(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                                name: _fullnameController.text,
-                                dob: _dateInputController.text,
-                              );
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                            name: _fullnameController.text,
+                            dob: _dateInputController.text,
+                          );
                         },
                       );
                     },

@@ -22,7 +22,12 @@ class _LoginPageState extends State<LoginPage> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if(state is AuthSuccess){
-          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+          if(state.user.role == 'administrator'){
+            Navigator.pushNamedAndRemoveUntil(context, '/home-admin', (route) => false);
+          }
+          else{
+            Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+          }
         }else if(state is AuthFailed){
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
