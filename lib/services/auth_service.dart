@@ -6,12 +6,14 @@ class AuthService{
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<UserModel> register({
-      required String email, 
-      required String password, 
-      required String name, 
-      required String dob, 
-      String role = 'customer'
-    }) async{
+  
+    required String email, 
+    required String password, 
+    required String name, 
+    required String dob, 
+    String role = 'customer'}) 
+    
+    async{
     try{
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email, 
