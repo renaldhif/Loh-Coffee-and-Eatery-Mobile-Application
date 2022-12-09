@@ -10,6 +10,7 @@ import 'ui/pages/forgotpass_page.dart';
 import 'ui/pages/home_page.dart';
 import 'ui/pages/login_page.dart';
 import 'ui/pages/profile_menu_page.dart';
+import 'ui/pages/request_reset.dart';
 import 'ui/pages/signup_page.dart';
 import 'splash.dart';
 
@@ -37,11 +38,12 @@ class MyApp extends StatelessWidget {
         // initialRoute: '/splash',
         routes: {
           // '/splash': (context) => SplashScreen(),
-          '/': (context) => SplashScreen(),
+          '/': (context) => const SplashScreen(),
           '/landing': (context) => const LandingPage(),
           '/login': (context) => const LoginPage(),
           '/signup': (context) => const SignUpPage(),
           '/forgotpassword': (context) => const ForgotPasswordPage(),
+          '/requestreset': (context) => const RequestResetPage(),
           '/profilemenu': (context) => const ProfileMenuPage(),
           '/home': (context) => const HomePage(),
           
