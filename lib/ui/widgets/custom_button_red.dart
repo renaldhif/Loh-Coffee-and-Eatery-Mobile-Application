@@ -6,6 +6,7 @@ class CustomButtonRed extends StatelessWidget {
   final double width;
   final Function() onPressed;
   final EdgeInsets margin;
+  final double fontSize;
 
   const CustomButtonRed({
     super.key,
@@ -13,6 +14,7 @@ class CustomButtonRed extends StatelessWidget {
     this.width = double.infinity,
     required this.onPressed,
     this.margin = EdgeInsets.zero,
+    this.fontSize = 18,
   });
 
   @override
@@ -32,7 +34,7 @@ class CustomButtonRed extends StatelessWidget {
         child: Text(
           title,
           style: whiteTextStyle.copyWith(
-            fontSize: 18,
+            fontSize: fontSize,
             fontWeight: bold,
           ),
         ),
