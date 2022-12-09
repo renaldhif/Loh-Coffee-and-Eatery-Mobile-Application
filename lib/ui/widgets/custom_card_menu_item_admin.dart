@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:loh_coffee_eatery/ui/widgets/custom_button.dart';
+import 'package:loh_coffee_eatery/ui/widgets/custom_button_red.dart';
 import '../../models/menu_model.dart';
 import '/shared/theme.dart';
 
-class CustomCardMenuItem extends StatelessWidget {
+class CustomCardMenuItemAdmin extends StatelessWidget {
   final MenuModel menu;
   // final String title, image, tag, price;
   // final double qtyLoved, qtyOrdered;
   // final Function() onPressed;
 
-  const CustomCardMenuItem(
+  const CustomCardMenuItemAdmin(
     this.menu,{
       super.key,
     // required this.title,
@@ -122,44 +124,27 @@ class CustomCardMenuItem extends StatelessWidget {
                   // Menu Card Button
                   Row(
                     children: [
-                      // Add to Cart Button
-                      Container(
-                        width: 0.4 * MediaQuery.of(context).size.width,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: primaryColor,
-                            width: 1,
-                          ),
-                          color: whiteColor,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.add,
-                              color: primaryColor,
-                            ),
-                            const SizedBox(width: 20),
-                            Text(
-                              'Add to Cart',
-                              style: greenTextStyle.copyWith(
-                                fontSize: 12,
-                                fontWeight: extraBold,
-                              ),
-                            ),
-                          ],
+                      // Update Button
+                      SizedBox(
+                        width: 0.2 *
+                            MediaQuery.of(context).size.width,
+                        height: 30,
+                        child: CustomButton(
+                          title: 'Update', 
+                          fontSize: 14,
+                          onPressed: () {},
                         ),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      // Favorite Button
-                      const Icon(
-                        Icons.favorite_border_rounded,
-                        color: primaryColor,
-                        size: 28,
+                      const SizedBox(width: 20),
+                      SizedBox(
+                        width: 0.2 *
+                            MediaQuery.of(context).size.width,
+                        height: 30,
+                        child: CustomButtonRed(
+                          title: 'Delete', 
+                          fontSize: 14,
+                          onPressed: () {},
+                        ),
                       ),
                     ],
                   ),
