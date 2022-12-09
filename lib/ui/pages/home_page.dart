@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loh_coffee_eatery/cubit/menu_cubit.dart';
 import 'package:loh_coffee_eatery/shared/theme.dart';
+import 'package:loh_coffee_eatery/ui/widgets/custom_card_menu_item.dart';
+
+import '../../models/menu_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,11 +30,11 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
       switch (index) {
         case 1:
-          Navigator.pushReplacementNamed(context, '/addmenu');
+          Navigator.pushNamed(context, '/addmenu');
           break;
-        // case 2:
-        //   Navigator.pushNamed(context, '/order');
-        //   break;
+        case 2:
+          Navigator.pushNamed(context, '/home-admin');
+          break;
         // case 3:
         //   Navigator.pushNamed(context, '/notification');
         //   break;
@@ -40,6 +45,26 @@ class _HomePageState extends State<HomePage> {
       }
     });
   }
+
+  @override
+  void initState(){
+    context.read<MenuCubit>().getMenus();
+    super.initState();
+  }
+
+  Widget menuCard(List<MenuModel> menus) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:  menus.map((MenuModel menu) {
+          return CustomCardMenuItem(menu);
+        }).toList(),
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     const SizedBox(height: 15),
+
                     // Dropdown Menu
                     Padding(
                       padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
@@ -95,141 +121,200 @@ class _HomePageState extends State<HomePage> {
               ),
 
               // Menu List
-              Container(
-                margin: const EdgeInsets.fromLTRB(12, 0, 12, 0),
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Menu Card
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 3,
+              BlocConsumer<MenuCubit, MenuState>(
+                listener: (context, state){
+                  if (state is MenuFailed){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text(state.error),
                       ),
-                      width: 0.9 * MediaQuery.of(context).size.width,
-                      height: 140,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(defaultRadius),
-                        border: Border.all(
-                          color: kUnavailableColor,
-                          width: 1,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            spreadRadius: 3,
-                            blurRadius: 7,
-                            offset: const Offset(1, 3),
-                          ),
-                        ],
-                        color: whiteColor,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state is MenuSuccess){
+                    return menuCard(state.menus);
+                  } else {
+                    return const Center(
+                      child: Text('Something went wrong'),
+                    );
+                  }
+                }
+              ),
+              
+                    // menu card widget
+                    // menuCard(menu),
 
-                        // Menu Card Content
-                        child: Row(
-                          children: [
+                    // Menu Card
+                    // Container(
+                    //   margin: const EdgeInsets.symmetric(
+                    //     vertical: 3,
+                    //   ),
+                    //   width: 0.9 * MediaQuery.of(context).size.width,
+                    //   height: 140,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(defaultRadius),
+                    //     border: Border.all(
+                    //       color: kUnavailableColor,
+                    //       width: 1,
+                    //     ),
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //         color: Colors.grey.withOpacity(0.3),
+                    //         spreadRadius: 3,
+                    //         blurRadius: 7,
+                    //         offset: const Offset(1, 3),
+                    //       ),
+                    //     ],
+                    //     color: whiteColor,
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(8.0),
+
+                    //     // Menu Card Content
+                    //     child: Row(
+                    //       children: [
+                            //   listener: (context, state) {
+                            //     if (state is MenuFailed){
+                            //       ScaffoldMessenger.of(context).showSnackBar(
+                            //         SnackBar(
+                            //           backgroundColor: Colors.red,
+                            //           content: Text(state.error),
+                            //         ),
+                            //       );
+                            //     }
+                            //   },
+                            //   builder: (context, state) {
+                            //     if (state is MenuLoading){
+                            //       return const Center(
+                            //         child: CircularProgressIndicator(
+                            //           color: primaryColor,
+                            //         ),
+                            //       );
+                            //     } else if (state is MenuSuccess){
+                            //       return ListView.builder(
+                            //         itemCount: state.menus.length,
+                            //         itemBuilder: (context, index) {
+                            //           final menu = state.menus[index];
+                            //           return CustomCardMenuItem(
+                            //             title: menu.title,
+                            //             image: menu.image,
+                            //             tag: menu.tag,
+                            //             price: menu.price,
+                            //           );
+                            //         },
+                            //       );
+                            //     } else {
+                            //       return Center(
+                            //         child: Text('Failed to load menu'),
+                            //       );
+                            //     }
+
+                            //     // return CustomCardMenuItem(
+                            //     //     title: title,
+                            //     //     image: image,
+                            //     //     tag: tag,
+                            //     //     price: price);
+                            //   },
+                            // ),
                             // Image
-                            ClipRRect(
-                              borderRadius:
-                                  BorderRadius.circular(defaultRadius),
-                              child: Image.asset(
-                                'assets/images/login_page.png',
-                                width: 0.3 * MediaQuery.of(context).size.width,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            // Menu Details
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Paket Ayam Bakar dengan Saus BBQ dan Es Teh Manis',
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: false,
-                                    style: greenTextStyle.copyWith(
-                                      fontSize: 14,
-                                      fontWeight: black,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    'Chicken, Rice, Spicy, Tea',
-                                    style: greenTextStyle.copyWith(
-                                      fontSize: 12,
-                                      fontWeight: light,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    'Rp 69.000',
-                                    style: orangeTextStyle.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: extraBold,
-                                    ),
-                                  ),
-                                  // Menu Card Button
-                                  const Spacer(),
-                                  Row(
-                                    children: [
-                                      // Add to Cart Button
-                                      Container(
-                                        width: 0.4 *
-                                            MediaQuery.of(context).size.width,
-                                        height: 25,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color: primaryColor,
-                                            width: 1,
-                                          ),
-                                          color: whiteColor,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(
-                                              Icons.add,
-                                              color: primaryColor,
-                                            ),
-                                            const SizedBox(width: 5),
-                                            Text(
-                                              'Add to Cart',
-                                              style: greenTextStyle.copyWith(
-                                                fontSize: 12,
-                                                fontWeight: extraBold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 12,
-                                      ),
-                                      // Favorite Button
-                                      const Icon(
-                                        Icons.favorite_border_rounded,
-                                        color: primaryColor,
-                                        size: 30,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
+                            // ClipRRect(
+                            //   borderRadius:
+                            //       BorderRadius.circular(defaultRadius),
+                            //   child: Image.asset(
+                            //     'assets/images/login_page.png',
+                            //     width: 0.3 * MediaQuery.of(context).size.width,
+                            //     fit: BoxFit.cover,
+                            //   ),
+                            // ),
+                            // const SizedBox(width: 10),
+                            // // Menu Details
+                            // Expanded(
+                            //   child: Column(
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: [
+                            //       Text(
+                            //         'Paket Ayam Bakar dengan Saus BBQ dan Es Teh Manis',
+                            //         maxLines: 2,
+                            //         overflow: TextOverflow.ellipsis,
+                            //         softWrap: false,
+                            //         style: greenTextStyle.copyWith(
+                            //           fontSize: 14,
+                            //           fontWeight: black,
+                            //         ),
+                            //       ),
+                            //       const SizedBox(height: 5),
+                            //       Text(
+                            //         'Chicken, Rice, Spicy, Tea',
+                            //         style: greenTextStyle.copyWith(
+                            //           fontSize: 12,
+                            //           fontWeight: light,
+                            //         ),
+                            //       ),
+                            //       const SizedBox(height: 5),
+                            //       Text(
+                            //         'Rp 69.000',
+                            //         style: orangeTextStyle.copyWith(
+                            //           fontSize: 16,
+                            //           fontWeight: extraBold,
+                            //         ),
+                            //       ),
+                            //       // Menu Card Button
+                            //       const Spacer(),
+                            //       Row(
+                            //         children: [
+                            //           // Add to Cart Button
+                            //           Container(
+                            //             width: 0.4 *
+                            //                 MediaQuery.of(context).size.width,
+                            //             height: 25,
+                            //             decoration: BoxDecoration(
+                            //               borderRadius:
+                            //                   BorderRadius.circular(5),
+                            //               border: Border.all(
+                            //                 color: primaryColor,
+                            //                 width: 1,
+                            //               ),
+                            //               color: whiteColor,
+                            //             ),
+                            //             child: Row(
+                            //               mainAxisAlignment:
+                            //                   MainAxisAlignment.center,
+                            //               children: [
+                            //                 const Icon(
+                            //                   Icons.add,
+                            //                   color: primaryColor,
+                            //                 ),
+                            //                 const SizedBox(width: 5),
+                            //                 Text(
+                            //                   'Add to Cart',
+                            //                   style: greenTextStyle.copyWith(
+                            //                     fontSize: 12,
+                            //                     fontWeight: extraBold,
+                            //                   ),
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //           ),
+                            //           const SizedBox(
+                            //             width: 12,
+                            //           ),
+                            //           // Favorite Button
+                            //           const Icon(
+                            //             Icons.favorite_border_rounded,
+                            //             color: primaryColor,
+                            //             size: 30,
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
             ],
           ),
         ),
