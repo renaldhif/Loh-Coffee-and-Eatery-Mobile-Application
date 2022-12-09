@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'cubit/auth_cubit.dart';
+import 'cubit/menu_cubit.dart';
 import 'firebase_options.dart';
 import '/ui/pages/add_menu_admin.dart';
 import '/ui/pages/home_page_admin.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(create: (context) => MenuCubit()),
       ],
       child: MaterialApp(
         // home: SplashScreen(),

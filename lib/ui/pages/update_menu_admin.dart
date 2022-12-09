@@ -7,14 +7,14 @@ import 'package:loh_coffee_eatery/ui/widgets/custom_textformfield.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class AddMenuPageAdmin extends StatefulWidget {
-  const AddMenuPageAdmin({super.key});
+class UpdateMenuPageAdmin extends StatefulWidget {
+  const UpdateMenuPageAdmin({super.key});
 
   @override
-  State<AddMenuPageAdmin> createState() => _AddMenuPageAdminState();
+  State<UpdateMenuPageAdmin> createState() => _AddMenuPageAdminState();
 }
 
-class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
+class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
   // TextEditingControllers
   final TextEditingController _menuNameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
@@ -130,8 +130,9 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 35),
                 child: CustomButton(
-                  title: 'Add Menu',
+                  title: 'Update Menu',
                   onPressed: () {
+                    //! Implement Update Menu Function
                   },
                 ),
               ),
