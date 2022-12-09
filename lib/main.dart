@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:loh_coffee_eatery/ui/pages/update_profile_page.dart';
 import 'cubit/auth_cubit.dart';
 import 'firebase_options.dart';
 import '/ui/pages/add_menu_admin.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           '/requestreset': (context) => const RequestResetPage(),
           '/profilemenu': (context) => const ProfileMenuPage(),
           '/home': (context) => const HomePage(),
+          '/update-profile': (context) => const UpdateProfilePage(),
           
           // admins
           '/home-admin': (context) => const HomePageAdmin(),

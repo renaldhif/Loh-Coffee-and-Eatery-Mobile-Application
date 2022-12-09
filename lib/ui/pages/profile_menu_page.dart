@@ -178,6 +178,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       onPressed: () {
                         //* TODO: Navigate to profile detail page
                         // Navigator.pushNamed(context, '/profile');
+                        Navigator.pushNamed(context, '/update-profile');
                       },
                       icon: const Icon(
                         Icons.arrow_forward_ios_rounded,
