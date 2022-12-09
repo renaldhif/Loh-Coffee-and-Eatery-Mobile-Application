@@ -42,13 +42,22 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  void getCurrentUser(String id) async {
+  // void getCurrentUser(String id) async {
+  //   try {
+  //     UserModel user = await UserService().getUserById(id);
+
+  //     emit(AuthSuccess(user));
+  //   } catch (e) {
+  //     emit(AuthFailed(e.toString()));
+  //   }
+  // }
+    Future<UserModel> getCurrentUser(String id) async {
     try {
       UserModel user = await UserService().getUserById(id);
 
-      emit(AuthSuccess(user));
+      return user;
     } catch (e) {
-      emit(AuthFailed(e.toString()));
+      throw e;
     }
   }
 
@@ -71,4 +80,35 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthFailed(e.toString()));
     }
   }
+
+  // void updateUser({required UserModel user}) async {
+  //   try {
+  //     emit(AuthLoading());
+  //     await UserService().updateUser(user);
+  //     emit(AuthSuccess(user));
+  //   } catch (e) {
+  //     emit(AuthFailed(e.toString()));
+  //   }
+  // }
+
+  // void updateUser({required UserModel user}) async {
+  //   try {
+  //     emit(AuthLoading());
+  //     await UserService().updateUser(user: user);
+  //     emit(AuthSuccessUpdate());
+  //   } catch (e) {
+  //     emit(AuthFailed(e.toString()));
+  //   }
+  // }
+
+  void updateUser({required String id, required String name, required String email, required String dob}) async {
+    try {
+      emit(AuthLoading());
+      await UserService().updateUser(id: id,name: name, email: email, dob: dob);
+      emit(AuthSuccessUpdate());
+    } catch (e) {
+      emit(AuthFailed(e.toString()));
+    }
+  }
+
 }

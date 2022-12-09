@@ -22,6 +22,13 @@ class AuthSuccess extends AuthState {
 
 }
 
+class AuthSuccessUpdate extends AuthState {
+
+  AuthSuccessUpdate();
+  @override
+  List<Object> get props => [];
+}
+
 class AuthFailed extends AuthState {
   final String error;
 
