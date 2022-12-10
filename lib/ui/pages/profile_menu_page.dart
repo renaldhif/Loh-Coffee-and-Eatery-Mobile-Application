@@ -22,7 +22,8 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
       _selectedIndex = index;
       switch (index) {
         case 0:
-          Navigator.pushReplacementNamed(context, '/home');
+          // Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pop(context);
           break;
         // case 2:
         //   Navigator.pushNamed(context, '/order');
@@ -143,33 +144,32 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         const SizedBox(width: 20),
                         BlocBuilder<AuthCubit, AuthState>(
                           builder: (context, state) {
-                            if(state is AuthSuccess){
+                            if (state is AuthSuccess) {
                               return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${state.user.name}',
-                                  style: mainTextStyle.copyWith(
-                                    fontSize: 20,
-                                    fontWeight: bold,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '${state.user.name}',
+                                    style: mainTextStyle.copyWith(
+                                      fontSize: 20,
+                                      fontWeight: bold,
+                                    ),
                                   ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 5),
-                                ),
-                                Text(
-                                  '${state.user.email}',
-                                  style: mainTextStyle.copyWith(
-                                    fontSize: 15,
-                                    fontWeight: bold,
+                                  const Padding(
+                                    padding: EdgeInsets.only(top: 5),
                                   ),
-                                ),
-                              ],
-                            );
-                            }
-                            else{}
-                              return const SizedBox();
+                                  Text(
+                                    '${state.user.email}',
+                                    style: mainTextStyle.copyWith(
+                                      fontSize: 15,
+                                      fontWeight: bold,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            } else {}
+                            return const SizedBox();
                           },
                         ),
                       ],

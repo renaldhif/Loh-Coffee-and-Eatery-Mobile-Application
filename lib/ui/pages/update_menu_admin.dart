@@ -1,5 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubit/menu_cubit.dart';
+import '../../models/menu_model.dart';
+import '../../services/menu_service.dart';
 import '/shared/theme.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button_white.dart';
@@ -21,6 +27,9 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _tagController = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
+
+  CollectionReference _menuCollection =
+      FirebaseFirestore.instance.collection('menus');
 
   // Image Picker
   File? image;
