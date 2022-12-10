@@ -17,11 +17,10 @@ class MenuModel extends Equatable {
     required this.tag,
     required this.price,
     required this.image,
-    required this.totalLoved,
-    required this.totalOrdered,
-
-    // this.totalLoved = 0,
-    // this.totalOrdered = 0
+    this.totalLoved = 0,
+    this.totalOrdered = 0
+    // required this.totalLoved,
+    // required this.totalOrdered,
   });
 
   factory MenuModel.fromJson(String id, Map<String, dynamic> json) {
@@ -30,11 +29,23 @@ class MenuModel extends Equatable {
       title: json['title'],
       description: json['description'],
       tag: json['tag'],
-      price: json['price'].toInt(),
+      price: json['price'],
       image: json['image'],
-      totalLoved: json['totalLoved'].toInt(),
-      totalOrdered: json['totalOrdered'].toInt(),
+      totalLoved: json['totalLoved'],
+      totalOrdered: json['totalOrdered'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'tag': tag,
+      'price': price,
+      'image': image,
+      'totalLoved': totalLoved,
+      'totalOrdered': totalOrdered,
+    };
   }
 
   @override

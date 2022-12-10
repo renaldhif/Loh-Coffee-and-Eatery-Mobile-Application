@@ -1,5 +1,9 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loh_coffee_eatery/cubit/menu_cubit.dart';
+import 'package:loh_coffee_eatery/models/menu_model.dart';
 import '/shared/theme.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button_white.dart';
@@ -35,6 +39,20 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
+
+    Reference refStorage = FirebaseStorage.instance.ref().child('images/menus/${image!.path}');
+    UploadTask uploadTask = refStorage.putFile(image!);
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+    String urlImg = await taskSnapshot.ref.getDownloadURL();
+    setState(() {
+      _imageController.text = urlImg;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Image Uploaded'),
+          backgroundColor: primaryColor,
+        ),
+      );
+    });
   }
 
   @override
@@ -103,35 +121,72 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                   label: 'Menu Tag',
                   hintText: 'input menu tag',
                   controller: _tagController),
-              //* Image
-              CustomTextFormField(
-                  title: 'Menu Image',
-                  label: 'Menu Image',
-                  hintText: 'input menu image',
-                  controller: _imageController),
-
               const SizedBox(
                 height: 15,
               ),
               Text(
-                'Or',
-                style: greenTextStyle.copyWith(fontSize: 18),
+                'Image',
+                style: greenTextStyle.copyWith(
+                  fontSize: 18,
+                  fontWeight: bold,
+                ),
               ),
               const SizedBox(
-                height: 15,
+                height: 5,
               ),
               CustomButtonWhite(
                 title: 'Choose an Image',
                 onPressed: () {
                   getImage();
+                  _imageController;
                 },
               ),
 
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 35),
-                child: CustomButton(
-                  title: 'Add Menu',
-                  onPressed: () {
+                padding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 35),
+                child: BlocConsumer<MenuCubit, MenuState>(
+                  listener: (context, state) {
+                    if(state is MenuSuccess){
+                      Navigator.pushNamedAndRemoveUntil(context, '/home-admin', (route) => false);
+                    }
+                    else if(state is MenuFailed){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(state.error),
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is MenuLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: primaryColor,
+                        ),
+                      );
+                    }
+                    return CustomButton(
+                      title: 'Add Menu',
+                      onPressed: () {
+                        context.read<MenuCubit>().addMenu(
+                          title: _menuNameController.text,
+                          description: _descriptionController.text,
+                          price: int.parse(_priceController.text),
+                          tag: _tagController.text,
+                          image: _imageController.text,
+                          totalLoved: 0,
+                          totalOrdered: 0,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Menu Successfully Added!'),
+                          backgroundColor: primaryColor,
+                        ),
+                      );
+                      },
+                    );
                   },
                 ),
               ),
