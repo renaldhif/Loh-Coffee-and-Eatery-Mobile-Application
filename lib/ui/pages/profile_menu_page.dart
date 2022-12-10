@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loh_coffee_eatery/cubit/auth_cubit.dart';
+import '../../models/user_model.dart';
 import '/ui/widgets/custom_button_red.dart';
 import '/shared/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

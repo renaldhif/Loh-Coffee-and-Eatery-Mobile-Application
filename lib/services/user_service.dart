@@ -68,4 +68,13 @@ class UserService{
   //     'dob': user.dob,
   //   });
   // }
+   Future<String> getUserNameFromUID(String uid) async {
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: uid)
+        .get();
+     return snapshot.docs.first['name'];
+
+  }
 }
