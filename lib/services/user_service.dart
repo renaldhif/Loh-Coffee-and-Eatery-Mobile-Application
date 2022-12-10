@@ -41,4 +41,22 @@ class UserService{
       'dob': dob,
     });
   }
+
+  //   Future<void> updateUser({required UserModel user}) async{
+  //   await _userCollection.doc().update({
+  //     'name': user.name,
+  //     'email': user.email,
+  //     'dob': user.dob,
+  //   });
+  // }
+   Future<String> getUserNameFromUID(String uid) async {
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: uid)
+        .get();
+     return snapshot.docs.first['name'];
+
+  }
+
 }

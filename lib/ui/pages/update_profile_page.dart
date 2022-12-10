@@ -27,49 +27,65 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Column(
-          children: [
-            CustomTextFormField(
-              title: 'Name',
-              label: 'Name',
-              hintText: 'Update name',
-              controller: _fullnameController,
-            ),
-            CustomTextFormField(
-              title: 'Email',
-              label: 'Email',
-              hintText: 'Update email',
-              controller: _emailController,
-            ),
-            CustomTextFormField(
-              title: 'Date of Birth',
-              label: 'Date of Birth',
-              hintText: 'Update date of birth',
-              controller: _dateInputController,
-            ),
-            const SizedBox(height: 20,),
-            //submitButton(),
-            CustomButton(
-              title: 'Update', 
-              onPressed: (){
-                User ? user = FirebaseAuth.instance.currentUser;
-                Future<UserModel> userNow = context.read<AuthCubit>().getCurrentUser(user!.uid);
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(
-                //     backgroundColor: Colors.red,
-                //     content: Text(user.uid),
-                //   ),
-                // );
-                context.read<AuthCubit>().updateUser(
-                  id: user.uid,
-                  name: _fullnameController.text,
-                  email: _emailController.text,
-                  dob: _dateInputController.text,
-                );
-                Navigator.pushNamed(context, '/profilemenu');
-              },
-            ),
-          ],
+        child: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            if(state is AuthSuccess){
+                          return Column(
+              children: [
+                CustomTextFormField(
+                  title: 'Name',
+                  label: '${state.user.name}',
+                  hintText: 'Update name',
+                  controller: _fullnameController,
+                ),
+                CustomTextFormField(
+                  title: 'Email',
+                  label: '${state.user.email}',
+                  hintText: 'Update email',
+                  controller: _emailController,
+                ),
+                CustomTextFormField(
+                  title: 'Date of Birth',
+                  label: '${state.user.dob}',
+                  hintText: 'Update date of birth',
+                  controller: _dateInputController,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                //submitButton(),
+                CustomButton(
+                  title: 'Update',
+                  onPressed: () {
+                    User ? user = FirebaseAuth.instance.currentUser;
+                    Future<UserModel> userNow = context.read<AuthCubit>().getCurrentUser(user!.uid);
+                    if(_fullnameController.text == ''){
+                      _fullnameController.text = '${state.user.name}';
+                    }
+                    if(_emailController.text == ''){
+                      _emailController.text = '${state.user.email}';
+                    }
+                    if(_dateInputController.text == ''){
+                      _dateInputController.text = '${state.user.dob}';
+                    }
+
+                    context.read<AuthCubit>().updateUser(
+                          id: user.uid,
+                          name: _fullnameController.text,
+                          email: _emailController.text,
+                          dob: _dateInputController.text,
+                        );
+                    Navigator.pushNamed(context, '/profilemenu');
+                  },
+                ),
+
+              ],
+            );
+            }else{
+              return SizedBox();
+            }
+
+          },
         ),
       ),
     );

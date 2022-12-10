@@ -77,6 +77,8 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthLoading());
       await UserService().updateUser(id: id,name: name, email: email, dob: dob);
       emit(AuthSuccessUpdate());
+      UserModel user = await UserService().getUserById(id);
+      emit(AuthSuccess(user));
     } catch (e) {
       emit(AuthFailed(e.toString()));
     }
