@@ -23,7 +23,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _dateInputController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

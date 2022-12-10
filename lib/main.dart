@@ -8,13 +8,16 @@ import 'firebase_options.dart';
 import '/ui/pages/add_menu_admin.dart';
 import '/ui/pages/home_page_admin.dart';
 import '/ui/pages/landing_page.dart';
+import 'ui/pages/add_review_page.dart';
 import 'ui/pages/forgotpass_page.dart';
 import 'ui/pages/home_page.dart';
 import 'ui/pages/login_page.dart';
 import 'ui/pages/profile_menu_page.dart';
 import 'ui/pages/request_reset.dart';
+import 'ui/pages/review_page_admin.dart';
 import 'ui/pages/signup_page.dart';
 import 'splash.dart';
+import 'ui/pages/update_menu_admin.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +43,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         // initialRoute: '/splash',
         routes: {
+          //* Customer Routes
           // '/splash': (context) => SplashScreen(),
           '/': (context) => const SplashScreen(),
           '/landing': (context) => const LandingPage(),
@@ -50,10 +54,13 @@ class MyApp extends StatelessWidget {
           '/profilemenu': (context) => const ProfileMenuPage(),
           '/home': (context) => const HomePage(),
           '/update-profile': (context) => const UpdateProfilePage(),
+          '/submit-review' :(context) => const AddReviewPage(),
           
-          // admins
+          //* Admin Routes
           '/home-admin': (context) => const HomePageAdmin(),
           '/addmenu': (context) => const AddMenuPageAdmin(),
+          '/updatemenu': (context) => const UpdateMenuPageAdmin(),
+          '/reviews': (context) => const ReviewPageAdmin(),
         },
       ),
     );

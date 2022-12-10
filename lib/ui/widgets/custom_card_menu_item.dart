@@ -60,12 +60,15 @@ class CustomCardMenuItem extends StatelessWidget {
                   width: 1,
                 ),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(defaultRadius),
-                child: Image.network(
-                  menu.image, // this field is required
-                  width: 0.3 * MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
+              child: AspectRatio(
+                aspectRatio: 1/1,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(defaultRadius),
+                  child: Image.network(
+                    menu.image, // this field is required
+                    width: 0.3 * MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -124,7 +127,7 @@ class CustomCardMenuItem extends StatelessWidget {
                     children: [
                       // Add to Cart Button
                       Container(
-                        width: 0.4 * MediaQuery.of(context).size.width,
+                        width: 0.35 * MediaQuery.of(context).size.width,
                         height: 25,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -141,7 +144,7 @@ class CustomCardMenuItem extends StatelessWidget {
                               Icons.add,
                               color: primaryColor,
                             ),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 10),
                             Text(
                               'Add to Cart',
                               style: greenTextStyle.copyWith(
