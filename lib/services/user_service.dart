@@ -34,38 +34,11 @@ class UserService{
     }
   }
 
-  // Future<void> updateUser(UserModel user) async{
-  //   try{
-  //     getUserById(user.id).then((value) => {
-  //       _userCollection.doc(user.id).update({
-  //         'email': user.email,
-  //         //'password': user.password,
-  //         'name': user.name,
-  //         'dob': user.dob,
-  //         'role': user.role
-  //       })
-  //     });
-  //   }catch(e){
-  //     throw e;
-  //   }
-  // }
   Future<void> updateUser({required String id, required String name, required String email, required String dob}) async{
     await _userCollection.doc(id).update({
       'name': name,
       'email': email,
       'dob': dob,
     });
-    // await _userCollection.doc().update({
-    //   'name': name,
-    //   'email': email,
-    //   'dob': dob,
-    // });
   }
-  //   Future<void> updateUser({required UserModel user}) async{
-  //   await _userCollection.doc().update({
-  //     'name': user.name,
-  //     'email': user.email,
-  //     'dob': user.dob,
-  //   });
-  // }
 }
