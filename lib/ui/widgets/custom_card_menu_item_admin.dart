@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loh_coffee_eatery/ui/pages/update_menu_admin.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button_red.dart';
 import '../../models/menu_model.dart';
@@ -11,8 +12,8 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
   // final Function() onPressed;
 
   const CustomCardMenuItemAdmin(
-    this.menu,{
-      super.key,
+    this.menu, {
+    super.key,
     // required this.title,
     // required this.image,
     // required this.tag,
@@ -62,12 +63,15 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                   width: 1,
                 ),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(defaultRadius),
-                child: Image.network(
-                  menu.image, // this field is required
-                  width: 0.3 * MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
+              child: AspectRatio(
+                aspectRatio: 1 / 1,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(defaultRadius),
+                  child: Image.network(
+                    menu.image, // this field is required
+                    width: 0.3 * MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -126,22 +130,22 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                     children: [
                       // Update Button
                       SizedBox(
-                        width: 0.2 *
-                            MediaQuery.of(context).size.width,
+                        width: 0.2 * MediaQuery.of(context).size.width,
                         height: 30,
                         child: CustomButton(
-                          title: 'Update', 
+                          title: 'Update',
                           fontSize: 14,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/updatemenu');
+                          },
                         ),
                       ),
                       const SizedBox(width: 20),
                       SizedBox(
-                        width: 0.2 *
-                            MediaQuery.of(context).size.width,
+                        width: 0.2 * MediaQuery.of(context).size.width,
                         height: 30,
                         child: CustomButtonRed(
-                          title: 'Delete', 
+                          title: 'Delete',
                           fontSize: 14,
                           onPressed: () {},
                         ),
