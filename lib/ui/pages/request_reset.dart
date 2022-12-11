@@ -8,6 +8,7 @@ class RequestResetPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 20),
