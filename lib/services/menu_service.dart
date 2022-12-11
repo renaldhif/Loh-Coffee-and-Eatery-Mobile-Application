@@ -82,21 +82,24 @@ class MenuService {
   }
 
   // update menu from edit menu page
-  Future<void> updateMenu(MenuModel menu) async {
+  Future<void> updateMenu(MenuModel menu, String title, String description,
+  int price, String tag, String image) async {
     try {
       await _menuCollection.doc(menu.id).update({
-        'title': menu.title,
-        'price': menu.price,
-        'description': menu.description,
-        'image': menu.image,
-        'tag': menu.tag,
-        'totalLoved': menu.totalLoved,
-        'totalOrdered': menu.totalOrdered,
+        'title': title,
+        'price': price,
+        'description': description,
+        'image': image,
+        'tag': tag,
+        'totalLoved': 1,
+        'totalOrdered': 0,
       });
     } catch (e) {
       throw e;
     }
   }
+
+
 
 
   // delete menu from edit menu page
@@ -117,4 +120,6 @@ class MenuService {
 
 //     return downloadUrl;
 //   }
+//get menu id by menumodel
+
 }

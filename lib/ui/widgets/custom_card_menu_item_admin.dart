@@ -23,6 +23,10 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
     // required this.onPressed,
   });
 
+  // void loadData(){
+  //   var id = menu.id;
+  // }
+
   @override
   Widget build(BuildContext context) {
     // Menu Card
@@ -136,7 +140,10 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                           title: 'Update',
                           fontSize: 14,
                           onPressed: () {
-                            Navigator.pushNamed(context, '/updatemenu');
+                            // loadData();
+                            // Navigator.pushNamed(context, '/updatemenu');
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => UpdateMenuPageAdmin(inMenu: menu)));
                           },
                         ),
                       ),
