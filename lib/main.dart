@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:loh_coffee_eatery/models/menu_model.dart';
 import 'package:loh_coffee_eatery/ui/pages/update_profile_page.dart';
 import 'cubit/auth_cubit.dart';
 import 'cubit/menu_cubit.dart';
@@ -29,6 +30,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   @override
@@ -41,6 +43,16 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         // home: SplashScreen(),
         debugShowCheckedModeBanner: false,
+        // MenuModel menu = const MenuModel(
+        //   id: '',
+        //   title: '',
+        //   price: 0,
+        //   description: '',
+        //   tag: '',
+        //   image: '',
+        //   totalLoved: 0,
+        //   totalOrdered: 0,
+        // ),
         // initialRoute: '/splash',
         routes: {
           //* Customer Routes
@@ -59,7 +71,8 @@ class MyApp extends StatelessWidget {
           //* Admin Routes
           '/home-admin': (context) => const HomePageAdmin(),
           '/addmenu': (context) => const AddMenuPageAdmin(),
-          '/updatemenu': (context) => const UpdateMenuPageAdmin(),
+
+          '/updatemenu': (context) => UpdateMenuPageAdmin(),
           '/reviews': (context) => const ReviewPageAdmin(),
         },
       ),
