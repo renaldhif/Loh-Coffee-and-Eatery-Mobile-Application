@@ -70,6 +70,7 @@ class MyApp extends StatelessWidget {
           
           //* Admin Routes
           '/home-admin': (context) => const HomePageAdmin(),
+          '/profile-admin' : (context) => const ProfileMenuPage(),
           '/addmenu': (context) => const AddMenuPageAdmin(),
 
           '/updatemenu': (context) => UpdateMenuPageAdmin(),
