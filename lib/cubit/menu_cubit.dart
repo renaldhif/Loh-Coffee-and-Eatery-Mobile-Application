@@ -75,10 +75,13 @@ class MenuCubit extends Cubit<MenuState> {
     }
   }
   
-  void updateMenu(MenuModel menu) async{
+
+
+  void updateMenu(MenuModel? menu, String title, String description,
+  int price, String tag, String image) async{
     try{
       emit(MenuLoading());
-      await MenuService().updateMenu(menu);
+      await MenuService().updateMenu(menu!, title, description, price, tag, image);
       emit(MenuSuccess([menu]));
     } catch (e) {
       emit(MenuFailed(e.toString()));

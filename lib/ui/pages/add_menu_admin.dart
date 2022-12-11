@@ -148,7 +148,7 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                 child: BlocConsumer<MenuCubit, MenuState>(
                   listener: (context, state) {
                     if(state is MenuSuccess){
-                      Navigator.pushNamedAndRemoveUntil(context, '/home-admin', (route) => false);
+                      Navigator.pushReplacementNamed(context, '/home-admin');
                     }
                     else if(state is MenuFailed){
                       ScaffoldMessenger.of(context).showSnackBar(
