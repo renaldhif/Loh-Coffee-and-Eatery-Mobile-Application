@@ -43,7 +43,6 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
   Widget signOutButton() {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        // TODO: implement listener
         if (state is AuthFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -285,8 +284,9 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       ],
                     ),
                     IconButton(
-                      // * TODO: Navigate to submit review page
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/submit-review');
+                      },
                       icon: const Icon(
                         Icons.arrow_forward,
                         color: primaryColor,
