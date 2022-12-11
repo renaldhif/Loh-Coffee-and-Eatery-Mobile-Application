@@ -136,9 +136,13 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                           padding: EdgeInsets.only(left: 15),
                         ),
                         CircleAvatar(
-                          backgroundImage: Image.asset('lohlogo.jpeg').image,
-                          backgroundColor: kUnavailableColor,
-                          radius: 30, //size
+                          radius: 30,
+                          backgroundColor: primaryColor,
+                          child: CircleAvatar(
+                            backgroundImage: Image.asset('assets/images/lohlogo.jpeg').image,
+                            radius: 29, //size
+                            backgroundColor: primaryColor,
+                          ),
                         ),
                         const SizedBox(width: 20),
                         BlocBuilder<AuthCubit, AuthState>(
@@ -224,7 +228,7 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                     ),
                     IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/review');
+                        Navigator.pushNamed(context, '/reviews');
                       },
                       icon: const Icon(
                         Icons.arrow_forward,

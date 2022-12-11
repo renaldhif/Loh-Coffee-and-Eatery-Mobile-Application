@@ -39,7 +39,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
           Navigator.pushNamed(context, '/reviews');
           break;
         case 4:
-          Navigator.pushNamed(context, '/profilemenu');
+          Navigator.pushNamed(context, '/profile-admin');
           _selectedIndex = 0;
           break;
       }

@@ -26,66 +26,175 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, state) {
-            if(state is AuthSuccess){
-                          return Column(
-              children: [
-                CustomTextFormField(
-                  title: 'Name',
-                  label: '${state.user.name}',
-                  hintText: 'Update name',
-                  controller: _fullnameController,
-                ),
-                CustomTextFormField(
-                  title: 'Email',
-                  label: '${state.user.email}',
-                  hintText: 'Update email',
-                  controller: _emailController,
-                ),
-                CustomTextFormField(
-                  title: 'Date of Birth',
-                  label: '${state.user.dob}',
-                  hintText: 'Update date of birth',
-                  controller: _dateInputController,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                //submitButton(),
-                CustomButton(
-                  title: 'Update',
-                  onPressed: () {
-                    User ? user = FirebaseAuth.instance.currentUser;
-                    Future<UserModel> userNow = context.read<AuthCubit>().getCurrentUser(user!.uid);
-                    if(_fullnameController.text == ''){
-                      _fullnameController.text = '${state.user.name}';
-                    }
-                    if(_emailController.text == ''){
-                      _emailController.text = '${state.user.email}';
-                    }
-                    if(_dateInputController.text == ''){
-                      _dateInputController.text = '${state.user.dob}';
-                    }
-
-                    context.read<AuthCubit>().updateUser(
-                          id: user.uid,
-                          name: _fullnameController.text,
-                          email: _emailController.text,
-                          dob: _dateInputController.text,
-                        );
-                    Navigator.pushNamed(context, '/profilemenu');
-                  },
-                ),
-
-              ],
-            );
-            }else{
-              return SizedBox();
-            }
-
-          },
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              if(state is AuthSuccess){
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(top: 30),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.arrow_circle_left_rounded,
+                            color: primaryColor,
+                            size: 55,
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12),
+                          child: Text(
+                            'Update Profile',
+                            style: greenTextStyle.copyWith(
+                              fontSize: 40,
+                              fontWeight: bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  CustomTextFormField(
+                    title: 'Name',
+                    label: '${state.user.name}',
+                    hintText: 'Update name',
+                    controller: _fullnameController,
+                  ),
+                  CustomTextFormField(
+                    title: 'Email',
+                    label: '${state.user.email}',
+                    hintText: 'Update email',
+                    controller: _emailController,
+                  ),
+                  // CustomTextFormField(
+                  //   title: 'Date of Birth',
+                  //   label: '${state.user.dob}',
+                  //   hintText: 'Update date of birth',
+                  //   controller: _dateInputController,
+                  // ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20,),
+                    child: Text(
+                      'Date of Birth',
+                      style: greenTextStyle.copyWith(
+                        fontSize: 18,
+                        fontWeight: bold,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: SizedBox(
+                        height: 50,
+                        child: TextFormField(
+                          controller: _dateInputController,
+                          keyboardType: TextInputType.datetime,
+                          readOnly: true,
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1950),
+                              lastDate: DateTime(2050),
+                              builder: (context, child) {
+                                return FittedBox(
+                                  child: Theme(
+                                    data: ThemeData.light().copyWith(
+                                      colorScheme: const ColorScheme.light(
+                                        primary: primaryColor,
+                                      ),
+                                      buttonTheme: const ButtonThemeData(
+                                        textTheme: ButtonTextTheme.primary,
+                                      ),
+                                    ),
+                                    child: child!,
+                                  ),
+                                );
+                              },
+                            );
+                            if (pickedDate != null) {
+                              var formatDate =
+                                  DateTime.parse(pickedDate.toString());
+                              var formattedDate =
+                                  "${formatDate.day}-${formatDate.month}-${formatDate.year}";
+                              _dateInputController.text = formattedDate;
+                            }
+                          },
+                          decoration: InputDecoration(
+                            labelText: '${state.user.dob}',
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            hintText: 'Enter your date of birth',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: primaryColor,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: primaryColor,
+                                width: 1.5,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  //submitButton(),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: CustomButton(
+                      title: 'Update',
+                      onPressed: () {
+                        User ? user = FirebaseAuth.instance.currentUser;
+                        Future<UserModel> userNow = context.read<AuthCubit>().getCurrentUser(user!.uid);
+                        if(_fullnameController.text == ''){
+                          _fullnameController.text = '${state.user.name}';
+                        }
+                        if(_emailController.text == ''){
+                          _emailController.text = '${state.user.email}';
+                        }
+                        if(_dateInputController.text == ''){
+                          _dateInputController.text = '${state.user.dob}';
+                        }
+      
+                        context.read<AuthCubit>().updateUser(
+                              id: user.uid,
+                              name: _fullnameController.text,
+                              email: _emailController.text,
+                              dob: _dateInputController.text,
+                            );
+                        Navigator.pushNamed(context, '/profilemenu');
+                      },
+                    ),
+                  ),
+      
+                ],
+              );
+              }else{
+                return SizedBox();
+              }
+            },
+          ),
         ),
       ),
     );
