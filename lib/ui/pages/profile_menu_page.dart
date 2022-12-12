@@ -15,6 +15,8 @@ class ProfileMenuPage extends StatefulWidget {
 
 class _ProfileMenuPageState extends State<ProfileMenuPage> {
   // boolean for dark mode
+  bool _isDarkMode = false;
+  // boolean for switch language
   bool _isSwitched = false;
 
   // To change the selected value of bottom navigation bar
@@ -135,13 +137,6 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         const Padding(
                           padding: EdgeInsets.only(left: 15),
                         ),
-                        CircleAvatar(
-                          backgroundImage: Image.network(
-                                  'https://firebasestorage.googleapis.com/v0/b/loh-coffee-eatery.appspot.com/o/profilepics%2F460A2392-7E42-4C79-8E5D-C5035CD243D5.jpg?alt=media&token=3bde7f21-462b-4824-bf64-ae6c7761bbb1')
-                              .image,
-                          backgroundColor: kUnavailableColor,
-                          radius: 30, //size
-                        ),
                         const SizedBox(width: 20),
                         BlocBuilder<AuthCubit, AuthState>(
                           builder: (context, state) {
@@ -177,8 +172,6 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                     ),
                     IconButton(
                       onPressed: () {
-                        //* TODO: Navigate to profile detail page
-                        // Navigator.pushNamed(context, '/profile');
                         Navigator.pushNamed(context, '/update-profile');
                       },
                       icon: const Icon(
@@ -348,10 +341,10 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       // * TODO: Iteration 3: Implement Dark Mode
                       onChanged: (value) {
                         setState(() {
-                          _isSwitched = value;
+                          _isDarkMode = value;
                         });
                       },
-                      value: _isSwitched,
+                      value: _isDarkMode,
                       activeColor: primaryColor,
                     ),
                   ],
