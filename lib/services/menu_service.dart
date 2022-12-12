@@ -91,7 +91,8 @@ class MenuService {
         'description': description,
         'image': image,
         'tag': tag,
-        'totalLoved': 1,
+        // TODO: update total loved and total ordered in Iteration 2
+        'totalLoved': 0, 
         'totalOrdered': 0,
       });
     } catch (e) {
