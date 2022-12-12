@@ -103,9 +103,9 @@ class MenuService {
 
 
   // delete menu from edit menu page
-  Future<void> deleteMenu(String id) async {
+  Future<void> deleteMenu(MenuModel menu) async {
     try {
-      await _menuCollection.doc(id).delete();
+      await _menuCollection.doc(menu.id).delete();
     } catch (e) {
       throw e;
     }

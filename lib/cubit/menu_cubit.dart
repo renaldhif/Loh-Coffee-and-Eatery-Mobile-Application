@@ -88,4 +88,14 @@ class MenuCubit extends Cubit<MenuState> {
     }
   }
 
+  void deleteMenu(MenuModel? menu) async{
+    try{
+      emit(MenuLoading());
+      await MenuService().deleteMenu(menu!);
+      getMenus();
+    } catch (e) {
+      emit(MenuFailed(e.toString()));
+    }
+  }
+
 }
