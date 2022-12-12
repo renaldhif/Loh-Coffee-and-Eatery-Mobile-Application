@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loh_coffee_eatery/ui/pages/update_menu_admin.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button_red.dart';
+import '../../cubit/menu_cubit.dart';
 import '../../models/menu_model.dart';
 import '/shared/theme.dart';
 
@@ -142,8 +144,11 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                           onPressed: () {
                             // loadData();
                             // Navigator.pushNamed(context, '/updatemenu');
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => UpdateMenuPageAdmin(inMenu: menu)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UpdateMenuPageAdmin(inMenu: menu)));
                           },
                         ),
                       ),
@@ -151,10 +156,75 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                       SizedBox(
                         width: 0.2 * MediaQuery.of(context).size.width,
                         height: 30,
-                        child: CustomButtonRed(
-                          title: 'Delete',
-                          fontSize: 14,
-                          onPressed: () {},
+                        child: BlocConsumer<MenuCubit, MenuState>(
+                          listener: (context, state) {
+                            if(state is MenuSuccess){
+                              //Navigator.of(context).pop();
+                              // Navigator.pushNamed(context, '/home-admin');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Menu Successfully Deleted!'),
+                                  backgroundColor: primaryColor,
+                                ),
+                                
+                              );
+                            }
+                            else if(state is MenuFailed){
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text(state.error),
+                                ),
+                              );
+                            }
+                            // TODO: implement listener
+                          },
+                          builder: (context, state) {
+                            if (state is MenuLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: primaryColor,
+                                ),
+                              );
+                            }
+                            return CustomButtonRed(
+                              title: 'Delete',
+                              fontSize: 14,
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text("Delete Menu"),
+                                      content: const Text(
+                                          "Are you sure you want to delete this menu?"),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text("Cancel"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text("Delete"),
+                                          onPressed: () {
+                                            context
+                                                .read<MenuCubit>()
+                                                .deleteMenu(menu);
+                                                // Navigator.pushNamed(context, '/home-admin');
+                                                Navigator.of(context).pop();
+                                                
+
+                                            
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
                     ],
