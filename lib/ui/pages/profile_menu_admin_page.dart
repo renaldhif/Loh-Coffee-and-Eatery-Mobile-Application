@@ -15,6 +15,8 @@ class ProfileMenuAdminPage extends StatefulWidget {
 
 class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
   // boolean for dark mode
+  bool _isDarkMode = false;
+  // boolean for switch language
   bool _isSwitched = false;
 
   // To change the selected value of bottom navigation bar
@@ -288,13 +290,13 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                       ],
                     ),
                     Switch(
-                      // * TODO: Iteration 3: Implement Dark Mode
+                      //TODO: Iteration 3: Implement Dark Mode
                       onChanged: (value) {
                         setState(() {
-                          _isSwitched = value;
+                          _isDarkMode = value;
                         });
                       },
-                      value: _isSwitched,
+                      value: _isDarkMode,
                       activeColor: primaryColor,
                     ),
                   ],
@@ -334,7 +336,7 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                       ],
                     ),
                     Switch(
-                      // * TODO: Iteration 3: Implement Switch Language
+                      //TODO: Iteration 3: Implement Switch Language
                       onChanged: (value) {
                         setState(() {
                           _isSwitched = value;

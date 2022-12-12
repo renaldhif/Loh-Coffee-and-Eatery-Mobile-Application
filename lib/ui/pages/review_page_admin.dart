@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loh_coffee_eatery/models/review_model.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_rating_card.dart';
+import '../../cubit/review_cubit.dart';
 import '../../shared/theme.dart';
-
 
 class ReviewPageAdmin extends StatefulWidget {
   const ReviewPageAdmin({super.key});
@@ -11,6 +13,25 @@ class ReviewPageAdmin extends StatefulWidget {
 }
 
 class _ReviewPageAdminState extends State<ReviewPageAdmin> {
+  @override
+  void initState() {
+    context.read<ReviewCubit>().getReviews();
+    super.initState();
+  }
+
+  Widget reviewCard(List<ReviewModel> reviews) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: reviews.map((ReviewModel rev) {
+              return CustomRatingCard(rev);
+          }).toList(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,38 +73,33 @@ class _ReviewPageAdminState extends State<ReviewPageAdmin> {
                   ],
                 ),
               ), // Header End
-              
-              //* Content
-              CustomRatingCard(
-                username: 'John Doe',
-                email: 'johndoe@gmail.com',
-                review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt luctus, nunc nisl aliquam nunc, vel aliquam nunc nisl euismod nunc. Sed euismod, nunc vel tincidunt luctus, nunc nisl aliquam nunc, vel aliquam nunc nisl euismod nunc.',
-                rating: 5,
-                date: DateTime.now(),
-              ),
+              //* Review Content Cards
 
-              CustomRatingCard(
-                username: 'John Doe',
-                email: 'johndoe@gmail.com',
-                review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt luctus, nunc nisl aliquam nunc, vel aliquam nunc nisl euismod nunc. Sed euismod, nunc vel tincidunt luctus, nunc nisl aliquam nunc, vel aliquam nunc nisl euismod nunc.',
-                rating: 5,
-                date: DateTime.now(),
-              ),
-
-              CustomRatingCard(
-                username: 'John Doe',
-                email: 'johndoe@gmail.com',
-                review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt luctus, nunc nisl aliquam nunc, vel aliquam nunc nisl euismod nunc. Sed euismod, nunc vel tincidunt luctus, nunc nisl aliquam nunc, vel aliquam nunc nisl euismod nunc.',
-                rating: 5,
-                date: DateTime.now(),
-              ),
-
-              CustomRatingCard(
-                username: 'John Doe',
-                email: 'johndoe@gmail.com',
-                review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt luctus, nunc nisl aliquam nunc, vel aliquam nunc nisl euismod nunc. Sed euismod, nunc vel tincidunt luctus, nunc nisl aliquam nunc, vel aliquam nunc nisl euismod nunc.',
-                rating: 5,
-                date: DateTime.now(),
+              BlocConsumer<ReviewCubit, ReviewState>(
+                listener: (context, state) {
+                  if (state is ReviewFailed) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.error),
+                      ),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state is ReviewLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: primaryColor,
+                      ),
+                    );
+                  } else if (state is ReviewSuccess) {
+                    return reviewCard(state.reviews);
+                  } else {
+                    return const Center(
+                      child: Text('Something went wrong!'),
+                    );
+                  }
+                },
               ),
             ],
           ),

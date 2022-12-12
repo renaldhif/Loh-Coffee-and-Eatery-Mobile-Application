@@ -8,3 +8,23 @@ abstract class ReviewState extends Equatable {
 }
 
 class ReviewInitial extends ReviewState {}
+
+class ReviewLoading extends ReviewState {}
+
+class ReviewSuccess extends ReviewState {
+  final List<ReviewModel> reviews;
+
+  ReviewSuccess(this.reviews);
+
+  @override
+  List<Object> get props => [reviews];
+}
+
+class ReviewFailed extends ReviewState {
+  final String error;
+
+  ReviewFailed(this.error);
+
+  @override
+  List<Object> get props => [error];
+}

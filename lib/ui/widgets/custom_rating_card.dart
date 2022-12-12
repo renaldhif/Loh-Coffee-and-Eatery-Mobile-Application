@@ -4,30 +4,24 @@ import '../../models/review_model.dart';
 import '/shared/theme.dart';
 
 class CustomRatingCard extends StatelessWidget {
-  // final ReviewModel review;
-  final String username, email, review;
-  final double rating;
-  final DateTime date;
+  final ReviewModel reviewModel;
+  // final String username, email, review;
+  // final double rating;
+  // final DateTime dt = reviewModel.timestamp.toDate();
 
   const CustomRatingCard(
-      // this.review, {
-      {
+    this.reviewModel, {
     super.key,
-    required this.username,
-    required this.email,
-    required this.review,
-    required this.rating,
-    required this.date,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(horizontal: 10,
         vertical: 10,
       ),
       width: 0.9 * MediaQuery.of(context).size.width,
-      height: 180,
+      // height: 130,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(defaultRadius),
         border: Border.all(
@@ -45,7 +39,7 @@ class CustomRatingCard extends StatelessWidget {
         color: whiteColor,
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        padding: const EdgeInsets.all(15),
         child: Row(
           children: [
             // Content
@@ -60,7 +54,7 @@ class CustomRatingCard extends StatelessWidget {
                       //* HEADER
                       // Username
                       Text(
-                        username,
+                        reviewModel.name.toString(),
                         style: greenTextStyle.copyWith(
                           fontSize: 18,
                           fontWeight: bold,
@@ -76,13 +70,12 @@ class CustomRatingCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 5,),
                           Text(
-                            rating.toString(),
+                            reviewModel.rating.toString(),
                             style: mainTextStyle.copyWith(
                               fontSize: 14,
                               fontWeight: regular,
                             ),
                           ),
-                          const SizedBox(width: 10,),
                         ],
                       ),
                     ],
@@ -90,7 +83,7 @@ class CustomRatingCard extends StatelessWidget {
 
                   // Email
                   Text(
-                    email,
+                    reviewModel.email.toString(),
                     style: mainTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: medium,
@@ -100,7 +93,8 @@ class CustomRatingCard extends StatelessWidget {
                   ,),
                   // Date
                   Text(
-                    DateFormat('dd MMM yyyy').format(date),
+                    // reviewModel.timestamp.toDate().toString(),
+                    DateFormat('dd MMMM yyyy').format(reviewModel.timestamp.toDate()),
                     style: mainTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: light,
@@ -109,14 +103,14 @@ class CustomRatingCard extends StatelessWidget {
                   // Header End
 
                   //* CONTENT REVIEW
-                  const SizedBox(height: 10,),
+                  const SizedBox(height: 20,),
                   // Review
                   Text(
-                    review,
+                    reviewModel.review,
                     textAlign: TextAlign.justify,
                     style: mainTextStyle.copyWith(
                       fontSize: 14,
-                      fontWeight: light,
+                      fontWeight: regular,
                     ),
                   ),
                   // Date

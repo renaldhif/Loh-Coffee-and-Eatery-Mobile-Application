@@ -1,13 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
 class ReviewModel extends Equatable {
   final String id;
-  final String name;
-  final String email;
+  final String? name;
+  final String? email;
   final String review;
-  final int rating;
-  final DateTime date;
+  final double rating;
+  final Timestamp timestamp;
 
   const ReviewModel({
     required this.id,
@@ -15,7 +16,7 @@ class ReviewModel extends Equatable {
     required this.email,
     required this.review,
     required this.rating,
-    required this.date,
+    required this.timestamp,
   });
 
   factory ReviewModel.fromJson(String id, Map<String, dynamic> json) {
@@ -25,7 +26,7 @@ class ReviewModel extends Equatable {
       email: json['email'],
       review: json['review'],
       rating: json['rating'],
-      date: json['date'],
+      timestamp: json['timestamp'],
     );
   }
 
@@ -35,7 +36,7 @@ class ReviewModel extends Equatable {
       'email': email,
       'review': review,
       'rating': rating,
-      'date': date,
+      'timestamp': timestamp,
     };
   }
 
@@ -46,6 +47,6 @@ class ReviewModel extends Equatable {
         email,
         review,
         rating,
-        date,
+        timestamp,
       ];
 }

@@ -6,6 +6,7 @@ import 'package:loh_coffee_eatery/models/menu_model.dart';
 import 'package:loh_coffee_eatery/ui/pages/update_profile_page.dart';
 import 'cubit/auth_cubit.dart';
 import 'cubit/menu_cubit.dart';
+import 'cubit/review_cubit.dart';
 import 'firebase_options.dart';
 import '/ui/pages/add_menu_admin.dart';
 import '/ui/pages/home_page_admin.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => MenuCubit()),
+        BlocProvider(create: (context) => ReviewCubit()),
       ],
       child: MaterialApp(
         // home: SplashScreen(),

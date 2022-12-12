@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:loh_coffee_eatery/cubit/review_cubit.dart';
 import 'package:loh_coffee_eatery/shared/theme.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button.dart';
 
+import '../../cubit/auth_cubit.dart';
+import '../../models/user_model.dart';
 import '../widgets/custom_textformfield.dart';
 
 class AddReviewPage extends StatefulWidget {
@@ -17,6 +23,8 @@ class AddReviewPage extends StatefulWidget {
 class _AddReviewPageState extends State<AddReviewPage> {
   // TextEditingControllers
   final TextEditingController _reviewController = TextEditingController();
+  // initial rating
+  double _initRating = 3;
 
   Widget starRating() {
     return Container(
@@ -40,6 +48,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
                   color: primaryColor,
                 ),
                 onRatingUpdate: (rating) {
+                  _initRating = rating;
                   print(rating);
                 },
               ),
@@ -99,62 +108,122 @@ class _AddReviewPageState extends State<AddReviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: whiteColor,
-        child: Column(
-          children: [
-            // Header
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.only(top: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.arrow_circle_left_rounded,
-                      color: primaryColor,
-                      size: 55,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: Text(
-                      'Submit Review',
-                      style: greenTextStyle.copyWith(
-                        fontSize: 40,
-                        fontWeight: bold,
+      body: SingleChildScrollView(
+        child: Container(
+          color: whiteColor,
+          child: Column(
+            children: [
+              // Header
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(top: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_circle_left_rounded,
+                        color: primaryColor,
+                        size: 55,
                       ),
                     ),
-                  ),
-
-                  // Rating Content
-                  //* Star Rating
-                  starRating(),
-                  const SizedBox(height: 15),
-
-                  // Submit Review Content
-                  //* Review
-                  reviewTextFormField(),
-
-                  // Submit Button
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 50),
-                    child: CustomButton(
-                      title: 'Submit Review',
-                      onPressed: () {},
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Text(
+                        'Submit Review',
+                        style: greenTextStyle.copyWith(
+                          fontSize: 40,
+                          fontWeight: bold,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+
+                    // Rating Content
+                    //* Star Rating
+                    starRating(),
+                    const SizedBox(height: 15),
+
+                    // Submit Review Content
+                    //* Review
+                    reviewTextFormField(),
+
+                    // Submit Button
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 50),
+                      child: BlocConsumer<ReviewCubit, ReviewState>(
+                        listener: (context, state) {
+                          if (state is ReviewSuccess) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Review Submitted. Thank you for your review!'),
+                                backgroundColor: primaryColor,
+                              ),
+                            );
+                            // User? user = FirebaseAuth.instance.currentUser;
+                            // String? inName = user?.displayName;
+                            Navigator.pop(context);
+                          } else if (state is ReviewFailed) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(state.error),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                        builder: (context, state) {
+                          if (state is ReviewLoading) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                color: primaryColor,
+                              ),
+                            );
+                          }
+                          return CustomButton(
+                            title: 'Submit Review',
+                            onPressed: () async {
+                              // get Date now
+                              // DateTime now = DateTime.now();
+                              Timestamp now = Timestamp.now();
+                              // String formattedDate = "${now.day}-${now.month}-${now.year}";
+
+                              // get firebase auth user data
+                              if (FirebaseAuth.instance.currentUser != null) {
+                                User? user = FirebaseAuth.instance.currentUser;
+                                // Future<UserModel> userNow = context
+                                //     .read<AuthCubit>()
+                                //     .getCurrentUser(user!.uid)
+                                UserModel userNow = await context
+                                    .read<AuthCubit>()
+                                    .getCurrentUser(user!.uid);
+                                String? name = userNow.name;
+                                String? email =
+                                    FirebaseAuth.instance.currentUser?.email;
+
+                                context.read<ReviewCubit>().addReview(
+                                      name: name,
+                                      email: email,
+                                      review: _reviewController.text,
+                                      rating: _initRating,
+                                      timestamp: now,
+                                    );
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
