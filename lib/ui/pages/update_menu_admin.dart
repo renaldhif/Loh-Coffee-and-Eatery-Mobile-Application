@@ -1,3 +1,4 @@
+import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -24,12 +25,15 @@ class UpdateMenuPageAdmin extends StatefulWidget {
 }
 
 class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
-  // TextEditingControllers
+  //* TextEditingControllers
   final TextEditingController _menuNameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _tagController = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
+  TextEditingController _tagController = TextEditingController();
+
+  //* Group Controller
+  GroupController controller = GroupController(isMultipleSelection: true);
 
   CollectionReference _menuCollection =
       FirebaseFirestore.instance.collection('menus');
@@ -37,12 +41,22 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
   // Image Picker
   File? image;
   Future getImage() async {
+    bool isLoading = false;
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
       final imageTemp = File(image.path);
       setState(() {
         this.image = imageTemp;
+        isLoading = true;
+        if( isLoading == true){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Uploading Image. Pleasw wait for a moment...'),
+              backgroundColor: secondaryColor,
+            ),
+          );
+        }
       });
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
@@ -53,15 +67,17 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
     String urlImg = await taskSnapshot.ref.getDownloadURL();
     setState(() {
+      isLoading = false;
       _imageController.text = urlImg;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Image Uploaded'),
-          backgroundColor: primaryColor,
-        ),
-      );
+      if ( isLoading == false){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Image Uploaded'),
+            backgroundColor: secondaryColor,
+          ),
+        );
+      }
     });
-
   }
 
   @override
@@ -93,7 +109,7 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Add Menu',
+                        'Update Menu',
                         style: greenTextStyle.copyWith(
                           fontSize: 40,
                           fontWeight: bold,
@@ -125,10 +141,78 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                   controller: _priceController),
               //* Tag
               CustomTextFormField(
+                  readOnly: true,
                   title: 'Menu Tag',
                   label: widget.inMenu!.tag.toString(),
-                  hintText: 'input menu tag',
+                  hintText: widget.inMenu!.tag.toString(),
                   controller: _tagController),
+              //* Checkboxes
+              const SizedBox(height: 25,),
+              Text(
+                'Please choose the menu tag below:',
+                style: greenTextStyle.copyWith(
+                  fontSize: 18,
+                  fontWeight: bold,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: SimpleGroupedCheckbox<String>(
+                  controller: controller,
+                  itemsTitle: const [
+                    "Rice",
+                    "Chicken",
+                    "Beef",
+                    "Seafood",
+                    "Noodles",
+                    "Pasta",
+                    "Fish",
+                    "Soup",
+                    "Snacks",
+                    "Vegetables",
+                    "Cake and Dessert",
+                    "Coffee",
+                    "Milk",
+                    "Tea",
+                    "Spicy",
+                  ],
+                  values: const [
+                    "Rice",
+                    "Chicken",
+                    "Beef",
+                    "Seafood",
+                    "Noodles",
+                    "Pasta",
+                    "Fish",
+                    "Soup",
+                    "Snacks",
+                    "Vegetables",
+                    "Cake and Dessert",
+                    "Coffee",
+                    "Milk",
+                    "Tea",
+                    "Spicy",
+                  ],
+                  groupStyle: GroupStyle(activeColor: primaryColor),
+                  onItemSelected: (selected) {
+                    setState(() {
+                      // print(selected.join(','));
+                      _tagController.text = selected.join(',');
+                    });
+                  },
+                ),
+              ),
+
+              const SizedBox(
+                height: 15,
+              ),
+              Text(
+                'Upload an image',
+                style: greenTextStyle.copyWith(
+                  fontSize: 18,
+                  fontWeight: bold,
+                ),
+              ),
               const SizedBox(
                 height: 15,
               ),
@@ -142,11 +226,11 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
 
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 35),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 35),
                 child: BlocConsumer<MenuCubit, MenuState>(
                   listener: (context, state) {
                     // TODO: implement listener
-                    if(state is MenuSuccess){
+                    if (state is MenuSuccess) {
                       // Navigator.pushNamedAndRemoveUntil(context, '/home-admin', (route) => false);
                       Navigator.popAndPushNamed(context, '/home-admin');
                       // Navigator.pop(context);
@@ -156,8 +240,7 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                       //       backgroundColor: primaryColor,
                       //     ),
                       //   );
-                    }
-                    else if(state is MenuFailed){
+                    } else if (state is MenuFailed) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           backgroundColor: Colors.red,
@@ -177,20 +260,24 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                     return CustomButton(
                       title: 'Update Menu',
                       onPressed: () {
-                        if(_menuNameController.text.isEmpty){
-                          _menuNameController.text = widget.inMenu!.title.toString();
+                        if (_menuNameController.text.isEmpty) {
+                          _menuNameController.text =
+                              widget.inMenu!.title.toString();
                         }
-                        if(_descriptionController.text.isEmpty){
-                          _descriptionController.text = widget.inMenu!.description.toString();
+                        if (_descriptionController.text.isEmpty) {
+                          _descriptionController.text =
+                              widget.inMenu!.description.toString();
                         }
-                        if(_priceController.text.isEmpty){
-                          _priceController.text = widget.inMenu!.price.toString();
+                        if (_priceController.text.isEmpty) {
+                          _priceController.text =
+                              widget.inMenu!.price.toString();
                         }
-                        if(_tagController.text.isEmpty){
+                        if (_tagController.text.isEmpty) {
                           _tagController.text = widget.inMenu!.tag.toString();
                         }
-                        if(_imageController.text.isEmpty){
-                          _imageController.text = widget.inMenu!.image.toString();
+                        if (_imageController.text.isEmpty) {
+                          _imageController.text =
+                              widget.inMenu!.image.toString();
                         }
                         context.read<MenuCubit>().updateMenu(
                               widget.inMenu,
@@ -207,7 +294,7 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                             backgroundColor: primaryColor,
                           ),
                         );
-                        
+
                         //! Implement Update Menu Function
                       },
                     );
