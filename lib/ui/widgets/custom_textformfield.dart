@@ -3,6 +3,7 @@ import '/shared/theme.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String title, label, hintText;
+  final bool readOnly;
   TextEditingController controller = TextEditingController();
 
   CustomTextFormField({
@@ -11,6 +12,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.label,
     required this.hintText,
     required this.controller,
+    this.readOnly = false,
   });
 
   @override
@@ -21,7 +23,8 @@ class CustomTextFormField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 15),
-          Text(title, // this field is required
+          Text(
+            title, // this field is required
             style: greenTextStyle.copyWith(
               fontSize: 18,
               fontWeight: bold,
@@ -40,6 +43,7 @@ class CustomTextFormField extends StatelessWidget {
             //   ),
             // ),
             child: TextFormField(
+              readOnly: readOnly,
               controller: controller,
               decoration: InputDecoration(
                 labelText: label, // this field is required

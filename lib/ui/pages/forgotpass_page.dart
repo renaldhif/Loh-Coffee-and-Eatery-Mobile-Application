@@ -61,7 +61,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 30),
@@ -88,7 +87,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       height: 20,
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: defaultRadius),
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
                       child: Image.asset(
                         'assets/images/forgotpassword.png',
                       ),

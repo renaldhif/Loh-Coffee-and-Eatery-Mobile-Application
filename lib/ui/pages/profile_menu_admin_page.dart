@@ -26,8 +26,8 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
       _selectedIndex = index;
       switch (index) {
         case 0:
-          Navigator.pushReplacementNamed(context, '/home');
-          // Navigator.pop(context);
+          // Navigator.popAndPushNamed(context, '/home-admin');
+          Navigator.pushReplacementNamed(context, '/home-admin');
           break;
         // case 2:
         //   Navigator.pushNamed(context, '/order');

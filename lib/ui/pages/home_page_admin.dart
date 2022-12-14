@@ -17,11 +17,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
   // Initial Selected Value
   String dropdownvalue = 'All Menu';
   // List of items in our dropdown menu
-  var items = [
-    'All Menu',
-    'Based on your preferences',
-    'Based on most loved menu'
-  ];
+  var items = ['All Menu', 'Based on most loved menu'];
 
   // To change the selected value of bottom navigation bar
   int _selectedIndex = 0;
@@ -29,25 +25,28 @@ class _HomePageAdminState extends State<HomePageAdmin> {
     setState(() {
       _selectedIndex = index;
       switch (index) {
-        case 1:
-          Navigator.pushNamed(context, '/addmenu');
+        case 0:
+          Navigator.popAndPushNamed(context, '/home-admin');
           break;
-        case 2:
-          Navigator.pushNamed(context, '/home-admin');
-          break;
-        case 3:
-          Navigator.pushNamed(context, '/reviews');
-          break;
+        // case 1:
+        //   Navigator.pushNamed(context, '/addmenu');
+        //   break;
+        // case 2:
+        //   Navigator.pushNamed(context, '/home-admin');
+        //   break;
+        // case 3:
+        //   Navigator.pushNamed(context, '/reviews');
+        //   break;
         case 4:
-          Navigator.pushNamed(context, '/profile-admin');
-          _selectedIndex = 0;
+          Navigator.popAndPushNamed(context, '/profile-admin');
+          // _selectedIndex = 0;
           break;
       }
     });
   }
 
   @override
-  void initState(){
+  void initState() {
     context.read<MenuCubit>().getMenus();
     super.initState();
   }
@@ -58,13 +57,12 @@ class _HomePageAdminState extends State<HomePageAdmin> {
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children:  menus.map((MenuModel menu) {
+        children: menus.map((MenuModel menu) {
           return CustomCardMenuItemAdmin(menu);
         }).toList(),
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +79,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Admin Filter Menu',
+                      'Filter Menu',
                       style: greenTextStyle.copyWith(
                         fontSize: 22,
                         fontWeight: black,
@@ -121,27 +119,24 @@ class _HomePageAdminState extends State<HomePageAdmin> {
               ),
 
               // Menu List
-              BlocConsumer<MenuCubit, MenuState>(
-                listener: (context, state){
-                  if (state is MenuFailed){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text(state.error),
-                      ),
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is MenuSuccess){
-                    return menuCard(state.menus);
-                  } else {
-                    return const Center(
-                      child: Text('Something went wrong'),
-                    );
-                  }
+              BlocConsumer<MenuCubit, MenuState>(listener: (context, state) {
+                if (state is MenuFailed) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(state.error),
+                    ),
+                  );
                 }
-              ),
+              }, builder: (context, state) {
+                if (state is MenuSuccess) {
+                  return menuCard(state.menus);
+                } else {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+              }),
             ],
           ),
         ),

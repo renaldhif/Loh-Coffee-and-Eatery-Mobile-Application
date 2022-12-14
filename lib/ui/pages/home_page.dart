@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget menuCard(List<MenuModel> menus) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+      margin: const EdgeInsets.symmetric(horizontal: 20,),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

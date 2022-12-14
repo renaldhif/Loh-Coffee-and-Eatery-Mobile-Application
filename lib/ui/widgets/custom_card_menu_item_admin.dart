@@ -161,13 +161,13 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                             if(state is MenuSuccess){
                               //Navigator.of(context).pop();
                               // Navigator.pushNamed(context, '/home-admin');
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Menu Successfully Deleted!'),
-                                  backgroundColor: primaryColor,
-                                ),
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //   const SnackBar(
+                              //     content: Text('Menu Successfully Deleted!'),
+                              //     backgroundColor: primaryColor,
+                              //   ),
                                 
-                              );
+                              // );
                             }
                             else if(state is MenuFailed){
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -213,7 +213,13 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                                                 .deleteMenu(menu);
                                                 // Navigator.pushNamed(context, '/home-admin');
                                                 Navigator.of(context).pop();
-                                                
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Menu Successfully Deleted!'),
+                                  backgroundColor: primaryColor,
+                                ),
+                                
+                              );
 
                                             
                                           },
