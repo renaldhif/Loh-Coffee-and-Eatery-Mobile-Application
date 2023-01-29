@@ -47,6 +47,7 @@ dependencies:
   firebase_storage: ^11.0.6
   flutter_rating_bar: ^4.0.1
   checkbox_grouped: ^1.8.1
+  firebase_crashlytics: ^3.0.8
 
 dev_dependencies:
   flutter_test:

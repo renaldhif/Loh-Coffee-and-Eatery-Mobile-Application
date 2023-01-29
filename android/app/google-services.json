@@ -29,6 +29,13 @@
             {
               "client_id": "571320088173-cbnr7ltrmf3ulv73dj9javb9jdp1t43e.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "571320088173-3b6mnhhjq894fiplq7ifgvoue71j0o53.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lohCoffeeEatery"
+              }
             }
           ]
         }
