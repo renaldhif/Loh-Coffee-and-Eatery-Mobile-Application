@@ -3,7 +3,7 @@ import '/shared/theme.dart';
 
 class CustomButtonWhite extends StatelessWidget {
   final String title;
-  final double width;
+  final double width, fontSize;
   final Function() onPressed;
   final EdgeInsets margin;
 
@@ -13,6 +13,7 @@ class CustomButtonWhite extends StatelessWidget {
     this.width = double.infinity,
     required this.onPressed,
     this.margin = EdgeInsets.zero,
+    this.fontSize = 18,
   });
 
   @override
@@ -34,11 +35,13 @@ class CustomButtonWhite extends StatelessWidget {
               borderRadius: BorderRadius.circular(defaultRadius),
             ),
           ),
-          child: Text(
-            title,
-            style: greenTextStyle.copyWith(
-              fontSize: 18,
-              fontWeight: bold,
+          child: Center(
+            child: Text(
+              title,
+              style: greenTextStyle.copyWith(
+                fontSize: fontSize,
+                fontWeight: bold,
+              ),
             ),
           ),
         ),

@@ -137,7 +137,7 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                       // Update Button
                       SizedBox(
                         width: 0.2 * MediaQuery.of(context).size.width,
-                        height: 30,
+                        height: 35,
                         child: CustomButton(
                           title: 'Update',
                           fontSize: 14,
@@ -155,7 +155,7 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                       const SizedBox(width: 20),
                       SizedBox(
                         width: 0.2 * MediaQuery.of(context).size.width,
-                        height: 30,
+                        height: 35,
                         child: BlocConsumer<MenuCubit, MenuState>(
                           listener: (context, state) {
                             if(state is MenuSuccess){
