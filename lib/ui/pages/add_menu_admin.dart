@@ -213,7 +213,8 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                 height: 15,
               ),
               CustomButtonWhite(
-                title: 'Choose an Image',
+                title: _imageController.text.isEmpty ? 'Choose an Image' : image!.path.split('/').last,
+                fontSize: _imageController.text.isEmpty ? 18 : 12,
                 onPressed: () {
                   getImage();
                   _imageController;
@@ -222,7 +223,7 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
 
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 35),
+                    const EdgeInsets.fromLTRB(20,35, 20, 70),
                 child: BlocConsumer<MenuCubit, MenuState>(
                   listener: (context, state) {
                     if (state is MenuSuccess) {
@@ -247,21 +248,43 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                     return CustomButton(
                       title: 'Add Menu',
                       onPressed: () {
-                        context.read<MenuCubit>().addMenu(
-                              title: _menuNameController.text,
-                              description: _descriptionController.text,
-                              price: int.parse(_priceController.text),
-                              tag: _tagController.text,
-                              image: _imageController.text,
-                              totalLoved: 0,
-                              totalOrdered: 0,
-                            );
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        if(_priceController.text.contains(RegExp(r'[a-zA-Z]'))) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Please input a valid price'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                        if(_menuNameController.text.isEmpty ||
+                            _descriptionController.text.isEmpty ||
+                            _priceController.text.isEmpty ||
+                            _tagController.text.isEmpty ||
+                            _imageController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Please fill all the fields'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                        else{
+                          context.read<MenuCubit>().addMenu(
+                            title: _menuNameController.text,
+                            description: _descriptionController.text,
+                            price: int.parse(_priceController.text),
+                            tag: _tagController.text,
+                            image: _imageController.text,
+                            totalLoved: 0,
+                            totalOrdered: 0,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Menu Successfully Added!'),
                             backgroundColor: primaryColor,
                           ),
                         );
+                        }
                       },
                     );
                   },
