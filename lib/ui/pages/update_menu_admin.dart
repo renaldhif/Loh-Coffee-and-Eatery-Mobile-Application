@@ -52,7 +52,7 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
         if( isLoading == true){
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Uploading Image. Pleasw wait for a moment...'),
+              content: Text('Uploading Image. Please wait for a moment...'),
               backgroundColor: secondaryColor,
             ),
           );
@@ -73,7 +73,7 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Image Uploaded'),
-            backgroundColor: secondaryColor,
+            backgroundColor: primaryColor,
           ),
         );
       }
@@ -217,7 +217,8 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                 height: 15,
               ),
               CustomButtonWhite(
-                title: 'Choose an Image',
+                title: _imageController.text.isEmpty ? 'Choose an Image' : image!.path.split('/').last,
+                fontSize: _imageController.text.isEmpty ? 18 : 12,
                 onPressed: () {
                   getImage();
                   _imageController;
@@ -231,15 +232,7 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                   listener: (context, state) {
                     // TODO: implement listener
                     if (state is MenuSuccess) {
-                      // Navigator.pushNamedAndRemoveUntil(context, '/home-admin', (route) => false);
                       Navigator.popAndPushNamed(context, '/home-admin');
-                      // Navigator.pop(context);
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(
-                      //       content: Text('Menu Successfully Updated!'),
-                      //       backgroundColor: primaryColor,
-                      //     ),
-                      //   );
                     } else if (state is MenuFailed) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -279,7 +272,16 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                           _imageController.text =
                               widget.inMenu!.image.toString();
                         }
-                        context.read<MenuCubit>().updateMenu(
+                        if(_priceController.text.contains(RegExp(r'[a-zA-Z]'))) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Please input a valid price'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                        else{
+                          context.read<MenuCubit>().updateMenu(
                               widget.inMenu,
                               _menuNameController.text,
                               _descriptionController.text,
@@ -287,15 +289,14 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                               _tagController.text,
                               _imageController.text,
                             );
-                        // Navigator.pushReplacementNamed(context, '/home-admin');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Menu Successfully Updated!'),
-                            backgroundColor: primaryColor,
-                          ),
-                        );
-
-                        //! Implement Update Menu Function
+                            // Navigator.popAndPushNamed(context, '/home-admin');
+                            ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Menu Successfully Updated!'),
+                              backgroundColor: primaryColor,
+                            ),
+                          );
+                        }
                       },
                     );
                   },

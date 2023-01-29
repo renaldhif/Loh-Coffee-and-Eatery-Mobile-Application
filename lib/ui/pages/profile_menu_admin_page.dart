@@ -27,7 +27,8 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
       switch (index) {
         case 0:
           // Navigator.popAndPushNamed(context, '/home-admin');
-          Navigator.pushReplacementNamed(context, '/home-admin');
+          Navigator.pop(context);
+          _selectedIndex = 0;
           break;
         // case 2:
         //   Navigator.pushNamed(context, '/order');
@@ -141,7 +142,8 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                           radius: 30,
                           backgroundColor: primaryColor,
                           child: CircleAvatar(
-                            backgroundImage: Image.asset('assets/images/lohlogo.jpeg').image,
+                            backgroundImage:
+                                Image.asset('assets/images/lohlogo.jpeg').image,
                             radius: 29, //size
                             backgroundColor: primaryColor,
                           ),

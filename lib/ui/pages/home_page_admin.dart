@@ -26,7 +26,8 @@ class _HomePageAdminState extends State<HomePageAdmin> {
       _selectedIndex = index;
       switch (index) {
         case 0:
-          Navigator.popAndPushNamed(context, '/home-admin');
+          // Navigator.pushReplacementNamed(context, '/home-admin');
+          _selectedIndex = 0;
           break;
         // case 1:
         //   Navigator.pushNamed(context, '/addmenu');
@@ -38,7 +39,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
         //   Navigator.pushNamed(context, '/reviews');
         //   break;
         case 4:
-          Navigator.popAndPushNamed(context, '/profile-admin');
+          Navigator.pushNamed(context, '/profile-admin');
           // _selectedIndex = 0;
           break;
       }

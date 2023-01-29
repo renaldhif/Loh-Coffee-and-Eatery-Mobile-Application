@@ -17,16 +17,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget resetPasswordButton() {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        // if(state is AuthSuccess){
-        //   Navigator.pushReplacementNamed(context, '/requestreset');
-        // }else if(state is AuthFailed){
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     SnackBar(
-        //       backgroundColor: Colors.red,
-        //       content: Text(state.error),
-        //     ),
-        //   );
-        // }
+        if(state is AuthInitial){
+          Navigator.pushReplacementNamed(context, '/requestreset');
+        }
       },
       builder: (context, state) {
         if (state is AuthLoading) {
@@ -50,7 +43,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               context
                   .read<AuthCubit>()
                   .resetPassword(email: _emailController.text);
-              Navigator.pushReplacementNamed(context, '/requestreset');
             }
           },
         );
