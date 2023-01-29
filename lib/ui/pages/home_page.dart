@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // Initial Selected Value
+  int counter = 0;
   String dropdownvalue = 'All Menu';
   // List of items in our dropdown menu
   var items = [
@@ -47,24 +48,25 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  void initState(){
+  void initState() {
     context.read<MenuCubit>().getMenus();
     super.initState();
   }
 
   Widget menuCard(List<MenuModel> menus) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20,),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 20,
+      ),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children:  menus.map((MenuModel menu) {
+        children: menus.map((MenuModel menu) {
           return CustomCardMenuItem(menu);
         }).toList(),
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -121,30 +123,35 @@ class _HomePageState extends State<HomePage> {
               ),
 
               // Menu List
-              BlocConsumer<MenuCubit, MenuState>(
-                listener: (context, state){
-                  if (state is MenuFailed){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text(state.error),
-                      ),
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is MenuSuccess){
-                    return menuCard(state.menus);
-                  } else {
-                    return const Center(
-                      child: Text('Something went wrong'),
-                    );
-                  }
+              BlocConsumer<MenuCubit, MenuState>(listener: (context, state) {
+                if (state is MenuFailed) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(state.error),
+                    ),
+                  );
                 }
-              ),
+              }, builder: (context, state) {
+                if (state is MenuSuccess) {
+                  return menuCard(state.menus);
+                } else {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+              }),
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushNamed(context, '/cart');
+        },
+        label: Text(counter.toString()),
+        icon: const Icon(Icons.shopping_cart_rounded),
+        backgroundColor: primaryColor,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [

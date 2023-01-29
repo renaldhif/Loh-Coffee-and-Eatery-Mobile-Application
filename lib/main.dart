@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:loh_coffee_eatery/ui/pages/cart_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/profile_menu_admin_page.dart';
 import 'package:loh_coffee_eatery/models/menu_model.dart';
 import 'package:loh_coffee_eatery/ui/pages/update_profile_page.dart';
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
           '/home': (context) => const HomePage(),
           '/update-profile': (context) => const UpdateProfilePage(),
           '/submit-review' :(context) => const AddReviewPage(),
+          '/cart': (context) => const CartPage(),
           
           //* Admin Routes
           '/home-admin': (context) => const HomePageAdmin(),
