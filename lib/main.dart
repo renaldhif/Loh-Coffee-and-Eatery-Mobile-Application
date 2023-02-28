@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:loh_coffee_eatery/ui/pages/cart_page.dart';
+import 'package:loh_coffee_eatery/ui/pages/confirm_payment_page.dart';
+import 'package:loh_coffee_eatery/ui/pages/payment_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/profile_menu_admin_page.dart';
 import 'package:loh_coffee_eatery/models/menu_model.dart';
 import 'package:loh_coffee_eatery/ui/pages/update_profile_page.dart';
@@ -13,6 +15,7 @@ import '/ui/pages/add_menu_admin.dart';
 import '/ui/pages/home_page_admin.dart';
 import '/ui/pages/landing_page.dart';
 import 'ui/pages/add_review_page.dart';
+import 'ui/pages/cashier_page.dart';
 import 'ui/pages/forgotpass_page.dart';
 import 'ui/pages/home_page.dart';
 import 'ui/pages/login_page.dart';
@@ -72,6 +75,9 @@ class MyApp extends StatelessWidget {
           '/update-profile': (context) => const UpdateProfilePage(),
           '/submit-review' :(context) => const AddReviewPage(),
           '/cart': (context) => const CartPage(),
+          '/cashier':(context) => const CashierPage(),
+          '/payment':(context) => const PaymentPage(),
+          '/confirmpayment':(context) => const ConfirmPaymentPage(),
           
           //* Admin Routes
           '/home-admin': (context) => const HomePageAdmin(),
