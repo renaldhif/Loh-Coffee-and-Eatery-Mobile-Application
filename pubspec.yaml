@@ -48,6 +48,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   checkbox_grouped: ^1.8.1
   firebase_crashlytics: ^3.0.8
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
