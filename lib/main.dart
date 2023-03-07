@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:loh_coffee_eatery/models/menu_adapter.dart';
 import 'package:loh_coffee_eatery/ui/pages/cart_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/confirm_payment_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/payment_page.dart';
@@ -31,6 +33,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await Hive.initFlutter();
+  await Hive.deleteBoxFromDisk('shopping_box');
+  //await Hive.openBox('shopping_box');
+  Hive.registerAdapter(MenuAdapter());
+  await Hive.openBox<MenuModel>('shopping_box');
 
   runApp(const MyApp());
 }
