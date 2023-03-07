@@ -1,6 +1,7 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:loh_coffee_eatery/shared/theme.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_card_menu_item.dart';
 
@@ -22,6 +23,9 @@ class _CartPageState extends State<CartPage> {
     setState(() {
       _selectedIndex = index;
       switch (index) {
+        case 0:
+          Navigator.pushNamed(context, '/home');
+          break;
         // case 1:
         //   Navigator.pushNamed(context, '/addmenu');
         //   break;
@@ -40,8 +44,10 @@ class _CartPageState extends State<CartPage> {
   }
 
   //* Group Controller
-  GroupController paymentController = GroupController(isMultipleSelection: false);
-  GroupController diningController = GroupController(isMultipleSelection: false);
+  GroupController paymentController =
+      GroupController(isMultipleSelection: false);
+  GroupController diningController =
+      GroupController(isMultipleSelection: false);
 
   @override
   void initState() {
@@ -49,17 +55,232 @@ class _CartPageState extends State<CartPage> {
     super.initState();
   }
 
-  Widget menuCard(List<MenuModel> menus) {
+  Box<MenuModel> localDBBox = Hive.box<MenuModel>('shopping_box');
+
+  int i = 0;
+  int qty = 1;
+  // int _shoppingBoxLength = Hive.box('shopping_box').length;
+
+  // int calcShoppingBoxLen() {
+  //   int _shoppingBoxLength = localDBBox.length;
+  //   return _shoppingBoxLength;
+  // }
+
+  int calcTotalPrice() {
+    int sum = 0;
+    for (int i = 0; i < localDBBox.length; i++) {
+      var cartModel = localDBBox.getAt(i) as MenuModel;
+      int iprice = cartModel.price;
+      sum += iprice;
+      print(sum);
+      print('------');
+      // print(_shoppingBoxLength);
+    }
+
+    return sum;
+  }
+
+  // int addQty(int qty) {
+  //   qty++;
+  //   return qty;
+  // }
+
+  Widget orderCard(int a) {
+    //loop through the localDBBox
+
+    String iName = '';
+    int iPrice = 0;
+    String iImage = '';
+    //get the name of the menu with index
+    iName = localDBBox.getAt(a)!.title;
+    //get the price of the menu with index
+    iPrice = localDBBox.getAt(a)!.price;
+    //get the image of the menu with index
+    iImage = localDBBox.getAt(a)!.image;
+    //get quantity of each menu
+    //int qty = 1;
+
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 20,
+      margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 9),
+      width: 0.9 * MediaQuery.of(context).size.width,
+      height: 100,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(defaultRadius),
+        border: Border.all(
+          color: kUnavailableColor,
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 3,
+            blurRadius: 7,
+            offset: const Offset(1, 3),
+          ),
+        ],
+        color: whiteColor,
       ),
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: menus.map((MenuModel menu) {
-          return CustomCardMenuItem(menu);
-        }).toList(),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+
+        // Menu Card Content
+        child: Row(
+          children: [
+            // Image
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(defaultRadius),
+                border: Border.all(
+                  color: Colors.grey.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
+              child: AspectRatio(
+                aspectRatio: 1 / 1,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(defaultRadius),
+                  child: Image.network(
+                    //loop through localDBBox
+                    //getOrderImage(),
+                    iImage,
+                    width: 0.2 * MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            // Menu Details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        //getOrderName(),
+                        iName,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: greenTextStyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: black,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Text(
+                            'Rp',
+                            style: orangeTextStyle.copyWith(
+                              fontSize: 16,
+                              fontWeight: extraBold,
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            iPrice.toString(),
+                            style: orangeTextStyle.copyWith(
+                              fontSize: 16,
+                              fontWeight: extraBold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  // Menu Card Button
+                  Row(
+                    children: [
+                      // Add to Cart Button
+                      Container(
+                        width: 0.35 * MediaQuery.of(context).size.width,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: primaryColor,
+                            width: 1,
+                          ),
+                          color: whiteColor,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            //* Minus Button
+                            GestureDetector(
+                              child: const Icon(
+                                Icons.remove,
+                                color: primaryColor,
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  if (qty <= 1) {
+                                    localDBBox.deleteAt(i);
+                                    print('qty now: $qty');
+                                  } else {
+                                    qty--;
+                                    print('qty now: $qty');
+                                  }
+                                });
+                              },
+                            ),
+                            const SizedBox(width: 10),
+
+                            //* Quantity
+                            Text(
+                              '$qty',
+                              style: greenTextStyle.copyWith(
+                                fontSize: 12,
+                                fontWeight: extraBold,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+
+                            //* Plus Button
+                            GestureDetector(
+                              child: const Icon(
+                                Icons.add,
+                                color: primaryColor,
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  qty++;
+
+                                  print('qty now: $qty');
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 50,
+                      ),
+
+                      //* Delete Button
+                      GestureDetector(
+                        child: const Icon(
+                          Icons.delete,
+                          color: primaryColor,
+                          size: 28,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            localDBBox.deleteAt(i);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -79,7 +300,7 @@ class _CartPageState extends State<CartPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Your Cart',
+                      'Your Cart 🛒',
                       style: greenTextStyle.copyWith(
                         fontSize: 22,
                         fontWeight: black,
@@ -87,33 +308,24 @@ class _CartPageState extends State<CartPage> {
                     ),
                     const SizedBox(height: 15),
 
-                    // Menu List
-                    //! Testing Purposes Only!
-                    //TODO: Remember to change into cart data
-                    BlocConsumer<MenuCubit, MenuState>(
-                        listener: (context, state) {
-                      if (state is MenuFailed) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: Colors.red,
-                            content: Text(state.error),
-                          ),
-                        );
-                      }
-                    }, builder: (context, state) {
-                      if (state is MenuSuccess) {
-                        return menuCard(state.menus);
-                      } else {
-                        return const Center(
-                          child: Text('Something went wrong'),
-                        );
-                      }
-                    }),
+                    //* Order Cart List
+                    for (int x = 0; x < localDBBox.length; x++) orderCard(x),
                   ],
                 ),
               ),
 
-              // Container for Payment Option
+              // Green spacer
+              Container(
+                width: 0.9 * MediaQuery.of(context).size.width,
+                height: 5,
+                color: primaryColor,
+              ),
+
+              const SizedBox(
+                height: 10,
+              ),
+
+              //* Container for Payment Option
               Container(
                 margin: const EdgeInsets.symmetric(
                   vertical: 3,
@@ -171,7 +383,9 @@ class _CartPageState extends State<CartPage> {
                 ),
               ),
 
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
 
               //* Container for Dining Option
               Container(
@@ -272,7 +486,9 @@ class _CartPageState extends State<CartPage> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        'Rp. 100.000',
+                        // 'Rp. 100.000',
+                        calcTotalPrice().toString(),
+                        // 'Rp. ${totalPrice.toString()}',
                         style: greenTextStyle.copyWith(
                           fontWeight: bold,
                           fontSize: 15,
@@ -290,7 +506,7 @@ class _CartPageState extends State<CartPage> {
                   onPressed: () {
                     // Navigator.pushNamedAndRemoveUntil(
                     //     context, '/login', (route) => false);
-                    if (paymentController.selectedItem == 'qris'){
+                    if (paymentController.selectedItem == 'qris') {
                       Navigator.pushNamed(context, '/payment');
                     } else {
                       Navigator.pushNamed(context, '/cashier');

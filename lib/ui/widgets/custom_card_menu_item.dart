@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:loh_coffee_eatery/ui/pages/home_page.dart';
 import '../../models/menu_model.dart';
 import '/shared/theme.dart';
 
-class CustomCardMenuItem extends StatelessWidget {
-  final MenuModel menu;
-  // final String title, image, tag, price;
-  // final double qtyLoved, qtyOrdered;
-  // final Function() onPressed;
+List _cartItems = [];
 
-  const CustomCardMenuItem(
-    this.menu,{
-      super.key,
+class CustomCardMenuItem extends StatefulWidget {
+  final MenuModel menu;
+
+
+  CustomCardMenuItem(
+    this.menu, {
+    super.key,
     // required this.title,
     // required this.image,
     // required this.tag,
@@ -19,6 +21,19 @@ class CustomCardMenuItem extends StatelessWidget {
     // required this.qtyOrdered,
     // required this.onPressed,
   });
+
+  @override
+  State<CustomCardMenuItem> createState() => _CustomCardMenuItemState();
+}
+
+class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
+  // final String title, image, tag, price;
+  void _addToCart() {
+    _cartItems.add(widget.menu);
+  }
+
+  //final _shoppingBox = Hive.box('shopping_box');
+  Box<MenuModel> localDBBox = Hive.box<MenuModel>('shopping_box');
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +76,11 @@ class CustomCardMenuItem extends StatelessWidget {
                 ),
               ),
               child: AspectRatio(
-                aspectRatio: 1/1,
+                aspectRatio: 1 / 1,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(defaultRadius),
                   child: Image.network(
-                    menu.image, // this field is required
+                    widget.menu.image, // this field is required
                     width: 0.3 * MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
                   ),
@@ -83,7 +98,7 @@ class CustomCardMenuItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        menu.title, // this field is required
+                        widget.menu.title, // this field is required
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
@@ -94,7 +109,7 @@ class CustomCardMenuItem extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        menu.tag, // this field is required
+                        widget.menu.tag, // this field is required
                         style: greenTextStyle.copyWith(
                           fontSize: 12,
                           fontWeight: light,
@@ -112,7 +127,7 @@ class CustomCardMenuItem extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            menu.price.toString(), // this field is required
+                            widget.menu.price.toString(), // this field is required
                             style: orangeTextStyle.copyWith(
                               fontSize: 16,
                               fontWeight: extraBold,
@@ -126,34 +141,66 @@ class CustomCardMenuItem extends StatelessWidget {
                   Row(
                     children: [
                       // Add to Cart Button
-                      Container(
-                        width: 0.35 * MediaQuery.of(context).size.width,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: primaryColor,
-                            width: 1,
-                          ),
-                          color: whiteColor,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.add,
+                      GestureDetector(
+                        child: Container(
+                          width: 0.35 * MediaQuery.of(context).size.width,
+                          height: 25,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
                               color: primaryColor,
+                              width: 1,
                             ),
-                            const SizedBox(width: 10),
-                            Text(
-                              'Add to Cart',
-                              style: greenTextStyle.copyWith(
-                                fontSize: 12,
-                                fontWeight: extraBold,
+                            color: whiteColor,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.add,
+                                color: primaryColor,
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 10),
+                              Text(
+                                'Add to Cart',
+                                style: greenTextStyle.copyWith(
+                                  fontSize: 12,
+                                  fontWeight: extraBold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
+                        onTap: () {
+                          // implement ontap function add to cart
+
+                          // _cartItems.add(menu);
+                          // double totalPrice = 0;
+                          // // print all the items in the cart using loops
+                          // for (var i = 0; i < _cartItems.length; i++) {
+                          //   totalPrice += _cartItems[i].price;
+                          //   print(totalPrice);
+                          // }
+                          //add menu to the cart list
+                          _addToCart();
+                          double totalPrice = 0;
+                          for (int i = 0; i < _cartItems.length; i++) {
+                            totalPrice += _cartItems[i].price;
+                          }
+                          print(_cartItems.length);
+                          print(totalPrice);
+
+                          //_shoppingBox.put(1,menu);
+                          localDBBox.add(widget.menu);
+                          //refresh page
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                            ),
+                            (route) => false,
+                          );
+                        },
                       ),
                       const SizedBox(
                         width: 10,

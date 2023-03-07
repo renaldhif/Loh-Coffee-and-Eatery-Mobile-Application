@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+//import 'package:hive_flutter/hive_flutter.dart';
+//import hive adapter
 import 'package:loh_coffee_eatery/cubit/menu_cubit.dart';
 import 'package:loh_coffee_eatery/shared/theme.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_card_menu_item.dart';
@@ -14,6 +18,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //final _shoppingBox = Hive.box('shopping_box');
+  Box<MenuModel> _shoppingBox = Hive.box('shopping_box');
+
+  //store _shoppingBox length in a variable
+  //int _shoppingBoxLength = Hive.box('shopping_box').length;
+  
+
+
   // Initial Selected Value
   int counter = 0;
   String dropdownvalue = 'All Menu';
@@ -51,8 +63,13 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     context.read<MenuCubit>().getMenus();
     super.initState();
+    //_refreshItems(); // this
   }
 
+
+
+  
+  
   Widget menuCard(List<MenuModel> menus) {
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -149,7 +166,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           Navigator.pushNamed(context, '/cart');
         },
-        label: Text(counter.toString()),
+        label: Text(_shoppingBox.length.toString()),
         icon: const Icon(Icons.shopping_cart_rounded),
         backgroundColor: primaryColor,
       ),
