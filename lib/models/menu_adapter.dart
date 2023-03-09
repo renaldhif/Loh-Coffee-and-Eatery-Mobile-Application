@@ -1,3 +1,5 @@
+//part of 'menu_model.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:loh_coffee_eatery/models/menu_model.dart';
 
@@ -20,6 +22,7 @@ class MenuAdapter extends TypeAdapter<MenuModel> {
       image: fields[5] as String,
       totalLoved: fields[6] as int,
       totalOrdered: fields[7] as int,
+      quantity: fields[8] as int,
     );
     // TODO: implement read
     //throw UnimplementedError();
@@ -45,6 +48,8 @@ class MenuAdapter extends TypeAdapter<MenuModel> {
       ..writeByte(6)
       ..write(obj.totalLoved)
       ..writeByte(7)
-      ..write(obj.totalOrdered);
+      ..write(obj.totalOrdered)
+      ..writeByte(8)
+      ..write(obj.quantity);
   }
 }

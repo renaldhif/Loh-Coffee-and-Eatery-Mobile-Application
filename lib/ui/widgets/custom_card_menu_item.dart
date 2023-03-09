@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:loh_coffee_eatery/ui/pages/home_page.dart';
+import '../../cubit/menu_cubit.dart';
 import '../../models/menu_model.dart';
 import '/shared/theme.dart';
 
@@ -191,7 +193,11 @@ class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
                           print(totalPrice);
 
                           //_shoppingBox.put(1,menu);
+                          
                           localDBBox.add(widget.menu);
+                          // context.read<MenuCubit>().addQuantity(
+                          //               widget.menu);
+                          
                           //refresh page
                           Navigator.pushAndRemoveUntil(
                             context,
