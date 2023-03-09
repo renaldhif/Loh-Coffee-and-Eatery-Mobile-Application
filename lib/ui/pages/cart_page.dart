@@ -58,7 +58,8 @@ class _CartPageState extends State<CartPage> {
   Box<MenuModel> localDBBox = Hive.box<MenuModel>('shopping_box');
 
   int i = 0;
-  int qty = 1;
+
+  //int qty = 1;
   // int _shoppingBoxLength = Hive.box('shopping_box').length;
 
   // int calcShoppingBoxLen() {
@@ -70,7 +71,7 @@ class _CartPageState extends State<CartPage> {
     int sum = 0;
     for (int i = 0; i < localDBBox.length; i++) {
       var cartModel = localDBBox.getAt(i) as MenuModel;
-      int iprice = cartModel.price;
+      int iprice = cartModel.price * cartModel.quantity;
       sum += iprice;
       print(sum);
       print('------');
@@ -80,24 +81,48 @@ class _CartPageState extends State<CartPage> {
     return sum;
   }
 
-  // int addQty(int qty) {
-  //   qty++;
-  //   return qty;
-  // }
+  MenuModel getMenuModel(int index) {
+    MenuModel menuModel = localDBBox.getAt(index) as MenuModel;
+    return menuModel;
+  }
 
-  Widget orderCard(int a) {
+  int getIndexHive(MenuModel menuModel) {
+    int index = localDBBox.values.toList().indexOf(menuModel);
+    return index;
+  }
+
+  //method add quantity in hive box
+  void addQty(MenuModel menuModel) {
+    int index = getIndexHive(menuModel);
+    int qty = localDBBox.getAt(index)!.quantity;
+    qty++;
+    localDBBox.putAt(index, menuModel.copyWith(quantity: qty));
+  }
+
+  //method minus quantity in hive box
+  void minusQty(MenuModel menuModel) {
+    int index = getIndexHive(menuModel);
+    int qty = localDBBox.getAt(index)!.quantity;
+    qty--;
+    localDBBox.putAt(index, menuModel.copyWith(quantity: qty));
+  }
+
+  @override
+  Widget orderCard(MenuModel menuModel) {
     //loop through the localDBBox
 
     String iName = '';
     int iPrice = 0;
     String iImage = '';
+    
     //get the name of the menu with index
-    iName = localDBBox.getAt(a)!.title;
+    iName = localDBBox.getAt(localDBBox.values.toList().indexOf(menuModel))!.title;
     //get the price of the menu with index
-    iPrice = localDBBox.getAt(a)!.price;
+    iPrice = localDBBox.getAt(localDBBox.values.toList().indexOf(menuModel))!.price;
     //get the image of the menu with index
-    iImage = localDBBox.getAt(a)!.image;
+    iImage = localDBBox.getAt(localDBBox.values.toList().indexOf(menuModel))!.image;
     //get quantity of each menu
+    int iQty = localDBBox.getAt(localDBBox.values.toList().indexOf(menuModel))!.quantity;
     //int qty = 1;
 
     return Container(
@@ -218,13 +243,16 @@ class _CartPageState extends State<CartPage> {
                               ),
                               onTap: () {
                                 setState(() {
-                                  if (qty <= 1) {
-                                    localDBBox.deleteAt(i);
-                                    print('qty now: $qty');
-                                  } else {
-                                    qty--;
-                                    print('qty now: $qty');
+                                  if (iQty <= 1) {
+                                    localDBBox.deleteAt(getIndexHive(menuModel));
+                                  } else if(iQty > 1) {
+                                    context.read<MenuCubit>().minusQuantity(
+                                          menuModel);
+                                    minusQty(menuModel);
+                                    print('iqty: $iQty');
+                                    print('quantity di menumodel: ${menuModel.quantity}');
                                   }
+
                                 });
                               },
                             ),
@@ -232,7 +260,7 @@ class _CartPageState extends State<CartPage> {
 
                             //* Quantity
                             Text(
-                              '$qty',
+                              iQty.toString(),
                               style: greenTextStyle.copyWith(
                                 fontSize: 12,
                                 fontWeight: extraBold,
@@ -248,9 +276,12 @@ class _CartPageState extends State<CartPage> {
                               ),
                               onTap: () {
                                 setState(() {
-                                  qty++;
-
-                                  print('qty now: $qty');
+                                  context.read<MenuCubit>().addQuantity(
+                                        menuModel);
+                                  //update the quantity of the menu
+                                  addQty(menuModel);
+                                  print('iqty: $iQty');
+                                  print('quantity di menumodel: ${menuModel.quantity}');
                                 });
                               },
                             ),
@@ -309,7 +340,7 @@ class _CartPageState extends State<CartPage> {
                     const SizedBox(height: 15),
 
                     //* Order Cart List
-                    for (int x = 0; x < localDBBox.length; x++) orderCard(x),
+                    for (int x = 0; x < localDBBox.length; x++) orderCard(getMenuModel(x)),
                   ],
                 ),
               ),

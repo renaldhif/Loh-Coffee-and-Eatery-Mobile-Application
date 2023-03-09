@@ -17,6 +17,7 @@ class MenuCubit extends Cubit<MenuState> {
       required String image, 
       int totalLoved = 0, 
       int totalOrdered = 0,
+      int quantity = 1
     }) async {
     try {
       emit(MenuLoading());
@@ -37,6 +38,7 @@ class MenuCubit extends Cubit<MenuState> {
         image: image,
         totalLoved: totalLoved,
         totalOrdered: totalOrdered,
+        quantity: quantity
       );
       emit(MenuSuccess([menu]));
     } catch (e) {
@@ -92,6 +94,26 @@ class MenuCubit extends Cubit<MenuState> {
     try{
       emit(MenuLoading());
       await MenuService().deleteMenu(menu!);
+      getMenus();
+    } catch (e) {
+      emit(MenuFailed(e.toString()));
+    }
+  }
+
+  void addQuantity(MenuModel? menu) async{
+    try{
+      emit(MenuLoading());
+      await MenuService().addQuantity(menu!);
+      getMenus();
+    } catch (e) {
+      emit(MenuFailed(e.toString()));
+    }
+  }
+
+  void minusQuantity(MenuModel? menu) async{
+    try{
+      emit(MenuLoading());
+      await MenuService().minusQuantity(menu!);
       getMenus();
     } catch (e) {
       emit(MenuFailed(e.toString()));

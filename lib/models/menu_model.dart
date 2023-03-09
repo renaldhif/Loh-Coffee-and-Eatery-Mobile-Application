@@ -9,6 +9,7 @@ class MenuModel extends Equatable {
   final String image;
   final int totalLoved;
   final int totalOrdered;
+  final int quantity;
 
   const MenuModel({
     required this.id,
@@ -18,10 +19,8 @@ class MenuModel extends Equatable {
     required this.price,
     required this.image,
     this.totalLoved = 0,
-    this.totalOrdered = 0
-    // required this.totalLoved,
-    // required this.totalOrdered,
-  });
+    this.totalOrdered = 0,
+    this.quantity = 1});
 
   factory MenuModel.fromJson(String id, Map<String, dynamic> json) {
     return MenuModel(
@@ -33,6 +32,7 @@ class MenuModel extends Equatable {
       image: json['image'],
       totalLoved: json['totalLoved'],
       totalOrdered: json['totalOrdered'],
+      quantity: json['quantity']
     );
   }
 
@@ -45,6 +45,7 @@ class MenuModel extends Equatable {
       'image': image,
       'totalLoved': totalLoved,
       'totalOrdered': totalOrdered,
+      'quantity': quantity
     };
   }
 
@@ -58,5 +59,21 @@ class MenuModel extends Equatable {
     image,
     totalLoved,
     totalOrdered,
+    quantity
   ];
+
+  MenuModel copyWith({required int quantity}) {
+    return MenuModel(
+      id: id,
+      title: title,
+      description: description,
+      tag: tag,
+      price: price,
+      image: image,
+      totalLoved: totalLoved,
+      totalOrdered: totalOrdered,
+      quantity: quantity
+    );
+  }
+
 }

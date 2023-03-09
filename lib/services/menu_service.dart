@@ -16,7 +16,8 @@ class MenuService {
       required int price, 
       required String image, 
       int totalLoved = 0, 
-      int totalOrdered = 0,
+      int totalOrdered = 0, 
+      int quantity = 1,
     }) async {
     try {
       _menuCollection.add({
@@ -27,6 +28,7 @@ class MenuService {
         'image' : image,
         'totalLoved' : totalLoved,
         'totalOrdered' : totalOrdered,
+        'quantity' : quantity,
       });
     return MenuModel(
       id: '',
@@ -37,6 +39,7 @@ class MenuService {
       image: image,
       totalLoved: totalLoved,
       totalOrdered: totalOrdered,
+      quantity: quantity,
     );
     } catch (e) {
       throw e;
@@ -94,6 +97,7 @@ class MenuService {
         // TODO: update total loved and total ordered in Iteration 2
         'totalLoved': 0, 
         'totalOrdered': 0,
+        'quantity': 1,
       });
     } catch (e) {
       throw e;
@@ -107,6 +111,26 @@ class MenuService {
   Future<void> deleteMenu(MenuModel menu) async {
     try {
       await _menuCollection.doc(menu.id).delete();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> addQuantity(MenuModel menu) async {
+    try {
+      await _menuCollection.doc(menu.id).update({
+        'quantity': menu.quantity,
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> minusQuantity(MenuModel menu) async {
+    try {
+      await _menuCollection.doc(menu.id).update({
+        'quantity': menu.quantity - 1,
+      });
     } catch (e) {
       throw e;
     }
