@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:loh_coffee_eatery/shared/theme.dart';
+import 'package:loh_coffee_eatery/ui/pages/payment_page.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_card_menu_item.dart';
 
 import '../../cubit/menu_cubit.dart';
@@ -58,14 +59,11 @@ class _CartPageState extends State<CartPage> {
   Box<MenuModel> localDBBox = Hive.box<MenuModel>('shopping_box');
 
   int i = 0;
-
-  //int qty = 1;
-  // int _shoppingBoxLength = Hive.box('shopping_box').length;
-
-  // int calcShoppingBoxLen() {
-  //   int _shoppingBoxLength = localDBBox.length;
-  //   return _shoppingBoxLength;
-  // }
+  String dropdownvalue = 'Table Number';
+  // List of items in our dropdown menu
+  var items = [
+    for (int i = 1; i <= 30; i++) i.toString(),
+  ];
 
   int calcTotalPrice() {
     int sum = 0;
@@ -107,6 +105,14 @@ class _CartPageState extends State<CartPage> {
     localDBBox.putAt(index, menuModel.copyWith(quantity: qty));
   }
 
+  void resetQty(MenuModel menuModel) {
+    int index = getIndexHive(menuModel);
+    int qty = localDBBox.getAt(index)!.quantity;
+    qty = 1;
+    localDBBox.putAt(index, menuModel.copyWith(quantity: qty));
+  }
+
+  //* ORDER CARD WIDGET
   @override
   Widget orderCard(MenuModel menuModel) {
     //loop through the localDBBox
@@ -114,15 +120,20 @@ class _CartPageState extends State<CartPage> {
     String iName = '';
     int iPrice = 0;
     String iImage = '';
-    
+
     //get the name of the menu with index
-    iName = localDBBox.getAt(localDBBox.values.toList().indexOf(menuModel))!.title;
+    iName =
+        localDBBox.getAt(localDBBox.values.toList().indexOf(menuModel))!.title;
     //get the price of the menu with index
-    iPrice = localDBBox.getAt(localDBBox.values.toList().indexOf(menuModel))!.price;
+    iPrice =
+        localDBBox.getAt(localDBBox.values.toList().indexOf(menuModel))!.price;
     //get the image of the menu with index
-    iImage = localDBBox.getAt(localDBBox.values.toList().indexOf(menuModel))!.image;
+    iImage =
+        localDBBox.getAt(localDBBox.values.toList().indexOf(menuModel))!.image;
     //get quantity of each menu
-    int iQty = localDBBox.getAt(localDBBox.values.toList().indexOf(menuModel))!.quantity;
+    int iQty = localDBBox
+        .getAt(localDBBox.values.toList().indexOf(menuModel))!
+        .quantity;
     //int qty = 1;
 
     return Container(
@@ -244,15 +255,17 @@ class _CartPageState extends State<CartPage> {
                               onTap: () {
                                 setState(() {
                                   if (iQty <= 1) {
-                                    localDBBox.deleteAt(getIndexHive(menuModel));
-                                  } else if(iQty > 1) {
-                                    context.read<MenuCubit>().minusQuantity(
-                                          menuModel);
+                                    localDBBox
+                                        .deleteAt(getIndexHive(menuModel));
+                                  } else if (iQty > 1) {
+                                    context
+                                        .read<MenuCubit>()
+                                        .minusQuantity(menuModel);
                                     minusQty(menuModel);
                                     print('iqty: $iQty');
-                                    print('quantity di menumodel: ${menuModel.quantity}');
+                                    print(
+                                        'quantity di menumodel: ${menuModel.quantity}');
                                   }
-
                                 });
                               },
                             ),
@@ -276,12 +289,14 @@ class _CartPageState extends State<CartPage> {
                               ),
                               onTap: () {
                                 setState(() {
-                                  context.read<MenuCubit>().addQuantity(
-                                        menuModel);
+                                  context
+                                      .read<MenuCubit>()
+                                      .addQuantity(menuModel);
                                   //update the quantity of the menu
                                   addQty(menuModel);
                                   print('iqty: $iQty');
-                                  print('quantity di menumodel: ${menuModel.quantity}');
+                                  print(
+                                      'quantity di menumodel: ${menuModel.quantity}');
                                 });
                               },
                             ),
@@ -301,7 +316,19 @@ class _CartPageState extends State<CartPage> {
                         ),
                         onTap: () {
                           setState(() {
-                            localDBBox.deleteAt(i);
+                            //set quantity to 1
+                            // resetQty(menuModel);
+                            // print('iqty: $iQty');
+                            // print
+                            //     'quantity di menumodel: ${menuModel.quantity}');
+
+                            // localDBBox.deleteAt(getIndexHive(menuModel));
+                            if (iQty <= 1) {
+                              localDBBox.deleteAt(getIndexHive(menuModel));
+                            } else if (iQty > 1) {
+                              resetQty(menuModel);
+                              localDBBox.deleteAt(getIndexHive(menuModel));
+                            }
                           });
                         },
                       ),
@@ -333,14 +360,15 @@ class _CartPageState extends State<CartPage> {
                     Text(
                       'Your Cart 🛒',
                       style: greenTextStyle.copyWith(
-                        fontSize: 22,
+                        fontSize: 28,
                         fontWeight: black,
                       ),
                     ),
                     const SizedBox(height: 15),
 
                     //* Order Cart List
-                    for (int x = 0; x < localDBBox.length; x++) orderCard(getMenuModel(x)),
+                    for (int x = 0; x < localDBBox.length; x++)
+                      orderCard(getMenuModel(x)),
                   ],
                 ),
               ),
@@ -475,6 +503,97 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
               ),
+              const SizedBox(
+                height: 10,
+              ),
+
+              //* Container for Table Number
+              Visibility(
+                visible: true,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 3,
+                  ),
+                  width: 0.9 * MediaQuery.of(context).size.width,
+                  height: 170,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                    border: Border.all(
+                      color: kUnavailableColor,
+                      width: 1,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 3,
+                        blurRadius: 7,
+                        offset: const Offset(1, 3),
+                      ),
+                    ],
+                    color: whiteColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    // Menu Card Content
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Choose your Table Number',
+                          style: greenTextStyle.copyWith(
+                            fontWeight: bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+
+                        //* Dropdown table number
+                        Center(
+                          child: ButtonTheme(
+                            alignedDropdown: true,
+                            child: DropdownButton(
+                              menuMaxHeight: 150,
+                              icon: const Icon(
+                                Icons.keyboard_arrow_down,
+                                color: primaryColor,
+                              ),
+                              items: items.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownvalue = newValue!;
+                                  print('dropdownvalue ${dropdownvalue}');
+                                });
+                              },
+                              // isExpanded: true,
+                              underline: Container(
+                                height: 1,
+                                color: primaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        
+                        const SizedBox(height: 20),
+                        //* Location
+                        Center(
+                          child: Text(
+                            'Location: Indoor',
+                            style: greenTextStyle.copyWith(
+                              fontWeight: medium,
+                              fontSize: 15,
+                            )
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
 
               const SizedBox(height: 10),
 
@@ -535,10 +654,14 @@ class _CartPageState extends State<CartPage> {
                 child: CustomButton(
                   title: 'Pay Now',
                   onPressed: () {
-                    // Navigator.pushNamedAndRemoveUntil(
-                    //     context, '/login', (route) => false);
                     if (paymentController.selectedItem == 'qris') {
-                      Navigator.pushNamed(context, '/payment');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PaymentPage(totalPrice: calcTotalPrice()),
+                        ),
+                      );
                     } else {
                       Navigator.pushNamed(context, '/cashier');
                     }
