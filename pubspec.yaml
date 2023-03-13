@@ -49,6 +49,7 @@ dependencies:
   checkbox_grouped: ^1.8.1
   firebase_crashlytics: ^3.0.8
   hive_flutter: ^1.1.0
+  animated_icon_button: ^1.0.2
 
 dev_dependencies:
   flutter_test:
