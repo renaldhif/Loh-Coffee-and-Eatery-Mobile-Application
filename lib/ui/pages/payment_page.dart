@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button_white.dart';
@@ -11,7 +10,8 @@ import '/shared/theme.dart';
 import 'package:path_provider/path_provider.dart';
 
 class PaymentPage extends StatefulWidget {
-  const PaymentPage({super.key});
+  int? totalPrice;
+  PaymentPage({super.key, this.totalPrice});
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -61,6 +61,28 @@ class _PaymentPageState extends State<PaymentPage> {
                   fontWeight: bold,
                 ),
               ),
+
+              const SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Rp ',
+                    style: greenTextStyle.copyWith(
+                      fontSize: 24,
+                      fontWeight: bold,
+                    ),
+                  ),
+                  Text(
+                    widget.totalPrice.toString(),
+                    style: greenTextStyle.copyWith(
+                      fontSize: 24,
+                      fontWeight: bold,
+                    ),
+                  ),
+                ],
+              ),
+
               const SizedBox(
                 height: 20,
               ),
