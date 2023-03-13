@@ -45,9 +45,9 @@ class _HomePageState extends State<HomePage> {
         // case 1:
         //   Navigator.pushNamed(context, '/addmenu');
         //   break;
-        // case 2:
-        //   Navigator.pushNamed(context, '/home-admin');
-        //   break;
+        case 2:
+          Navigator.pushNamed(context, '/orderlist');
+          break;
         // case 3:
         //   Navigator.pushNamed(context, '/notification');
         //   break;
