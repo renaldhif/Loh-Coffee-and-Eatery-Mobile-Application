@@ -21,6 +21,8 @@ import 'ui/pages/cashier_page.dart';
 import 'ui/pages/forgotpass_page.dart';
 import 'ui/pages/home_page.dart';
 import 'ui/pages/login_page.dart';
+import 'ui/pages/order_list_admin_page.dart';
+import 'ui/pages/order_list_customer_page.dart';
 import 'ui/pages/profile_menu_page.dart';
 import 'ui/pages/request_reset.dart';
 import 'ui/pages/review_page_admin.dart';
@@ -84,13 +86,15 @@ class MyApp extends StatelessWidget {
           '/submit-review' :(context) => const AddReviewPage(),
           '/cart': (context) => const CartPage(),
           '/cashier':(context) => const CashierPage(),
-          '/payment':(context) => const PaymentPage(),
+          '/payment':(context) => PaymentPage(),
           '/confirmpayment':(context) => const ConfirmPaymentPage(),
+          '/orderlist':(context) => const OrderListCustomerPage(),
           
           //* Admin Routes
           '/home-admin': (context) => const HomePageAdmin(),
           '/profile-admin' : (context) => const ProfileMenuAdminPage(),
           '/addmenu': (context) => const AddMenuPageAdmin(),
+          '/orderlist-admin':(context) => const OrderListAdminPage(),
 
           '/updatemenu': (context) => UpdateMenuPageAdmin(),
           '/reviews': (context) => const ReviewPageAdmin(),
