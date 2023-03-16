@@ -51,15 +51,17 @@ class _CartPageState extends State<CartPage> {
 
   @override
   void initState() {
+    if (lenLocalDBBox < 1) isCartEmpty = true;
     context.read<MenuCubit>().getMenus();
     super.initState();
   }
 
   Box<MenuModel> localDBBox = Hive.box<MenuModel>('shopping_box');
-
+  int lenLocalDBBox = Hive.box<MenuModel>('shopping_box').length;
   int i = 0;
-  String dropdownvalue = '1';
+  bool isCartEmpty = false;
   bool isDineIn = false;
+  String dropdownvalue = '1';
   String tableLocation = '';
 
   final CollectionReference<Map<String, dynamic>> productList =
@@ -146,10 +148,26 @@ class _CartPageState extends State<CartPage> {
     localDBBox.putAt(index, menuModel.copyWith(quantity: qty));
   }
 
+  Widget TextCartEmpty() {
+    if(localDBBox.length < 1){
+      isCartEmpty = true;
+      return Visibility(
+      visible: isCartEmpty,
+      child: Text(
+        'Your cart is empty. Please add some items.',
+        style: greenTextStyle.copyWith(
+          fontSize: 16,
+          fontWeight: medium,
+        ),
+      ),
+    );
+    }
+    return Container();
+  }
+
   //* ORDER CARD WIDGET
   @override
   Widget orderCard(MenuModel menuModel) {
-
     String iName = '';
     int iPrice = 0;
     String iImage = '';
@@ -287,6 +305,7 @@ class _CartPageState extends State<CartPage> {
                               ),
                               onTap: () {
                                 setState(() {
+                                  ;
                                   if (iQty <= 1) {
                                     localDBBox
                                         .deleteAt(getIndexHive(menuModel));
@@ -349,13 +368,11 @@ class _CartPageState extends State<CartPage> {
                         ),
                         onTap: () {
                           setState(() {
-                            //set quantity to 1
-                            // resetQty(menuModel);
-                            // print('iqty: $iQty');
-                            // print
-                            //     'quantity di menumodel: ${menuModel.quantity}');
+                            if (lenLocalDBBox < 1) {
+                              isCartEmpty = true;
+                              TextCartEmpty();
+                            }
 
-                            // localDBBox.deleteAt(getIndexHive(menuModel));
                             if (iQty <= 1) {
                               localDBBox.deleteAt(getIndexHive(menuModel));
                             } else if (iQty > 1) {
@@ -416,7 +433,14 @@ class _CartPageState extends State<CartPage> {
               ),
 
               const SizedBox(
-                height: 10,
+                height: 20,
+              ),
+
+              //* Widget Cart Empty Text
+              TextCartEmpty(),
+
+              const SizedBox(
+                height: 20,
               ),
 
               //* Container for Payment Option
@@ -653,8 +677,7 @@ class _CartPageState extends State<CartPage> {
 
                         //* Location
                         FutureBuilder<String>(
-                          future:
-                              getTableIndex(int.parse(dropdownvalue)),
+                          future: getTableIndex(int.parse(dropdownvalue)),
                           builder: (context, snapshot) => Center(
                             child: Text(
                               'Location: ${snapshot.hasData ? snapshot.data! : 'Loading...'}',
@@ -725,25 +748,26 @@ class _CartPageState extends State<CartPage> {
                 ),
               ),
 
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: CustomButton(
-                  title: 'Pay Now',
-                  onPressed: () {
-                    if (paymentController.selectedItem == 'qris') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              PaymentPage(totalPrice: calcTotalPrice()),
-                        ),
-                      );
-                    } else {
-                      Navigator.pushNamed(context, '/cashier');
-                    }
-                  },
+              if (calcTotalPrice() > 0)
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  child: CustomButton(
+                    title: 'Pay Now',
+                    onPressed: () {
+                      if (paymentController.selectedItem == 'qris') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                PaymentPage(totalPrice: calcTotalPrice()),
+                          ),
+                        );
+                      } else {
+                        Navigator.pushNamed(context, '/cashier');
+                      }
+                    },
+                  ),
                 ),
-              ),
             ],
           ),
         ),
