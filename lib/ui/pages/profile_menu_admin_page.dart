@@ -190,6 +190,109 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 15, bottom: 10),
                 child: Text(
+                  'Table Management',
+                  style: greenTextStyle.copyWith(
+                    fontSize: 14,
+                    fontWeight: bold,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              // Add Table
+              Container(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                height: 50,
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  border: Border.all(
+                    color: backgroundColor,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.table_restaurant,
+                          size: 26,
+                          color: primaryColor,
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          "Add Table",
+                          style: greenTextStyle.copyWith(
+                            fontSize: 17,
+                            fontWeight: bold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/addtable');
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward,
+                        color: primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Delete Table
+              Container(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                height: 50,
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  border: Border.all(
+                    color: backgroundColor,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.highlight_remove,
+                          size: 26,
+                          color: primaryColor,
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          "Delete Table",
+                          style: greenTextStyle.copyWith(
+                            fontSize: 17,
+                            fontWeight: bold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/deletetable');
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward,
+                        color: primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Reviews
+              const SizedBox(height: 25),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, bottom: 10),
+                child: Text(
                   'Reviews & Ratings',
                   style: greenTextStyle.copyWith(
                     fontSize: 14,
@@ -346,51 +449,6 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                       },
                       value: _isSwitched,
                       activeColor: primaryColor,
-                    ),
-                  ],
-                ),
-              ),
-
-              // Add Table
-              Container(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                height: 50,
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  border: Border.all(
-                    color: backgroundColor,
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.table_restaurant,
-                          size: 26,
-                          color: primaryColor,
-                        ),
-                        const SizedBox(width: 20),
-                        Text(
-                          "Add Table",
-                          style: greenTextStyle.copyWith(
-                            fontSize: 17,
-                            fontWeight: bold,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/addtable');
-                      },
-                      icon: const Icon(
-                        Icons.arrow_forward,
-                        color: primaryColor,
-                      ),
                     ),
                   ],
                 ),

@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:loh_coffee_eatery/models/menu_adapter.dart';
 import 'package:loh_coffee_eatery/ui/pages/cart_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/confirm_payment_page.dart';
+import 'package:loh_coffee_eatery/ui/pages/delete_table_admin_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/payment_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/profile_menu_admin_page.dart';
 import 'package:loh_coffee_eatery/models/menu_model.dart';
@@ -99,6 +100,7 @@ class MyApp extends StatelessWidget {
           '/addmenu': (context) => const AddMenuPageAdmin(),
           '/orderlist-admin':(context) => const OrderListAdminPage(),
           '/addtable' : (context) => const AddTablePageAdmin(),
+          '/deletetable' : (context) => const DeleteTableAdminPage(),
           '/updatemenu': (context) => UpdateMenuPageAdmin(),
           '/reviews': (context) => const ReviewPageAdmin(),
         },
