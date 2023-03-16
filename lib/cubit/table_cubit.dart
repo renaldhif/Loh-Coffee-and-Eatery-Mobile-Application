@@ -38,4 +38,46 @@ class TableCubit extends Cubit<TableState> {
     }
   }
 
+  void updateTable({
+    required String id,
+    required int tableNum,
+    required int sizeOfPeople,
+    required String location,
+    required bool isBooked,
+  }) async {
+    try {
+      emit(TableLoading());
+      await TableService().updateTable(
+        id: id,
+        tableNum: tableNum,
+        sizeOfPeople: sizeOfPeople,
+        location: location,
+        isBooked: isBooked,
+      );
+      emit(TableSuccess([]));
+    } catch (e) {
+      emit(TableFailed(e.toString()));
+    }
+  }
+
+  void deleteTable({required String id}) async {
+    try {
+      emit(TableLoading());
+      await TableService().deleteTable(id: id);
+      emit(TableSuccess([]));
+    } catch (e) {
+      emit(TableFailed(e.toString()));
+    }
+  }
+
+  void getTableNum() async {
+    try {
+      emit(TableLoading());
+      List<int> tableNum = await TableService().getTableNum();
+      emit(TableSuccess([]));
+    } catch (e) {
+      emit(TableFailed(e.toString()));
+    }
+  }
+
 }

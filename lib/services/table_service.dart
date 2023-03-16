@@ -41,4 +41,45 @@ class TableService{
       throw e;
     }
   }
+
+  Future<void> updateTable({
+    required String id,
+    required int tableNum,
+    required int sizeOfPeople,
+    required String location,
+    required bool isBooked,
+  }) async {
+    try {
+      await _tableCollection.doc(id).update({
+        'tableNum' : tableNum,
+        'sizeOfPeople' : sizeOfPeople,
+        'location' : location,
+        'isBooked' : isBooked,
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> deleteTable({required String id}) async {
+    try {
+      await _tableCollection.doc(id).delete();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  //get the tableNum only
+  Future<List<int>> getTableNum() async {
+    try {
+      QuerySnapshot querySnapshot = await _tableCollection.get();
+      List<int> tableNum = querySnapshot.docs.map((e) {
+        return TableModel.fromJson(e.id, e.data() as Map<String, dynamic>).tableNum;
+      }).toList();
+    
+      return tableNum;
+    } catch (e) {
+      throw e;
+    }
+  }
 }
