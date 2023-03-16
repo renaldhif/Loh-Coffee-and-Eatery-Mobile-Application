@@ -1,11 +1,10 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:loh_coffee_eatery/shared/theme.dart';
 import 'package:loh_coffee_eatery/ui/pages/payment_page.dart';
-import 'package:loh_coffee_eatery/ui/widgets/custom_card_menu_item.dart';
-
 import '../../cubit/menu_cubit.dart';
 import '../../models/menu_model.dart';
 import '../widgets/custom_button.dart';
@@ -59,11 +58,47 @@ class _CartPageState extends State<CartPage> {
   Box<MenuModel> localDBBox = Hive.box<MenuModel>('shopping_box');
 
   int i = 0;
-  String dropdownvalue = 'Table Number';
-  // List of items in our dropdown menu
-  var items = [
-    for (int i = 1; i <= 30; i++) i.toString(),
-  ];
+  String dropdownvalue = '1';
+  bool isDineIn = false;
+  String tableLocation = '';
+
+  final CollectionReference<Map<String, dynamic>> productList =
+      FirebaseFirestore.instance.collection('tables');
+
+  Future<int> tableLength() async {
+    AggregateQuerySnapshot query = await productList.count().get();
+    print('The number of table: ${query.count}');
+    return query.count;
+  }
+
+//get tableNum
+  Future<int> getTableNum(int index) async {
+    QuerySnapshot<Map<String, dynamic>> query = await productList.get();
+    print('The number of table: ${query.docs[index].data()['tableNum']}');
+    return query.docs[index].data()['tableNum'];
+  }
+
+  //get table index based on tableNum
+  Future<String> getTableIndex(int tableNum) async {
+    QuerySnapshot<Map<String, dynamic>> query = await productList.get();
+    int index = 0;
+    for (int i = 0; i < query.docs.length; i++) {
+      if (query.docs[i].data()['tableNum'] == tableNum) {
+        index = i;
+      }
+    }
+    print('The number of table: $index');
+
+    tableLocation = query.docs[index].data()['location'];
+    return tableLocation;
+  }
+
+  //get table location based on tableNum
+  Future<String> getTableLocation(int tableNum) async {
+    QuerySnapshot<Map<String, dynamic>> query = await productList.get();
+    tableLocation = query.docs[tableNum].data()['location'];
+    return tableLocation;
+  }
 
   int calcTotalPrice() {
     int sum = 0;
@@ -73,7 +108,6 @@ class _CartPageState extends State<CartPage> {
       sum += iprice;
       print(sum);
       print('------');
-      // print(_shoppingBoxLength);
     }
 
     return sum;
@@ -115,7 +149,6 @@ class _CartPageState extends State<CartPage> {
   //* ORDER CARD WIDGET
   @override
   Widget orderCard(MenuModel menuModel) {
-    //loop through the localDBBox
 
     String iName = '';
     int iPrice = 0;
@@ -345,6 +378,8 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
+    // bool isDineIn = false;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -496,7 +531,9 @@ class _CartPageState extends State<CartPage> {
                         ),
                         checkFirstElement: true,
                         onItemSelected: (selected) => setState(() {
+                          isDineIn = selected == 'takeaway' ? true : false;
                           print(selected);
+                          print('isTakeAway?: ${isDineIn}');
                         }),
                       ),
                     ],
@@ -509,7 +546,7 @@ class _CartPageState extends State<CartPage> {
 
               //* Container for Table Number
               Visibility(
-                visible: true,
+                visible: !isDineIn,
                 child: Container(
                   margin: const EdgeInsets.symmetric(
                     vertical: 3,
@@ -548,45 +585,84 @@ class _CartPageState extends State<CartPage> {
                         const SizedBox(height: 30),
 
                         //* Dropdown table number
-                        Center(
-                          child: ButtonTheme(
-                            alignedDropdown: true,
-                            child: DropdownButton(
-                              menuMaxHeight: 150,
-                              icon: const Icon(
-                                Icons.keyboard_arrow_down,
-                                color: primaryColor,
-                              ),
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownvalue = newValue!;
-                                  print('dropdownvalue ${dropdownvalue}');
-                                });
-                              },
-                              // isExpanded: true,
-                              underline: Container(
-                                height: 1,
-                                color: primaryColor,
+                        FutureBuilder<int>(
+                          future: tableLength(),
+                          builder: (BuildContext context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Container(
+                                width: 0.8 * MediaQuery.of(context).size.width,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: primaryColor,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: ButtonTheme(
+                                    alignedDropdown: true,
+
+                                    //* Dropdown
+                                    child: DropdownButton(
+                                      // value: dropdownvalue,
+                                      hint: Text(
+                                        dropdownvalue,
+                                        style: greenTextStyle.copyWith(
+                                          fontWeight: semiBold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      menuMaxHeight: 150,
+                                      icon: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: primaryColor,
+                                      ),
+                                      items: List.generate(snapshot.data!,
+                                          (index) {
+                                        return DropdownMenuItem(
+                                          value: index + 1,
+                                          child: Text((index + 1).toString()),
+                                        );
+                                      }).toList(),
+                                      onChanged: (int? newValue) {
+                                        setState(() {
+                                          dropdownvalue = newValue!.toString();
+                                          print(
+                                              'dropdownvalue ${dropdownvalue}');
+                                        });
+                                      },
+                                      // isExpanded: true,
+                                      underline: Container(
+                                        height: 1,
+                                        color: primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          },
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        //* Location
+                        FutureBuilder<String>(
+                          future:
+                              getTableIndex(int.parse(dropdownvalue)),
+                          builder: (context, snapshot) => Center(
+                            child: Text(
+                              'Location: ${snapshot.hasData ? snapshot.data! : 'Loading...'}',
+                              style: greenTextStyle.copyWith(
+                                fontWeight: semiBold,
+                                fontSize: 15,
                               ),
                             ),
-                          ),
-                        ),
-                        
-                        const SizedBox(height: 20),
-                        //* Location
-                        Center(
-                          child: Text(
-                            'Location: Indoor',
-                            style: greenTextStyle.copyWith(
-                              fontWeight: medium,
-                              fontSize: 15,
-                            )
                           ),
                         ),
                       ],
