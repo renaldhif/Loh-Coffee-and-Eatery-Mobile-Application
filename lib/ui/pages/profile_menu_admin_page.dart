@@ -351,6 +351,51 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                 ),
               ),
 
+              // Add Table
+              Container(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                height: 50,
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  border: Border.all(
+                    color: backgroundColor,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.table_restaurant,
+                          size: 26,
+                          color: primaryColor,
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          "Add Table",
+                          style: greenTextStyle.copyWith(
+                            fontSize: 17,
+                            fontWeight: bold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/addtable');
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward,
+                        color: primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               const SizedBox(height: 25),
               // Sign Out Button
               signOutButton(),

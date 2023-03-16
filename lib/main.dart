@@ -12,11 +12,13 @@ import 'package:loh_coffee_eatery/ui/pages/update_profile_page.dart';
 import 'cubit/auth_cubit.dart';
 import 'cubit/menu_cubit.dart';
 import 'cubit/review_cubit.dart';
+import 'cubit/table_cubit.dart';
 import 'firebase_options.dart';
 import '/ui/pages/add_menu_admin.dart';
 import '/ui/pages/home_page_admin.dart';
 import '/ui/pages/landing_page.dart';
 import 'ui/pages/add_review_page.dart';
+import 'ui/pages/add_table_admin.dart';
 import 'ui/pages/cashier_page.dart';
 import 'ui/pages/forgotpass_page.dart';
 import 'ui/pages/home_page.dart';
@@ -56,6 +58,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => MenuCubit()),
         BlocProvider(create: (context) => ReviewCubit()),
+        BlocProvider(create: (context) => TableCubit()),
       ],
       child: MaterialApp(
         // home: SplashScreen(),
@@ -95,7 +98,7 @@ class MyApp extends StatelessWidget {
           '/profile-admin' : (context) => const ProfileMenuAdminPage(),
           '/addmenu': (context) => const AddMenuPageAdmin(),
           '/orderlist-admin':(context) => const OrderListAdminPage(),
-
+          '/addtable' : (context) => const AddTablePageAdmin(),
           '/updatemenu': (context) => UpdateMenuPageAdmin(),
           '/reviews': (context) => const ReviewPageAdmin(),
         },
