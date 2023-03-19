@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:loh_coffee_eatery/shared/theme.dart';
 import 'package:loh_coffee_eatery/ui/pages/payment_page.dart';
 import '../../cubit/menu_cubit.dart';
+import '../../cubit/payment_cubit.dart';
 import '../../models/menu_model.dart';
 import '../widgets/custom_button.dart';
 
@@ -63,6 +64,9 @@ class _CartPageState extends State<CartPage> {
   bool isDineIn = false;
   String dropdownvalue = '1';
   String tableLocation = '';
+  String paymentOption = 'QRIS';
+  String diningOption = 'Dine In';
+  int tableChoosen = 0;
 
   final CollectionReference<Map<String, dynamic>> productList =
       FirebaseFirestore.instance.collection('tables');
@@ -494,6 +498,15 @@ class _CartPageState extends State<CartPage> {
                         checkFirstElement: true,
                         onItemSelected: (selected) => setState(() {
                           print(selected);
+                          if(selected == 'qris'){
+                            paymentOption = 'QRIS';
+                            print('blok if payment opetion sleected: $paymentOption');
+                          } else if(selected == 'cashier'){
+                            paymentOption = 'Cashier';
+                            print('blok elseif payment opetion sleected: $paymentOption');
+                          }
+                          print('--diluar--');
+                          print('payment opetion sleected: $paymentOption');
                         }),
                       ),
                     ],
@@ -558,6 +571,14 @@ class _CartPageState extends State<CartPage> {
                           isDineIn = selected == 'takeaway' ? true : false;
                           print(selected);
                           print('isTakeAway?: ${isDineIn}');
+                          if(selected == 'dinein'){
+                            diningOption = 'Dine In';
+                            print('blok if dining opetion sleected: $diningOption');
+                          } else if(selected == 'takeaway'){
+                            diningOption = 'Takeaway';
+                            print('blok elseif dining opetion sleected: $diningOption');
+                          }
+                          print('dining opetion sleected: $diningOption');
                         }),
                       ),
                     ],
@@ -655,6 +676,7 @@ class _CartPageState extends State<CartPage> {
                                           print(
                                               'dropdownvalue ${dropdownvalue}');
                                         });
+                                        tableChoosen = newValue!;
                                       },
                                       // isExpanded: true,
                                       underline: Container(
@@ -754,15 +776,26 @@ class _CartPageState extends State<CartPage> {
                   child: CustomButton(
                     title: 'Pay Now',
                     onPressed: () {
+                      
                       if (paymentController.selectedItem == 'qris') {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                PaymentPage(totalPrice: calcTotalPrice()),
+                                PaymentPage(paymentOption: paymentOption, 
+                                diningOption: diningOption,
+                                totalPrice: calcTotalPrice()),
                           ),
                         );
-                      } else {
+                      } else if(paymentController.selectedItem == 'cashier') {
+                        context.read<PaymentCubit>().addPayment(
+                                paymentReceipt: 'none',
+                                paymentOption: paymentOption,
+                                diningOption: diningOption,
+                                totalPrice: calcTotalPrice(),
+                                status: 'Pending',
+                                paymentDateTime: Timestamp.now(),);
+                        localDBBox.clear();
                         Navigator.pushNamed(context, '/cashier');
                       }
                     },
