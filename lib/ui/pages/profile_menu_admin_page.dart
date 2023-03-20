@@ -26,19 +26,24 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
       _selectedIndex = index;
       switch (index) {
         case 0:
-          // Navigator.popAndPushNamed(context, '/home-admin');
-          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, '/home-admin');
           _selectedIndex = 0;
           break;
-        // case 2:
-        //   Navigator.pushNamed(context, '/order');
+        // case 1:
+        //   Navigator.pushNamed(context, '/addmenu');
         //   break;
-        // case 3:
-        //   Navigator.pushNamed(context, '/notification');
-        //   break;
+        case 2:
+          Navigator.pushNamed(context, '/orderlist-admin');
+          break;
+        case 3:
+          Navigator.pushNamed(context, '/payment-admin');
+          break;
         // case 4:
-        //   Navigator.pushNamed(context, '/profilemenu');
         //   break;
+        case 5:
+          Navigator.pushNamed(context, '/profile-admin');
+          // _selectedIndex = 0;
+          break;
       }
     });
   }
@@ -462,28 +467,32 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month_rounded),
-              label: 'Reserve',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_rounded),
-              label: 'Order List',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_rounded),
-              label: 'Notification',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_rounded),
+            label: 'Reserves',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.format_list_bulleted_rounded),
+            label: 'Orders',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.payments_outlined),
+            label: 'Payments',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.post_add_rounded),
+            label: 'Posts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
           selectedItemColor: primaryColor,

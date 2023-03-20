@@ -35,10 +35,12 @@ class _HomePageAdminState extends State<HomePageAdmin> {
         case 2:
           Navigator.pushNamed(context, '/orderlist-admin');
           break;
-        // case 3:
-        //   Navigator.pushNamed(context, '/reviews');
+        case 3:
+          Navigator.pushNamed(context, '/payment-admin');
+          break;
+        // case 4:
         //   break;
-        case 4:
+        case 5:
           Navigator.pushNamed(context, '/profile-admin');
           // _selectedIndex = 0;
           break;
@@ -158,15 +160,19 @@ class _HomePageAdminState extends State<HomePageAdmin> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_rounded),
-            label: 'Reserve',
+            label: 'Reserves',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.format_list_bulleted_rounded),
-            label: 'Order List',
+            label: 'Orders',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_rounded),
-            label: 'Notification',
+            icon: Icon(Icons.payments_outlined),
+            label: 'Payments',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.post_add_rounded),
+            label: 'Posts',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
