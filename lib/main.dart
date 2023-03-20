@@ -31,8 +31,10 @@ import 'ui/pages/profile_menu_page.dart';
 import 'ui/pages/request_reset.dart';
 import 'ui/pages/review_page_admin.dart';
 import 'ui/pages/signup_page.dart';
-import 'splash.dart';
+import 'ui/pages/payment_list_admin.dart';
 import 'ui/pages/update_menu_admin.dart';
+import 'ui/pages/menu_detail_page.dart';
+import 'splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +44,7 @@ void main() async {
 
   await Hive.initFlutter();
   await Hive.deleteBoxFromDisk('shopping_box');
-  //await Hive.openBox('shopping_box');
+
   Hive.registerAdapter(MenuAdapter());
   await Hive.openBox<MenuModel>('shopping_box');
 
@@ -64,22 +66,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => PaymentCubit()),
       ],
       child: MaterialApp(
-        // home: SplashScreen(),
         debugShowCheckedModeBanner: false,
-        // MenuModel menu = const MenuModel(
-        //   id: '',
-        //   title: '',
-        //   price: 0,
-        //   description: '',
-        //   tag: '',
-        //   image: '',
-        //   totalLoved: 0,
-        //   totalOrdered: 0,
-        // ),
-        // initialRoute: '/splash',
         routes: {
           //* Customer Routes
-          // '/splash': (context) => SplashScreen(),
           '/': (context) => const SplashScreen(),
           '/landing': (context) => const LandingPage(),
           '/login': (context) => const LoginPage(),
@@ -95,6 +84,7 @@ class MyApp extends StatelessWidget {
           '/payment':(context) => PaymentPage(),
           '/confirmpayment':(context) => const ConfirmPaymentPage(),
           '/orderlist':(context) => const OrderListCustomerPage(),
+          '/menudetail':(context) => MenuDetailPage(),
           
           //* Admin Routes
           '/home-admin': (context) => const HomePageAdmin(),
@@ -105,6 +95,7 @@ class MyApp extends StatelessWidget {
           '/deletetable' : (context) => const DeleteTableAdminPage(),
           '/updatemenu': (context) => UpdateMenuPageAdmin(),
           '/reviews': (context) => const ReviewPageAdmin(),
+          '/payment-admin':(context) => const PaymentListAdminPage(),
         },
       ),
     );
