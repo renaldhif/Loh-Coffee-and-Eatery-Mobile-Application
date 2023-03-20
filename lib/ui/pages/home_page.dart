@@ -63,13 +63,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     context.read<MenuCubit>().getMenus();
     super.initState();
-    //_refreshItems(); // this
   }
 
-
-
-  
-  
   Widget menuCard(List<MenuModel> menus) {
     return Container(
       margin: const EdgeInsets.symmetric(
