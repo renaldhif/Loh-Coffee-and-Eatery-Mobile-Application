@@ -16,6 +16,7 @@ class PaymentCubit extends Cubit<PaymentState> {
     required int totalPrice,
     required String status,
     required Timestamp paymentDateTime,
+    required String customerName,
   }) async {
     try {
       emit(PaymentLoading());
@@ -26,6 +27,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         totalPrice: totalPrice,
         status: status,
         paymentDateTime: paymentDateTime,
+        customerName: customerName,
       );
       emit(PaymentSuccess([payment]));
     } catch (e) {
@@ -42,4 +44,35 @@ class PaymentCubit extends Cubit<PaymentState> {
       emit(PaymentFailed(e.toString()));
     }
   }
+
+  void updatePayment({
+    required String id,
+    required String status,
+  }) async {
+    try {
+      emit(PaymentLoading());
+      await PaymentService().updatePayment(
+        id: id,
+        status: status,
+      );
+      emit(PaymentSuccess([]));
+    } catch (e) {
+      emit(PaymentFailed(e.toString()));
+    }
+  }
+
+  Future<PaymentModel> getPaymentByTimestamp({
+    required Timestamp paymentDateTime,
+  }) async {
+    try {
+      emit(PaymentLoading());
+      PaymentModel payments = await PaymentService().getPaymentByTimestamp(
+        paymentDateTime: paymentDateTime,
+      );
+      return payments;
+    } catch (e) {
+      throw e;
+    }
+  }
+
 }

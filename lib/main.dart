@@ -12,6 +12,7 @@ import 'package:loh_coffee_eatery/models/menu_model.dart';
 import 'package:loh_coffee_eatery/ui/pages/update_profile_page.dart';
 import 'cubit/auth_cubit.dart';
 import 'cubit/menu_cubit.dart';
+import 'cubit/order_cubit.dart';
 import 'cubit/payment_cubit.dart';
 import 'cubit/review_cubit.dart';
 import 'cubit/table_cubit.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ReviewCubit()),
         BlocProvider(create: (context) => TableCubit()),
         BlocProvider(create: (context) => PaymentCubit()),
+        BlocProvider(create: (context) => OrderCubit()),
       ],
       child: MaterialApp(
         // home: SplashScreen(),
