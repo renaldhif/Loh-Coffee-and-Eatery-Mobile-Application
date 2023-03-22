@@ -1,13 +1,19 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:loh_coffee_eatery/shared/theme.dart';
 import 'package:loh_coffee_eatery/ui/pages/payment_page.dart';
+import '../../cubit/auth_cubit.dart';
 import '../../cubit/menu_cubit.dart';
+import '../../cubit/order_cubit.dart';
 import '../../cubit/payment_cubit.dart';
 import '../../models/menu_model.dart';
+import '../../models/order_model.dart';
+import '../../models/payment_model.dart';
+import '../../models/user_model.dart';
 import '../widgets/custom_button.dart';
 
 class CartPage extends StatefulWidget {
@@ -66,7 +72,7 @@ class _CartPageState extends State<CartPage> {
   String tableLocation = '';
   String paymentOption = 'QRIS';
   String diningOption = 'Dine In';
-  int tableChoosen = 0;
+  int tableChoosen = 1;
 
   final CollectionReference<Map<String, dynamic>> productList =
       FirebaseFirestore.instance.collection('tables');
@@ -75,6 +81,16 @@ class _CartPageState extends State<CartPage> {
     AggregateQuerySnapshot query = await productList.count().get();
     print('The number of table: ${query.count}');
     return query.count;
+  }
+
+  //get list of menuId in localDBBox
+  List<String> getListMenuId() {
+    List<String> listMenuId = [];
+    for (int i = 0; i < localDBBox.length; i++) {
+      var cartModel = localDBBox.getAt(i) as MenuModel;
+      listMenuId.add(cartModel.id);
+    }
+    return listMenuId;
   }
 
 //get tableNum
@@ -98,6 +114,8 @@ class _CartPageState extends State<CartPage> {
     tableLocation = query.docs[index].data()['location'];
     return tableLocation;
   }
+
+
 
   //get table location based on tableNum
   Future<String> getTableLocation(int tableNum) async {
@@ -775,28 +793,69 @@ class _CartPageState extends State<CartPage> {
                   padding: const EdgeInsets.all(20),
                   child: CustomButton(
                     title: 'Pay Now',
-                    onPressed: () {
+                    onPressed: () async {
+                      
+                      if (FirebaseAuth.instance.currentUser != null) {
+                                User? user = FirebaseAuth.instance.currentUser;
+                                // Future<UserModel> userNow = context
+                                //     .read<AuthCubit>()
+                                //     .getCurrentUser(user!.uid)
+                                UserModel userNow = await context
+                                    .read<AuthCubit>()
+                                    .getCurrentUser(user!.uid);
+                                String? name = userNow.name;
                       
                       if (paymentController.selectedItem == 'qris') {
-                        Navigator.push(
-                          context,
+                        Navigator.push(context,
                           MaterialPageRoute(
                             builder: (context) =>
                                 PaymentPage(paymentOption: paymentOption, 
                                 diningOption: diningOption,
-                                totalPrice: calcTotalPrice()),
+                                totalPrice: calcTotalPrice(),
+                                tableNumber: tableChoosen),
                           ),
                         );
                       } else if(paymentController.selectedItem == 'cashier') {
+                        Timestamp now = Timestamp.now();
+                        int num = await orderLength();
                         context.read<PaymentCubit>().addPayment(
                                 paymentReceipt: 'none',
                                 paymentOption: paymentOption,
                                 diningOption: diningOption,
                                 totalPrice: calcTotalPrice(),
                                 status: 'Pending',
-                                paymentDateTime: Timestamp.now(),);
+                                paymentDateTime: now,
+                                customerName: name,);
+                          
+                          PaymentModel payment = await context.read<PaymentCubit>().getPaymentByTimestamp(
+                              paymentDateTime: now);
+                          OrderModel order1;
+                          if(isDineIn){
+                            order1 = OrderModel(
+                              number: num + 1,
+                              user: userNow,
+                              menu: localDBBox.values.toList(),
+                              tableNum: tableChoosen,
+                              payment: payment,
+                              orderStatus: 'Pending',
+                              orderDateTime: now,
+                            );}
+                          else{
+                            order1 = OrderModel(
+                              number: num + 1,
+                              user: userNow,
+                              menu: localDBBox.values.toList(),
+                              tableNum: 0,
+                              payment: payment,
+                              orderStatus: 'Pending',
+                              orderDateTime: now,
+                            );}
+
+                          context.read<OrderCubit>().createOrder(order1);
+
                         localDBBox.clear();
                         Navigator.pushNamed(context, '/cashier');
+                      }
                       }
                     },
                   ),
