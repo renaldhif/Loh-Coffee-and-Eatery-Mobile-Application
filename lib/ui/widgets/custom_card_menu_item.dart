@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -22,19 +24,37 @@ class CustomCardMenuItem extends StatefulWidget {
 }
 
 class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
+  @override
+  void initState() {
+    super.initState();
+    isLiked = widget.menu.userId.contains(getUserId());
+  }
+  
   void _addToCart() {
     _cartItems.add(widget.menu);
   }
 
+  String? getUserId() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      User? user = FirebaseAuth.instance.currentUser;
+      String userid;
+      return userid = user!.uid;
+    }
+  }
+
   //final _shoppingBox = Hive.box('shopping_box');
   Box<MenuModel> localDBBox = Hive.box<MenuModel>('shopping_box');
+  bool isLiked = false;
 
   @override
   Widget build(BuildContext context) {
+    // bool isLiked = false;
     // Menu Card
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MenuDetailPage(
+        Navigator.push(
+          context, MaterialPageRoute(
+            builder: (context) => MenuDetailPage(
           inMenu: widget.menu,
         )));
       },
@@ -61,7 +81,7 @@ class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
           color: whiteColor,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(12, 10, 0, 0),
 
           // Menu Card Content
           child: Row(
@@ -139,7 +159,7 @@ class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
                           ],
                         ),
                         const SizedBox(height: 5),
-                        // Loved 
+                        // Loved
                         Row(
                           children: [
                             const Icon(
@@ -236,10 +256,50 @@ class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
                           width: 10,
                         ),
                         // Favorite Button
-                        const Icon(
-                          Icons.favorite_border_rounded,
-                          color: primaryColor,
-                          size: 28,
+                        BlocConsumer<MenuCubit, MenuState>(
+                          listener: (context, state) {
+                            if (state is MenuSuccess) {
+                            } else if (state is MenuFailed) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(state.error),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is MenuLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: primaryColor,
+                                ),
+                              );
+                            }
+                            return IconButton(
+                              icon: isLiked
+                                  ? const Icon(
+                                      Icons.favorite,
+                                      // Icons.favorite_border_outlined,
+                                    )
+                                  : const Icon(Icons.favorite_border_outlined
+                                      // Icons.favorite
+                                      ),
+                              iconSize: 20,
+                              color: primaryColor,
+                              onPressed: () {
+                                setState(() {
+                                  print('user: ${getUserId()}');
+                                  print('isLiked before changed: $isLiked');
+                                  isLiked = !isLiked;
+                                  context.read<MenuCubit>().addLikeMenu(
+                                      widget.menu, getUserId()!);
+                                  // isLiked = !isLiked;
+                                  print('isLiked after changed: $isLiked');
+                                });
+                              },
+                            );
+                          },
                         ),
                       ],
                     ),
