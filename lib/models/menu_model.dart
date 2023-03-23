@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:loh_coffee_eatery/models/user_model.dart';
 
 class MenuModel extends Equatable {
   final String id;
@@ -10,6 +11,7 @@ class MenuModel extends Equatable {
   final int totalLoved;
   final int totalOrdered;
   final int quantity;
+  final List<String> userId;
 
   const MenuModel({
     required this.id,
@@ -20,20 +22,22 @@ class MenuModel extends Equatable {
     required this.image,
     this.totalLoved = 0,
     this.totalOrdered = 0,
-    this.quantity = 1});
+    this.quantity = 1,
+    this.userId = const [],
+  });
 
   factory MenuModel.fromJson(String id, Map<String, dynamic> json) {
     return MenuModel(
-      id: id,
-      title: json['title'],
-      description: json['description'],
-      tag: json['tag'],
-      price: json['price'],
-      image: json['image'],
-      totalLoved: json['totalLoved'],
-      totalOrdered: json['totalOrdered'],
-      quantity: json['quantity']
-    );
+        id: id,
+        title: json['title'],
+        description: json['description'],
+        tag: json['tag'],
+        price: json['price'],
+        image: json['image'],
+        totalLoved: json['totalLoved'],
+        totalOrdered: json['totalOrdered'],
+        userId: List<String>.from(json['userId']),
+        quantity: json['quantity']);
   }
 
   Map<String, dynamic> toJson() {
@@ -45,22 +49,24 @@ class MenuModel extends Equatable {
       'image': image,
       'totalLoved': totalLoved,
       'totalOrdered': totalOrdered,
-      'quantity': quantity
+      'quantity': quantity,
+      'userId' : userId,
     };
   }
 
   @override
   List<Object?> get props => [
-    id,
-    title,
-    description,
-    tag,
-    price,
-    image,
-    totalLoved,
-    totalOrdered,
-    quantity
-  ];
+        id,
+        title,
+        description,
+        tag,
+        price,
+        image,
+        totalLoved,
+        totalOrdered,
+        quantity,
+        userId
+      ];
 
   MenuModel copyWith({required int quantity}) {
     return MenuModel(
@@ -72,8 +78,8 @@ class MenuModel extends Equatable {
       image: image,
       totalLoved: totalLoved,
       totalOrdered: totalOrdered,
-      quantity: quantity
+      quantity: quantity,
+      userId: userId,
     );
   }
-
 }

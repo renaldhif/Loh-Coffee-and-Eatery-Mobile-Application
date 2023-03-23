@@ -9,27 +9,20 @@ class MenuCubit extends Cubit<MenuState> {
   MenuCubit() : super(MenuInitial());
 
   // void addMenu(MenuModel menu) async {
-    void addMenu({
-      required String title, 
-      required String description, 
-      required String tag, 
-      required int price, 
-      required String image, 
-      int totalLoved = 0, 
-      int totalOrdered = 0,
-      int quantity = 1
-    }) async {
+  void addMenu({
+    required String title,
+    required String description,
+    required String tag,
+    required int price,
+    required String image,
+    int totalLoved = 0,
+    int totalOrdered = 0,
+    int quantity = 1,
+    List<String> userId = const [],
+  }) async {
     try {
       emit(MenuLoading());
-      // MenuModel menu = await MenuService().addMenu(
-      //   title: title,
-      //   description: description,
-      //   tag: tag,
-      //   price: price,
-      //   image: image,
-      //   totalLoved: totalLoved,
-      //   totalOrdered: totalOrdered,
-      // );
+
       MenuModel menu = await MenuService().addMenu(
         title: title,
         description: description,
@@ -38,16 +31,17 @@ class MenuCubit extends Cubit<MenuState> {
         image: image,
         totalLoved: totalLoved,
         totalOrdered: totalOrdered,
-        quantity: quantity
+        quantity: quantity,
+        userId: userId,
       );
       emit(MenuSuccess([menu]));
     } catch (e) {
       emit(MenuFailed(e.toString()));
     }
-  } 
+  }
 
-  void getMenus() async{
-    try{
+  void getMenus() async {
+    try {
       emit(MenuLoading());
       List<MenuModel> menus = await MenuService().getMenus();
       emit(MenuSuccess(menus));
@@ -56,17 +50,8 @@ class MenuCubit extends Cubit<MenuState> {
     }
   }
 
-  // void getMenuById()async{
-  //   try{
-  //     emit(MenuLoading());
-  //     List<MenuModel> menus = await MenuService().getMenuById();
-  //     emit(MenuSuccess(menus));
-  //   } catch (e) {
-  //     emit(MenuFailed(e.toString()));
-  //   }
-  // }
   Future<MenuModel> getMenuById(String id) async {
-    try{
+    try {
       emit(MenuLoading());
       MenuModel menu = await MenuService().getMenuById(id);
       emit(MenuSuccess([menu]));
@@ -76,22 +61,21 @@ class MenuCubit extends Cubit<MenuState> {
       throw e;
     }
   }
-  
 
-
-  void updateMenu(MenuModel? menu, String title, String description,
-  int price, String tag, String image) async{
-    try{
+  void updateMenu(MenuModel? menu, String title, String description, int price,
+      String tag, String image) async {
+    try {
       emit(MenuLoading());
-      await MenuService().updateMenu(menu!, title, description, price, tag, image);
+      await MenuService()
+          .updateMenu(menu!, title, description, price, tag, image);
       emit(MenuSuccess([menu]));
     } catch (e) {
       emit(MenuFailed(e.toString()));
     }
   }
 
-  void deleteMenu(MenuModel? menu) async{
-    try{
+  void deleteMenu(MenuModel? menu) async {
+    try {
       emit(MenuLoading());
       await MenuService().deleteMenu(menu!);
       getMenus();
@@ -100,8 +84,8 @@ class MenuCubit extends Cubit<MenuState> {
     }
   }
 
-  void addQuantity(MenuModel? menu) async{
-    try{
+  void addQuantity(MenuModel? menu) async {
+    try {
       emit(MenuLoading());
       await MenuService().addQuantity(menu!);
       getMenus();
@@ -110,8 +94,8 @@ class MenuCubit extends Cubit<MenuState> {
     }
   }
 
-  void minusQuantity(MenuModel? menu) async{
-    try{
+  void minusQuantity(MenuModel? menu) async {
+    try {
       emit(MenuLoading());
       await MenuService().minusQuantity(menu!);
       getMenus();
@@ -120,4 +104,13 @@ class MenuCubit extends Cubit<MenuState> {
     }
   }
 
+  void addLikeMenu(MenuModel? menu, String? uid) async {
+    try {
+      emit(MenuLoading());
+      await MenuService().addLikeMenu(menu!, uid);
+      getMenus();
+    } catch (e) {
+      emit(MenuFailed(e.toString()));
+    }
+  }
 }
