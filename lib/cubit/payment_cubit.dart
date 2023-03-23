@@ -45,19 +45,20 @@ class PaymentCubit extends Cubit<PaymentState> {
     }
   }
 
-  void updatePayment({
-    required String id,
+  Future<void> changePaymentStatusByIndex({
+    required int index,
     required String status,
-  }) async {
-    try {
+  }) async{
+    try{
       emit(PaymentLoading());
-      await PaymentService().updatePayment(
-        id: id,
+      await PaymentService().changePaymentStatusByIndex(
+        index: index,
         status: status,
       );
+      print(status);
       emit(PaymentSuccess([]));
-    } catch (e) {
-      emit(PaymentFailed(e.toString()));
+    }catch(e){
+      throw e;
     }
   }
 
@@ -74,5 +75,103 @@ class PaymentCubit extends Cubit<PaymentState> {
       throw e;
     }
   }
+
+  Future<String> getCustomerNameByIndex({
+    required int index,
+  }) async{
+    try{
+      emit(PaymentLoading());
+      
+      String customerName = await PaymentService().getCustomerNameByIndex(
+        index: index,
+      );
+      return customerName.toString();
+
+
+    }catch(e){
+      throw e;
+    }
+  }
+
+  Future<Timestamp> getTimestampByIndex({
+    required int index,
+  }) async{
+    try{
+      emit(PaymentLoading());
+      
+      Timestamp paymentDateTime = await PaymentService().getTimestampByIndex(
+        index: index,
+      );
+      return paymentDateTime;
+  }
+  catch(e){
+    throw e;
+  }
+  }
+
+  Future<String> getPaymentReceiptByIndex({
+    required int index,
+  }) async{
+    try{
+      emit(PaymentLoading());
+      
+      String paymentReceipt = await PaymentService().getPaymentReceiptByIndex(
+        index: index,
+      );
+      return paymentReceipt;
+  }
+  catch(e){
+    throw e;
+  }
+  }
+
+    Future<String> getPaymentStatusByIndex({
+    required int index,
+  }) async{
+    try{
+      emit(PaymentLoading());
+      
+      String status = await PaymentService().getPaymentStatusByIndex(
+        index: index,
+      );
+      return status;
+  }
+  catch(e){
+    throw e;
+  }
+  }
+
+    Future<String> getPaymentOptionByIndex({
+    required int index,
+  }) async{
+    try{
+      emit(PaymentLoading());
+      
+      String paymentOption = await PaymentService().getPaymentOptionByIndex(
+        index: index,
+      );
+      return paymentOption;
+  }
+  catch(e){
+    throw e;
+  }
+  }
+
+
+    Future<int> getTotalPriceByIndex({
+      required int index,
+    }) async{
+      try{
+        emit(PaymentLoading());
+        
+        int totalPrice = await PaymentService().getTotalPriceByIndex(
+          index: index,
+        );
+        return totalPrice;
+    }
+      catch(e){
+        throw e;
+      }
+    }
 
 }
