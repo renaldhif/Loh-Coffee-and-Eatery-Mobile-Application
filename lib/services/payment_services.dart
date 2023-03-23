@@ -52,19 +52,24 @@ class PaymentService{
     }
   }
 
-//update status
-  Future<void> updatePayment({
-    required String id,
+//change payment status by index without using id
+  Future<void> changePaymentStatusByIndex({
+    required int index,
     required String status,
   }) async{
     try{
-      await _paymentCollection.doc(id).update({
+      final paymentRef = 
+      FirebaseFirestore.instance.collection('payments').doc(status);
+      await paymentRef.update({
         'status' : status,
       });
-    }catch(e){
+      status = status;
+    }
+    catch(e){
       throw e;
     }
   }
+
 
   //get payement model by timestamp
   Future<PaymentModel> getPaymentByTimestamp({
@@ -76,6 +81,99 @@ class PaymentService{
         return PaymentModel.fromJson(e.id, e.data() as Map<String, dynamic>);
       });
       return payments.first;
+    }catch(e){
+      throw e;
+    }
+  }
+
+  //get customerName by index
+  Future<String> getCustomerNameByIndex({
+    required int index,
+  }) async{
+    try{
+      QuerySnapshot querySnapshot = await _paymentCollection.get();
+      Iterable<PaymentModel> payments = querySnapshot.docs.map((e) {
+        return PaymentModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      });
+      return payments.elementAt(index).customerName;
+    }catch(e){
+      throw e;
+    }
+  }
+
+  //get timestamp by index
+  Future<Timestamp> getTimestampByIndex({
+    required int index,
+  }) async{
+    try{
+      QuerySnapshot querySnapshot = await _paymentCollection.get();
+      Iterable<PaymentModel> payments = querySnapshot.docs.map((e) {
+        return PaymentModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      });
+      return payments.elementAt(index).paymentDateTime;
+    }catch(e){
+      throw e;
+    }
+  }
+
+  //get paymentReceipt by index
+  Future<String> getPaymentReceiptByIndex({
+    required int index,
+  }) async{
+    try{
+      QuerySnapshot querySnapshot = await _paymentCollection.get();
+      Iterable<PaymentModel> payments = querySnapshot.docs.map((e) {
+        return PaymentModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      });
+      if(payments.elementAt(index).paymentReceipt == 'none')
+        return 'none';
+      else
+        return payments.elementAt(index).paymentReceipt;
+    }catch(e){
+      throw e;
+    }
+  }
+
+  //get paymentStatus by index
+  Future<String> getPaymentStatusByIndex({
+    required int index,
+  }) async{
+    try{
+      QuerySnapshot querySnapshot = await _paymentCollection.get();
+      Iterable<PaymentModel> payments = querySnapshot.docs.map((e) {
+        return PaymentModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      });
+      return payments.elementAt(index).status;
+    }catch(e){
+      throw e;
+    }
+  }
+
+  //get paymentOption by index
+  Future<String> getPaymentOptionByIndex({
+    required int index,
+  }) async{
+    try{
+      QuerySnapshot querySnapshot = await _paymentCollection.get();
+      Iterable<PaymentModel> payments = querySnapshot.docs.map((e) {
+        return PaymentModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      });
+      return payments.elementAt(index).paymentOption;
+    }catch(e){
+      throw e;
+    }
+  }
+
+  //get totalPrice by index
+  Future<int> getTotalPriceByIndex({
+    required int index,
+  }) async{
+    try{
+      QuerySnapshot querySnapshot = await _paymentCollection.get();
+      Iterable<PaymentModel> payments = querySnapshot.docs.map((e) {
+        return PaymentModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      });
+      return payments.elementAt(index).totalPrice;
     }catch(e){
       throw e;
     }
