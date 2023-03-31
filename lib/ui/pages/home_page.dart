@@ -18,22 +18,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //final _shoppingBox = Hive.box('shopping_box');
   Box<MenuModel> _shoppingBox = Hive.box('shopping_box');
-
-  //store _shoppingBox length in a variable
-  //int _shoppingBoxLength = Hive.box('shopping_box').length;
-  
-
 
   // Initial Selected Value
   int counter = 0;
   String dropdownvalue = 'All Menu';
+
   // List of items in our dropdown menu
   var items = [
     'All Menu',
-    'Based on your preferences',
-    'Based on most loved menu'
+    'Our recommendation',
   ];
 
   // To change the selected value of bottom navigation bar
@@ -90,45 +84,49 @@ class _HomePageState extends State<HomePage> {
               // Header
               Container(
                 margin: EdgeInsets.all(defaultRadius),
+                padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
                 width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 5),
                     Text(
-                      'Filter Menu',
+                      'Welcome to Loh Coffee! \nWhat would you like to eat?',
                       style: greenTextStyle.copyWith(
                         fontSize: 22,
                         fontWeight: black,
                       ),
+                      textAlign: TextAlign.start,
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Text(
+                          'Want to try our recommendation?',
+                          style: greenTextStyle.copyWith(
+                            fontSize: 16,
+                            fontWeight: light,
+                          ),
+                        ),
 
-                    // Dropdown Menu
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-                      child: DropdownButton(
-                        value: dropdownvalue,
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: primaryColor,
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              Navigator.pushReplacementNamed(
+                                  context, '/home-recommend');
+                            });
+                          },
+                          child: Center(
+                            child: Text(
+                              'Click here',
+                              style: orangeTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: black,
+                              ),
+                            ),
+                          ),
                         ),
-                        items: items.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownvalue = newValue!;
-                          });
-                        },
-                        isExpanded: true,
-                        underline: Container(
-                          height: 1,
-                          color: primaryColor,
-                        ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -146,6 +144,7 @@ class _HomePageState extends State<HomePage> {
                 }
               }, builder: (context, state) {
                 if (state is MenuSuccess) {
+                  print('state is menu success');
                   return menuCard(state.menus);
                 } else {
                   return const Center(
@@ -153,7 +152,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
               }),
-              const SizedBox(height: 80),
+              const SizedBox(height: 100),
             ],
           ),
         ),
@@ -181,8 +180,8 @@ class _HomePageState extends State<HomePage> {
             label: 'Order List',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_rounded),
-            label: 'Notification',
+            icon: Icon(Icons.local_post_office_sharp),
+            label: 'Promo',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

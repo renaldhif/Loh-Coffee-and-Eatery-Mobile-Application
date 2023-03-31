@@ -11,6 +11,8 @@ class MenuInitial extends MenuState {}
 
 class MenuLoading extends MenuState {}
 
+class MenuLoadingRecommendation extends MenuState {}
+
 class MenuSuccess extends MenuState {
   final List<MenuModel> menus;
 
@@ -19,6 +21,16 @@ class MenuSuccess extends MenuState {
   @override
   List<Object> get props => [menus];
 }
+
+class MenuSuccessRecomendation extends MenuState{
+  final List<MenuModel> menuRecommend;
+
+  MenuSuccessRecomendation(this.menuRecommend);
+
+  @override
+  List<Object> get props => [menuRecommend];
+}
+
 
 class MenuFailed extends MenuState {
   final String error;

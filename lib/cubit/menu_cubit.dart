@@ -50,6 +50,29 @@ class MenuCubit extends Cubit<MenuState> {
     }
   }
 
+  Future<void> getRecommendedMenus(String uid) async {
+    print('getRecommendedMenus() executed');
+    try {
+      emit(MenuLoadingRecommendation());
+      List<MenuModel> menuRecommend = await MenuService().getRecommendedMenus(uid);
+      emit(MenuSuccessRecomendation(menuRecommend));
+    } catch (e) {
+      emit(MenuFailed(e.toString()));
+      throw (e);
+    }
+  }
+
+  // Future<void> getTop3MenusBasedOnTotalLovedAndOrdered() async{
+  //   try {
+  //     emit(MenuLoadingRecommendation());
+  //     bool menuTop3 = await MenuService().getTop3MenusBasedOnTotalLovedAndOrdered().then((value) => true);
+  //     emit(MenuLoadingRecommendation());
+  //   } catch (e) {
+  //     emit(MenuFailed(e.toString()));
+  //     throw (e);
+  //   }
+  // }
+
   Future<MenuModel> getMenuById(String id) async {
     try {
       emit(MenuLoading());
