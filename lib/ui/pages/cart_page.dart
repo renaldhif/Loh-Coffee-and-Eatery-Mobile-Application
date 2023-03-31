@@ -829,9 +829,18 @@ class _CartPageState extends State<CartPage> {
                           
                           PaymentModel payment = await context.read<PaymentCubit>().getPaymentByTimestamp(
                               paymentDateTime: now);
-                          OrderModel order1;
+                          // OrderModel order1;
                           if(isDineIn){
-                            order1 = OrderModel(
+                            // order1 = OrderModel(
+                            //   number: num + 1,
+                            //   user: userNow,
+                            //   menu: localDBBox.values.toList(),
+                            //   tableNum: tableChoosen,
+                            //   payment: payment,
+                            //   orderStatus: 'Pending',
+                            //   orderDateTime: now,
+                            // );}
+                            context.read<OrderCubit>().createOrder(
                               number: num + 1,
                               user: userNow,
                               menu: localDBBox.values.toList(),
@@ -839,9 +848,11 @@ class _CartPageState extends State<CartPage> {
                               payment: payment,
                               orderStatus: 'Pending',
                               orderDateTime: now,
-                            );}
+                            );
+                            }
+
                           else{
-                            order1 = OrderModel(
+                            context.read<OrderCubit>().createOrder(
                               number: num + 1,
                               user: userNow,
                               menu: localDBBox.values.toList(),
@@ -849,13 +860,13 @@ class _CartPageState extends State<CartPage> {
                               payment: payment,
                               orderStatus: 'Pending',
                               orderDateTime: now,
-                            );}
-
-                          context.read<OrderCubit>().createOrder(order1);
+                            );
+                          }
 
                         localDBBox.clear();
                         Navigator.pushNamed(context, '/cashier');
-                      }
+                          }
+                      
                       }
                     },
                   ),

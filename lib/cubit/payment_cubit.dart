@@ -174,4 +174,20 @@ class PaymentCubit extends Cubit<PaymentState> {
       }
     }
 
+  Future<PaymentModel> getPaymentByIndex({
+    required int index,
+  }) async{
+    try{
+      emit(PaymentLoading());
+      
+      PaymentModel payment = await PaymentService().getPaymentByIndex(
+        index: index,
+      );
+      return payment;
+  }
+  catch(e){
+    throw e;
+  }
+  }
+
 }

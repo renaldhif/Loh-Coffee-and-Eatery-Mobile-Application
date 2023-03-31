@@ -264,30 +264,36 @@ class _PaymentPageState extends State<PaymentPage> {
                             PaymentModel payment = await context.read<PaymentCubit>().getPaymentByTimestamp(
                               paymentDateTime: now);
                             
-                            PaymentModel payment1 = PaymentModel(
-                              paymentReceipt: _imageController.text,
-                              paymentOption: widget.paymentOption!,
-                              diningOption: widget.diningOption!,
-                              totalPrice: widget.totalPrice!,
-                              status: 'Pending',
-                              paymentDateTime: now,
-                              customerName: name,
-                            );
+                            // PaymentModel payment1 = PaymentModel(
+                            //   paymentReceipt: _imageController.text,
+                            //   paymentOption: widget.paymentOption!,
+                            //   diningOption: widget.diningOption!,
+                            //   totalPrice: widget.totalPrice!,
+                            //   status: 'Pending',
+                            //   paymentDateTime: now,
+                            //   customerName: name,
+                            // );
                             
-                            OrderModel order1 = OrderModel(
+                            // OrderModel order1 = OrderModel(
+                            //   number: num + 1,
+                            //   user: userNow,
+                            //   menu: localDBBox.values.toList(),
+                            //   tableNum: widget.tableNumber!,
+                            //   payment: payment, 
+                            //   orderStatus: 'Pending',
+                            //   orderDateTime: now,
+                            // );
+
+                            
+
+                            context.read<OrderCubit>().createOrder(
                               number: num + 1,
                               user: userNow,
                               menu: localDBBox.values.toList(),
                               tableNum: widget.tableNumber!,
                               payment: payment,
                               orderStatus: 'Pending',
-                              orderDateTime: now,
-                            );
-
-                            
-
-                            context.read<OrderCubit>().createOrder(
-                              order1,
+                              orderDateTime: now
                             );
                             localDBBox.clear();
                             ScaffoldMessenger.of(context).showSnackBar(
