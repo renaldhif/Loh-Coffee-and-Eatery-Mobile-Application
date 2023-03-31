@@ -1,44 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:intl/intl.dart';
-import 'package:loh_coffee_eatery/cubit/order_cubit.dart';
-import 'package:loh_coffee_eatery/cubit/payment_state.dart';
-import 'package:loh_coffee_eatery/models/payment_model.dart';
+import 'package:loh_coffee_eatery/cubit/auth_cubit.dart';
+import 'package:loh_coffee_eatery/models/order_model.dart';
 import 'package:loh_coffee_eatery/models/review_model.dart';
-import 'package:loh_coffee_eatery/ui/pages/order_details_page.dart';
-import 'package:loh_coffee_eatery/ui/widgets/custom_button.dart';
-import 'package:loh_coffee_eatery/ui/widgets/custom_button_white.dart';
+import 'package:loh_coffee_eatery/models/user_model.dart';
+import 'package:loh_coffee_eatery/ui/widgets/custom_rating_card.dart';
+import '../../cubit/order_cubit.dart';
+import '../../cubit/payment_cubit.dart';
 import '../../cubit/review_cubit.dart';
 import '../../models/menu_model.dart';
+import '../../models/payment_model.dart';
 import '../../shared/theme.dart';
+import '../widgets/custom_button.dart';
 import '../widgets/custom_button_red.dart';
-import '../../cubit/payment_cubit.dart';
 
-class OrderListAdminPage extends StatefulWidget {
-  const OrderListAdminPage({super.key});
+class OrderDetailsCustomerPage extends StatefulWidget {
+  int? orderNumber;
+  OrderDetailsCustomerPage({super.key, this.orderNumber});
 
   @override
-  State<OrderListAdminPage> createState() => _OrderListAdminPageState();
+  State<OrderDetailsCustomerPage> createState() => _OrderDetailsCustomerPageState();
 }
 
-class _OrderListAdminPageState extends State<OrderListAdminPage> {
+class _OrderDetailsCustomerPageState extends State<OrderDetailsCustomerPage> {
   @override
   void initState() {
-    context.read<OrderCubit>().getOrders();
     super.initState();
   }
 
-  String orderStatus = 'Pending';
-  String diningOption = 'Dine In';
-  String paymentStatus = 'Confirmed';
-  bool isOpen = false;
-  bool isConfirm = false;
-
-
   final CollectionReference<Map<String, dynamic>> orderList =
-      FirebaseFirestore.instance.collection('orders');
+    FirebaseFirestore.instance.collection('orders');
 
   final CollectionReference<Map<String, dynamic>> paymentList =
       FirebaseFirestore.instance.collection('payments');
@@ -49,15 +43,54 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
   final CollectionReference<Map<String, dynamic>> userList =
       FirebaseFirestore.instance.collection('users');
 
+  
+  List<OrderModel> orderModelList = [];
+  List<MenuModel> listMenu = [];
 
-  //get order length
-  Future<int> orderLength() async {
-    AggregateQuerySnapshot query = await orderList.count().get();
-    print('The number of order: ${query.count}');
-    return query.count;
+
+Future<String> getCurrentUserEmail() async {
+  if (FirebaseAuth.instance.currentUser != null) {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    UserModel userNow = await context
+        .read<AuthCubit>()
+        .getCurrentUser(user!.uid);
+    String? email = userNow.email;
+    print('Current User Email: $email');
+    return email.toString();
+  } else {
+    throw Exception('User is not logged in');
+  }
+}
+
+//get order model by id without using cubit
+Future<OrderModel> getOrderModelById(String orderID) async {
+  DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await orderList.doc(orderID).get();
+  OrderModel orderModel = OrderModel.fromJson(documentSnapshot.id, documentSnapshot.data() as Map<String, dynamic>);
+  return orderModel;
+}
+
+
+  //
+  void addOrderModelToList() async {
+    String email = await getCurrentUserEmail();
+    List<String> orderIDList =
+      await context.read<OrderCubit>().getOrderIdListByUserEmail(email);
+    
+    for(int i = 0; i < orderIDList.length; i++){
+      OrderModel orderModel = await getOrderModelById(orderIDList[i]);
+      orderModelList.add(orderModel);
+      }
+    
   }
 
-  //get order id by order number
+  Future<int> getOrderModelListLength() async {
+    return orderModelList.length;
+  }
+
+  //------------------
+
+    //get order id by order number
   Future<String> getOrderIdByOrderNumber(int orderNumber) async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await orderList
         .where('number', isEqualTo: orderNumber)
@@ -108,8 +141,8 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     Timestamp timestamp = await getOrderTimestampByOrderNumber(orderNumber);
     PaymentModel payment = await getPaymentByTimestamp(timestamp);
     String customerName = payment.customerName;
-    print('Customer Name ini: $customerName');
-    print('Order ID: $orderId');
+    // print('Customer Name ini: $customerName');
+    // print('Order ID: $orderId');
     return customerName;
   }
 
@@ -119,7 +152,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await orderList.doc(orderId).get();
     int tableNumber = documentSnapshot.data()!['tableNum'];
-    print('Table Number: $tableNumber');
+    // print('Table Number: $tableNumber');
     return tableNumber;
   }
 
@@ -129,7 +162,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await orderList.doc(orderId).get();
     String orderStatus = documentSnapshot.data()!['orderStatus'];
-    print('Order Status: $orderStatus');
+    // print('Order Status: $orderStatus');
     return orderStatus;
   }
 
@@ -140,7 +173,6 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
         await orderList.doc(orderId).get();
     List<dynamic> menuListHere = documentSnapshot.data()!['menu'];
     List<String> menuIdList = [];
-
 
     for (int i = 0; i < menuListHere.length; i++) {
       String menuTitle = menuListHere[i]['title'];
@@ -156,7 +188,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
         throw Exception("No menu found with title $menuTitle");
       }
     }
-    print('Menu ID List: $menuIdList');
+    // print('Menu ID List: $menuIdList');
     return menuIdList;
   }
 
@@ -182,8 +214,9 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
         quantity: data['quantity'],
       );
       menuModelList.add(menuModel);
+      listMenu.add(menuModel);
     }
-    print('Menu Model List: $menuModelList');
+    // print('Menu Model List: $menuModelList');
     return menuModelList;
   }
 
@@ -200,18 +233,84 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
           .get();
     if (querySnapshot.docs.isNotEmpty) {
       String userId = querySnapshot.docs.first.id;
-      print('User ID: $userId');
+      // print('User ID: $userId');
       return userId;
     } else {
       throw Exception("No user found with name $userEmail");
     }
   }
 
+  //get dining option by paymentmodel
+  Future<String> getDiningOptionByPaymentModel(PaymentModel payment) async {
+    String diningOption = payment.diningOption;
+    // print('Dining Option: $diningOption');
+    return diningOption;
+  }
 
-  //method to get orders by lopping through orderList length and call orderHeader
-  Widget getOrders() {
+  //get total price by paymentmodel
+  Future<int> getTotalPriceByPaymentModel(PaymentModel payment) async {
+    int totalPrice = payment.totalPrice;
+    // print('Total Price: $totalPrice');
+    return totalPrice;
+  }
+
+  //get payment status by paymentmodel
+    Future<String> getPaymentStatusByPaymentModel(PaymentModel payment) async {
+    String status = payment.status;
+    // print('Total Price: $totalPrice');
+    return status;
+  }
+
+  Future<int> listMenuLength() async {
+    return listMenu.length;
+  }
+
+  //get list of menuModel in orderList by orderNumber
+  Future<List<MenuModel>> getMenuList2(int orderNumber) async {
+    String orderId = await getOrderIdByOrderNumber(orderNumber);
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await orderList.doc(orderId).get();
+    List<MenuModel> menu = documentSnapshot.data()!['menu'];
+    return menu;
+  }
+
+  //get menu quantity by index
+  Future<int> getMenuQuantityByOrderNumber(int orderNumber, int index) async {
+    String orderId = await getOrderIdByOrderNumber(orderNumber);
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await orderList.doc(orderId).get();
+    List<dynamic> menuListHere = documentSnapshot.data()!['menu'];
+    int menuQuantity = menuListHere[index]['quantity'];
+
+    return menuQuantity;
+  }
+
+    Future<int> getMenuPriceByOrderNumber(int orderNumber, int index) async {
+    String orderId = await getOrderIdByOrderNumber(orderNumber);
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await orderList.doc(orderId).get();
+    List<dynamic> menuListHere = documentSnapshot.data()!['menu'];
+    int menuPrice = menuListHere[index]['price'];
+
+    return menuPrice;
+  }
+
+    Future<String> getMenuImageByOrderNumber(int orderNumber, int index) async {
+    String orderId = await getOrderIdByOrderNumber(orderNumber);
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await orderList.doc(orderId).get();
+    List<dynamic> menuListHere = documentSnapshot.data()!['menu'];
+    String menuImage = menuListHere[index]['image'];
+
+    return menuImage;
+  }
+
+  
+
+  //method to get menus by lopping through listMenu length and call orderContent
+  Widget getMenus() {
     return FutureBuilder<int>(
-      future: orderLength(),
+      future: listMenuLength(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           //call paymentHeader without using ListView.builder
@@ -219,34 +318,16 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
             children: [
               for (int i = 0; i < snapshot.data!; i++)
                 FutureBuilder<Widget>(
-                  future: orderHeader(i),
+                  future: orderContent(i),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Container(
                         width: 0.8 * MediaQuery.of(context).size.width,
                         margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 1,
-                              offset: const Offset(0, 1),
-                            ),
-                          ],
-                        ),
                         child: Center(
                           child: Column(
                             children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
                               snapshot.data!,
-                              const SizedBox(
-                                height: 10,
-                              ),
                             ],
                           ),
                         )
@@ -269,88 +350,140 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
       },
     );
   }
+  
 
+  bool isConfirm = false;
+  String diningOption = 'Dine In';
+  String paymentStatus = 'Payment confirmed';
+  String orderStatus = 'Order confirmed';
 
-  Future<Widget> orderHeader(int orderNumber) async {
-    Timestamp orderTime = await getOrderTimestampByOrderNumber(orderNumber + 1);
+  Future<Widget> orderContent(int index) async {
+    String name = listMenu[index].title;
+    int qty = await getMenuQuantityByOrderNumber(widget.orderNumber!, index);
+    Timestamp orderTime = await getOrderTimestampByOrderNumber(widget.orderNumber!);
     PaymentModel payment = await getPaymentByTimestamp(orderTime);
-    String time = await formatTime(payment);
-    // String customerName = await getCustomerNameByOrderNumber(orderNumber + 1);
-    return GestureDetector(
-      
-      onTap: () async {
-        // String name = await getCustomerNameByIndex(orderNumber);
-        // print('Customer Name: $name');
-        getCustomerNameByOrderNumber(orderNumber + 1);
-        getTableNumberByOrderNumber(orderNumber + 1);
-        getOrderStatusByOrderNumber(orderNumber + 1);
-        getMenuIdByOrderNumber(orderNumber + 1);
-        getMenuByOrderNumber(orderNumber + 1);
-        getUserIdByOrderNumber(orderNumber + 1);
-        
-       
-        
-        setState(() {
-          // Navigator.pushNamed(context, '/order-details');
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    OrderDetailsPage(orderNumber: orderNumber + 1)));
-          
-        });
-      },
-      child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Order No: ${orderNumber + 1}',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                softWrap: false,
-                style: greenTextStyle.copyWith(
-                  fontSize: 14,
-                  fontWeight: black,
+    String orderNumber = widget.orderNumber.toString();
+    List<MenuModel> menuList2 = await getMenuByOrderNumber(widget.orderNumber!);
+    int price = await getMenuPriceByOrderNumber(widget.orderNumber!, index);
+    String image = await getMenuImageByOrderNumber(widget.orderNumber!, index);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Container(
+              height: 0.2 * MediaQuery.of(context).size.width,
+              width: 0.2 * MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(defaultRadius),
+                border: Border.all(
+                  color: Colors.grey.withOpacity(0.3),
+                  width: 1,
                 ),
               ),
-    
-              const SizedBox(height: 5),
-    
-              //* Order Date
-              Text(
-                'Order Date: ${time}',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                softWrap: false,
-                style: mainTextStyle.copyWith(
-                  fontSize: 14,
-                  fontWeight: black,
+              child: AspectRatio(
+                aspectRatio: 1 / 1,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(defaultRadius),
+                  //! Change to Image.network
+                  child: Image.network(
+                    image,
+                    width: 0.2 * MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Menu Name
+                Text(
+                  //getOrderName(),
+                  // iName,
+                  name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: greenTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: black,
+                  ),
+                ),
+                const SizedBox(height: 5),
+
+                // Menu Price
+                Row(
+                  children: [
+                    Text(
+                      'Rp',
+                      style: orangeTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: extraBold,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      // iPrice.toString(),
+                      price.toString(),
+                      style: orangeTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: extraBold,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 5),
+
+                // Quantity
+                Text(
+                  'Qty: 1',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: greenTextStyle.copyWith(
+                    fontSize: 14,
+                    fontWeight: medium,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
+      ],
     );
   }
 
-  Widget orderContent(){
+  Future<Widget> orderDetailCard() async {
+    String orderNumber = widget.orderNumber.toString();
+    String customerName = await getCustomerNameByOrderNumber(widget.orderNumber!);
+    Timestamp orderTime = await getOrderTimestampByOrderNumber(widget.orderNumber!);
+    PaymentModel payment = await getPaymentByTimestamp(orderTime);
+    String diningOption = await getDiningOptionByPaymentModel(payment);
+    int tableNumber = await getTableNumberByOrderNumber(widget.orderNumber!);
+    int totalPrice = await getTotalPriceByPaymentModel(payment);
+    String orderStatus = await getOrderStatusByOrderNumber(widget.orderNumber!);
+    String paymentStatus = await getPaymentStatusByPaymentModel(payment);
+    List<MenuModel> menuList2 = await getMenuByOrderNumber(widget.orderNumber!);
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+
       // spacer line
         const SizedBox(height: 5),
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
-
         const SizedBox(height: 10),
-        //* Customer Name
+
         Text(
-          'Customer Name: \${Customer Name}',
+          'Order Number: $orderNumber',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -359,12 +492,36 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
             fontWeight: medium,
           ),
         ),
+
+        // spacer line
+        const SizedBox(height: 15),
+        Container(
+          width: 0.8 * MediaQuery.of(context).size.width,
+          height: 5,
+          color: kUnavailableColor,
+        ),
         const SizedBox(height: 10),
+
+
+
+        //* Customer Name
+        Text(
+          'Customer Name: $customerName',
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          softWrap: false,
+          style: greenTextStyle.copyWith(
+            fontSize: 16,
+            fontWeight: medium,
+          ),
+        ),
+        
+        const SizedBox(height: 10),
+
         // spacer line
         const SizedBox(height: 5),
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
@@ -372,7 +529,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
 
         //* Order Details
         Text(
-          'Dining Option: \${Dine In/Takeaway}',
+          'Dining Option: $diningOption',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -387,7 +544,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
           visible:
               diningOption == 'Dine In' ? true : false,
           child: Text(
-            'Table Number: \${1}',
+            'Table Number: $tableNumber',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             softWrap: false,
@@ -395,6 +552,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
               fontSize: 16,
               fontWeight: medium,
             ),
+
           ),
         ),
         const SizedBox(height: 5),
@@ -408,7 +566,9 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
           color: kUnavailableColor,
         ),
         //* Order Content
-        orderContent(),
+        getMenus(),
+        // orderContent(),
+
         // spacer line
         Container(
           width:
@@ -431,6 +591,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
         ),
         const SizedBox(height: 5),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Rp',
@@ -442,7 +603,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
             const SizedBox(width: 5),
             Text(
               // iPrice.toString(),
-              '69420',
+              totalPrice.toString(),
               style: orangeTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: extraBold,
@@ -474,7 +635,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
         ),
         const SizedBox(height: 5),
         Text(
-          paymentStatus,
+          '$paymentStatus',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -498,7 +659,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
         ),
         const SizedBox(height: 5),
         Text(
-          orderStatus,
+          '$orderStatus',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -521,102 +682,13 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
           height: 5,
           color: kUnavailableColor,
         ),
-
         const SizedBox(height: 15),
-        //* Confirm order button
-        Visibility(
-          visible: !isConfirm &&
-              paymentStatus == 'Payment confirmed',
-          child: CustomButton(
-              title: 'Confirm order',
-              onPressed: () {
-                setState(() {
-                  print('confirm button');
-                  print('isConfirm then: ${isConfirm}');
-                  print(
-                      'pay status then: ${orderStatus}');
-                  isConfirm = true;
-                  orderStatus = 'Order confirmed';
-                  print('isConfirm now: ${isConfirm}');
-                  print(
-                      'pay status now: ${orderStatus}');
-                });
-              }),
-        ),
-        const SizedBox(height: 15),
-
-        //* Reject order button
-        Visibility(
-          visible: !isConfirm &&
-              paymentStatus == 'Payment confirmed',
-          child: CustomButtonRed(
-            title: 'Reject order',
-            onPressed: () {
-              setState(() {
-                print('reject button');
-                print('isConfirm then: ${isConfirm}');
-                print(
-                    'pay status then: ${orderStatus}');
-                isConfirm = true;
-                orderStatus = 'Order rejected';
-                print('isConfirm now: ${isConfirm}');
-                print('pay status now: ${orderStatus}');
-              });
-            },
-          ),
-        ),
-        // order status
-        const SizedBox(height: 15),
-      ],
-    );
-  }
-
-  Widget orderContents() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 10),
-        //* Order Name
-        Text(
-          'Makanan 1',
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          softWrap: false,
-          style: greenTextStyle.copyWith(
-            fontSize: 16,
-            fontWeight: black,
-          ),
-        ),
-        const SizedBox(height: 5),
-
-        Text(
-          'Qty: 1',
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          softWrap: false,
-          style: greenTextStyle.copyWith(
-            fontSize: 14,
-            fontWeight: medium,
-          ),
-        ),
-        const SizedBox(height: 10),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (paymentStatus == 'Payment confirmed' && !isConfirm) {
-      orderStatus = 'Pending';
-    } else if (paymentStatus == 'Payment confirmed' && isConfirm) {
-      if (orderStatus == 'Order confirmed') {
-        orderStatus = 'Order confirmed';
-      } else if (orderStatus == 'Order rejected') {
-        orderStatus = 'Order rejected';
-      }
-    } else if (paymentStatus == 'Payment rejected') {
-      orderStatus = 'Order rejected';
-    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -642,44 +714,33 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12),
-                          child: Text(
-                            'Customer Order Lists',
-                            style: greenTextStyle.copyWith(
-                              fontSize: 26,
-                              fontWeight: bold,
-                            ),
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Text(
+                        'Your Order🍽',
+                        style: greenTextStyle.copyWith(
+                          fontSize: 28,
+                          fontWeight: bold,
                         ),
-
-                        //* REFRESH BUTTON
-                        AnimatedIconButton(
-                          size: 26,
-                          onPressed: () {
-                            setState(() {});
-                          },
-                          duration: const Duration(seconds: 1),
-                          splashColor: Colors.transparent,
-                          icons: const <AnimatedIconItem>[
-                            AnimatedIconItem(
-                              icon: Icon(Icons.refresh, color: primaryColor),
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
                     const SizedBox(height: 10),
                   ],
                 ),
               ), // Header End
-              
-              //* Order Header
-              getOrders(),
-              
+              //* Order Cards
+             FutureBuilder<Widget>(
+                future: orderDetailCard(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return snapshot.data as Widget;
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  // Handle other cases
+                  return Container();
+                },
+              ),
             ],
           ),
         ),
