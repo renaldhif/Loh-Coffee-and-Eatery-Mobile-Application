@@ -57,6 +57,8 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     return query.count;
   }
 
+  
+
   //get order id by order number
   Future<String> getOrderIdByOrderNumber(int orderNumber) async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await orderList
@@ -275,6 +277,15 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     Timestamp orderTime = await getOrderTimestampByOrderNumber(orderNumber + 1);
     PaymentModel payment = await getPaymentByTimestamp(orderTime);
     String time = await formatTime(payment);
+
+    String orderStatus = await getOrderStatusByOrderNumber(orderNumber + 1);
+    if(orderStatus == 'Pending'){
+      isConfirm = false;
+    }
+    else{
+      isConfirm = true;
+    }
+
     // String customerName = await getCustomerNameByOrderNumber(orderNumber + 1);
     return GestureDetector(
       
@@ -502,7 +513,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
-          style: orderStatus == 'Order confirmed'
+          style: orderStatus == 'Confirmed'
               ? greenTextStyle.copyWith(
                   fontSize: 14,
                   fontWeight: medium,
@@ -526,7 +537,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
         //* Confirm order button
         Visibility(
           visible: !isConfirm &&
-              paymentStatus == 'Payment confirmed',
+              paymentStatus == 'Confirmed',
           child: CustomButton(
               title: 'Confirm order',
               onPressed: () {
@@ -536,7 +547,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                   print(
                       'pay status then: ${orderStatus}');
                   isConfirm = true;
-                  orderStatus = 'Order confirmed';
+                  orderStatus = 'Confirmed';
                   print('isConfirm now: ${isConfirm}');
                   print(
                       'pay status now: ${orderStatus}');
@@ -548,7 +559,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
         //* Reject order button
         Visibility(
           visible: !isConfirm &&
-              paymentStatus == 'Payment confirmed',
+              paymentStatus == 'Confirmed',
           child: CustomButtonRed(
             title: 'Reject order',
             onPressed: () {
@@ -558,7 +569,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                 print(
                     'pay status then: ${orderStatus}');
                 isConfirm = true;
-                orderStatus = 'Order rejected';
+                orderStatus = 'Rejected';
                 print('isConfirm now: ${isConfirm}');
                 print('pay status now: ${orderStatus}');
               });
@@ -606,16 +617,16 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (paymentStatus == 'Payment confirmed' && !isConfirm) {
+    if (paymentStatus == 'Confirmed' && !isConfirm) {
       orderStatus = 'Pending';
-    } else if (paymentStatus == 'Payment confirmed' && isConfirm) {
-      if (orderStatus == 'Order confirmed') {
-        orderStatus = 'Order confirmed';
-      } else if (orderStatus == 'Order rejected') {
-        orderStatus = 'Order rejected';
+    } else if (paymentStatus == 'Confirmed' && isConfirm) {
+      if (orderStatus == 'Confirmed') {
+        orderStatus = 'Confirmed';
+      } else if (orderStatus == 'Rejected') {
+        orderStatus = 'Rejected';
       }
-    } else if (paymentStatus == 'Payment rejected') {
-      orderStatus = 'Order rejected';
+    } else if (paymentStatus == 'Rejected') {
+      orderStatus = 'Rejected';
     }
     return Scaffold(
       body: SingleChildScrollView(

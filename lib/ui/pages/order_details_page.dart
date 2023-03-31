@@ -308,6 +308,16 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     String orderStatus = await getOrderStatusByOrderNumber(widget.orderNumber!);
     String paymentStatus = await getPaymentStatusByPaymentModel(payment);
     List<MenuModel> menuList2 = await getMenuByOrderNumber(widget.orderNumber!);
+
+
+    if(orderStatus == 'Pending'){
+      isConfirm = false;
+    }
+    else{
+      isConfirm = true;
+    }
+
+
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -501,7 +511,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
-          style: orderStatus == 'Order confirmed'
+          style: orderStatus == 'Confirmed'
               ? greenTextStyle.copyWith(
                   fontSize: 14,
                   fontWeight: medium,
@@ -548,7 +558,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                     );
                   setState(() {
                     isConfirm = true;
-                    orderStatus = 'Order confirmed';
+                    orderStatus = 'Confirmed';
 
                     Navigator.pushReplacementNamed(
                         context, '/home-admin');
@@ -573,7 +583,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                     );
                 setState(() {
                   isConfirm = true;
-                  orderStatus = 'Order rejected';
+                  orderStatus = 'Rejected';
                   Navigator.pushReplacementNamed(
                         context, '/home-admin');
                 });
