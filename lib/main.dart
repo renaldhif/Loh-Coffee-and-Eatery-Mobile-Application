@@ -6,6 +6,7 @@ import 'package:loh_coffee_eatery/models/menu_adapter.dart';
 import 'package:loh_coffee_eatery/ui/pages/cart_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/confirm_payment_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/delete_table_admin_page.dart';
+import 'package:loh_coffee_eatery/ui/pages/home_page_recommend.dart';
 import 'package:loh_coffee_eatery/ui/pages/payment_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/profile_menu_admin_page.dart';
 import 'package:loh_coffee_eatery/models/menu_model.dart';
@@ -29,6 +30,7 @@ import 'ui/pages/login_page.dart';
 import 'ui/pages/order_list_admin_page.dart';
 import 'ui/pages/order_list_customer_page.dart';
 import 'ui/pages/profile_menu_page.dart';
+import 'ui/pages/customer_preferences.dart';
 import 'ui/pages/request_reset.dart';
 import 'ui/pages/review_page_admin.dart';
 import 'ui/pages/signup_page.dart';
@@ -78,7 +80,9 @@ class MyApp extends StatelessWidget {
           '/forgotpassword': (context) => const ForgotPasswordPage(),
           '/requestreset': (context) => const RequestResetPage(),
           '/profilemenu': (context) => const ProfileMenuPage(),
+          '/custpreferences':(context) => const CustomerPreferencesPage(),
           '/home': (context) => const HomePage(),
+          '/home-recommend':(context) => const HomePageRecommend(),
           '/update-profile': (context) => const UpdateProfilePage(),
           '/submit-review' :(context) => const AddReviewPage(),
           '/cart': (context) => const CartPage(),
