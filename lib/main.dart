@@ -7,6 +7,9 @@ import 'package:loh_coffee_eatery/ui/pages/cart_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/confirm_payment_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/delete_table_admin_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/home_page_recommend.dart';
+import 'package:loh_coffee_eatery/ui/pages/order_details_customer_page.dart';
+import 'package:loh_coffee_eatery/ui/pages/order_details_page.dart';
+import 'package:loh_coffee_eatery/ui/pages/payment_details_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/payment_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/profile_menu_admin_page.dart';
 import 'package:loh_coffee_eatery/models/menu_model.dart';
@@ -90,6 +93,7 @@ class MyApp extends StatelessWidget {
           '/payment':(context) => PaymentPage(),
           '/confirmpayment':(context) => const ConfirmPaymentPage(),
           '/orderlist':(context) => const OrderListCustomerPage(),
+          '/orderdetails-customer':(context) => OrderDetailsCustomerPage(),
           '/menudetail':(context) => MenuDetailPage(),
           
           //* Admin Routes
@@ -99,6 +103,8 @@ class MyApp extends StatelessWidget {
           '/orderlist-admin':(context) => const OrderListAdminPage(),
           '/addtable' : (context) => const AddTablePageAdmin(),
           '/deletetable' : (context) => const DeleteTableAdminPage(),
+          '/order-details':(context) => OrderDetailsPage(),
+          '/payment-details':(context) => PaymentDetailsPage(),
           '/updatemenu': (context) => UpdateMenuPageAdmin(),
           '/reviews': (context) => const ReviewPageAdmin(),
           '/payment-admin':(context) => const PaymentListAdminPage(),
