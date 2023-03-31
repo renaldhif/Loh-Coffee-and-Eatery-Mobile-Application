@@ -11,18 +11,25 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
-  void register(
-      {required String email,
-      required String password,
-      required String name,
-      required String dob,
-      String role = 'customer'}) async {
+  void register({
+    required String email,
+    required String password,
+    required String name,
+    required String dob,
+    String role = 'customer',
+    List<String> foodPreference = const [],
+    }) async {
     try {
       emit(AuthLoading());
 
       UserModel user = await AuthService().register(
-          email: email, password: password, name: name, dob: dob, role: role);
-
+        email: email, 
+        password: password, 
+        name: name, 
+        dob: dob, 
+        role: role,
+        foodPreference: foodPreference,
+      );
       emit(AuthSuccess(user));
     } catch (e) {
       emit(AuthFailed(e.toString()));
@@ -84,4 +91,24 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> updateFoodPreferences({required String id, required List<String> foodPreference}) async{
+    try{
+      emit(AuthLoading());
+      await UserService().updateFoodPreferences(id: id, foodPreference: foodPreference);
+      emit(AuthSuccessUpdate());
+      UserModel user = await UserService().getUserById(id);
+      emit(AuthSuccess(user));
+    }catch(e){
+      emit(AuthFailed(e.toString()));
+    }
+  }
+
+  Future<List<String>> getUserPreferences(String id) async{
+    try{
+      List<String> userPreferences = await UserService().getUserPreferences(id);
+      return userPreferences;
+    }catch(e){
+      throw e;
+    }
+  }
 }

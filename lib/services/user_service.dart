@@ -11,7 +11,8 @@ class UserService{
         //'password': user.password,
         'name': user.name,
         'dob': user.dob,
-        'role': user.role
+        'role': user.role,
+        'foodPreference': user.foodPreference,
       });
     }catch(e){
       throw e;
@@ -27,7 +28,8 @@ class UserService{
         //password: documentSnapshot['password'],
         name: documentSnapshot['name'],
         dob: documentSnapshot['dob'],
-        role: documentSnapshot['role']
+        role: documentSnapshot['role'],
+        foodPreference: documentSnapshot['foodPreference'].cast<String>(),
       );
     }catch(e){
       throw e;
@@ -68,13 +70,30 @@ class UserService{
   //     'dob': user.dob,
   //   });
   // }
-   Future<String> getUserNameFromUID(String uid) async {
+  Future<String> getUserNameFromUID(String uid) async {
 
     final snapshot = await FirebaseFirestore.instance
         .collection('users')
         .where('uid', isEqualTo: uid)
         .get();
-     return snapshot.docs.first['name'];
+    return snapshot.docs.first['name'];
 
+  }
+
+  // Get current user preferences
+  Future<List<String>> getUserPreferences(String id) async {
+    try {
+      DocumentSnapshot documentSnapshot = await _userCollection.doc(id).get();
+      return documentSnapshot['foodPreference'].cast<String>();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  //update food preferences by uid
+  Future<void> updateFoodPreferences({required String id, required List<String> foodPreference}) async{
+    await _userCollection.doc(id).update({
+      'foodPreference': foodPreference,
+    });
   }
 }

@@ -11,7 +11,9 @@ class AuthService{
     required String password, 
     required String name, 
     required String dob, 
-    String role = 'customer'}) 
+    String role = 'customer', 
+    List<String> foodPreference = const [],
+    }) 
     
     async{
     try{
@@ -26,7 +28,8 @@ class AuthService{
         //password: password, 
         name: name, 
         dob: dob,
-        role: 'customer'
+        role: 'customer',
+        foodPreference: foodPreference,
       );
       await UserService().addUser(user);
       return user;

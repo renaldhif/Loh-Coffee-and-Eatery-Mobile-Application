@@ -33,7 +33,7 @@ class CustomTextFormField extends StatelessWidget {
           const SizedBox(height: 10),
           SizedBox(
             width: double.infinity,
-            height: 50,
+            height: 60,
             // decoration: BoxDecoration(
             //   color: whiteColor,
             //   borderRadius: BorderRadius.circular(10),
@@ -43,6 +43,8 @@ class CustomTextFormField extends StatelessWidget {
             //   ),
             // ),
             child: TextFormField(
+              // minLines: 3,
+              // maxLines: 6,
               readOnly: readOnly,
               controller: controller,
               decoration: InputDecoration(

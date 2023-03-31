@@ -233,8 +233,9 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       ],
                     ),
                     IconButton(
-                      // * TODO: Navigate to edit preferences page
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/custpreferences');
+                      },
                       icon: const Icon(
                         Icons.arrow_forward,
                         color: primaryColor,
