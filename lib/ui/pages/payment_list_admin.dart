@@ -5,6 +5,7 @@ import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:loh_coffee_eatery/cubit/payment_cubit.dart';
+import 'package:loh_coffee_eatery/ui/pages/payment_details_page.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button_red.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_button_white.dart';
@@ -73,6 +74,25 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
     return paymentStatus.toString();
   }
 
+  Future<int> getTotalPriceByIndex(int index) async {
+    int totalPrice = (await context
+        .read<PaymentCubit>()
+        .getTotalPriceByIndex(index: index));
+    print('Total Price: $totalPrice');
+    return totalPrice;
+  }
+
+  //get payment by index
+  Future<PaymentModel> getPaymentByIndex(int index) async {
+    PaymentModel payment = await context
+        .read<PaymentCubit>()
+        .getPaymentByIndex(index: index);
+    print('Payment: $payment');
+    return payment;
+  }
+
+
+
   bool isConfirm = false;
   // String paymentStatus = 'Waiting to be confirmed';
   bool isOpen = false;
@@ -83,15 +103,43 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
       future: paymentLength(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          //call paymentTiles without using ListView.builder
+          //call paymentHeader without using ListView.builder
           return Column(
             children: [
               for (int i = 0; i < snapshot.data!; i++)
                 FutureBuilder<Widget>(
-                  future: paymentTiles(i),
+                  future: paymentHeader(i),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return snapshot.data!;
+                      return Container(
+                        width: 0.8 * MediaQuery.of(context).size.width,
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              spreadRadius: 1,
+                              blurRadius: 1,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              snapshot.data!,
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                        )
+                      );
                     } else {
                       return const Center(
                         child: CircularProgressIndicator(),
@@ -111,273 +159,48 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
     );
   }
 
-  Future<Widget> paymentTiles(int index) async {
+  Future<Widget> paymentHeader(int index) async {
     String name = await getCustomerNameByIndex(index);
     String time = await getTimeByIndex(index);
+    int paymentTotalPrice = await getTotalPriceByIndex(index);
     String paymentReceipt = await getPaymentReceiptByIndex(index);
     String paymentStatus = await getPaymentStatusByIndex(index);
+    // PaymentModel payment = await getPaymentByIndex(index);
 
-    return ExpansionPanelList(
-      animationDuration: const Duration(milliseconds: 500),
-      dividerColor: kUnavailableColor,
-      elevation: 0,
-      expansionCallback: (int index, bool isExpanded) {
+    return GestureDetector(
+      onTap: () {
         setState(() {
-          isOpen = !isOpen;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PaymentDetailsPage(index: index,),
+            ),
+          );
         });
       },
-      children: [
-        //* Header Expansion Panel
-        ExpansionPanel(
-          isExpanded: isOpen,
-          canTapOnHeader: true,
-          headerBuilder: ((context, isExpanded) {
-            return Center(
-              child: Column(
-                children: [
-                  //* Customer Name
-                  Text(
-                    'Customer Name: $name',
-                    style: greenTextStyle.copyWith(
-                      fontSize: 14,
-                      fontWeight: semiBold,
-                    ),
-                  ),
-                  //* Payment Date
-                  Text(
-                    'Payment Date: $time',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: false,
-                    style: mainTextStyle.copyWith(
-                      fontSize: 14,
-                      fontWeight: black,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }),
-
-          //* Body Expansion Panel
-          body: Column(
-            children: [
-              // spacer line
-              const SizedBox(height: 5),
-              Container(
-                width: 0.8 * MediaQuery.of(context).size.width,
-                height: 5,
-                color: kUnavailableColor,
-              ),
-
-              const SizedBox(height: 20),
-              // payment image
-              //! Change to NetworkImage
-              Visibility(
-                visible: paymentReceipt != 'none',
-                child: Container(
-                  width: 0.8 * MediaQuery.of(context).size.width,
-                  height: 0.3 * MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(defaultRadius),
-                    border: Border.all(
-                      color: kUnavailableColor,
-                      width: 1,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 3,
-                        blurRadius: 7,
-                        offset: const Offset(1, 3),
-                      ),
-                    ],
-                    color: whiteColor,
-                  ),
-                  child: Center(
-                    child: Image.network(
-                      paymentReceipt,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-              //* Payment Status
-              Text(
-                'Payment Status:',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                softWrap: false,
-                style: greenTextStyle.copyWith(
-                  fontSize: 16,
-                  fontWeight: black,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                paymentStatus,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                softWrap: false,
-                style: paymentStatus == 'Payment confirmed'
-                    ? greenTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: medium,
-                      )
-                    : orangeTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: bold,
-                      ),
-              ),
-              const SizedBox(height: 10),
-              // spacer line
-              const SizedBox(height: 5),
-              Container(
-                width: 0.8 * MediaQuery.of(context).size.width,
-                height: 5,
-                color: kUnavailableColor,
-              ),
-
-              // order status
-              const SizedBox(height: 15),
-              //* Confirm payment button
-              Visibility(
-                visible: !isConfirm,
-                child: BlocConsumer<PaymentCubit, PaymentState>(
-                  listener: (context, state) {
-                    // TODO: implement listener
-                    if (state is PaymentSuccess) {
-                      print('payment success');
-                    } else if (state is PaymentFailed) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.error),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  },
-                  builder: (context, state) {
-                    return CustomButton(
-                        title: 'Confirm payment',
-                        onPressed: () {
-                          setState(() {
-                            print('confirm button');
-                            print('isConfirm then: ${isConfirm}');
-                            print('pay status then: ');
-                            isConfirm = true;
-                            context
-                                .read<PaymentCubit>()
-                                .changePaymentStatusByIndex(
-                                  index: index,
-                                  status: 'Confirmed',
-                                );
-
-                            // paymentStatus = 'Payment confirmed';
-                            print('isConfirm now: ');
-                            print('pay status now: ');
-                          });
-                        });
-                  },
-                ),
-              ),
-              const SizedBox(height: 15),
-
-              //* Reject payment button
-              Visibility(
-                visible: !isConfirm,
-                child: BlocConsumer<PaymentCubit, PaymentState>(
-                  listener: (context, state) {
-                    // TODO: implement listener
-                    if (state is PaymentSuccess) {
-                      print('payment success');
-                    } else if (state is PaymentFailed) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.error),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  },
-                  builder: (context, state) {
-                    return CustomButtonRed(
-                      title: 'Reject payment',
-                      onPressed: () {
-                        setState(() {
-                          print('reject button');
-                          print('isConfirm then: ${isConfirm}');
-                          print('pay status then: ');
-                          isConfirm = true;
-                          // paymentStatus = 'Payment rejected';
-                          context
-                                .read<PaymentCubit>()
-                                .changePaymentStatusByIndex(
-                                  index: index,
-                                  status: 'Rejected',
-                                );
-
-                          print('isConfirm now: ');
-                          print('pay status now: ');
-                        });
-                      },
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget paymentDetailCard() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 9),
-      width: 0.9 * MediaQuery.of(context).size.width,
-      // height: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(defaultRadius),
-        border: Border.all(
-          color: kUnavailableColor,
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 3,
-            blurRadius: 7,
-            offset: const Offset(1, 3),
-          ),
-        ],
-        color: whiteColor,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-
-        //* Menu Card Content
-        child: Row(
+      child: Center(
+        child: Column(
           children: [
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      payments(),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
-                ],
+            //* Customer Name
+            Text(
+              'Customer Name: $name',
+              style: greenTextStyle.copyWith(
+                fontSize: 14,
+                fontWeight: semiBold,
               ),
             ),
+            //* Payment Date
+            Text(
+              'Payment Date: $time',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: mainTextStyle.copyWith(
+                fontSize: 14,
+                fontWeight: black,
+              ),
+            ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
@@ -445,8 +268,10 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
                   ],
                 ),
               ), // Header End
+              
               //* Payment Cards
-              paymentDetailCard(),
+              payments(),
+              const SizedBox(height: 30),
             ],
           ),
         ),
