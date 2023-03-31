@@ -120,11 +120,13 @@ class _DeleteTableAdminPageState extends State<DeleteTableAdminPage> {
                             ),
                           );
                         } else {
-                          //TODO: Implement delete table
-                          // context.read<TableCubit>().addTable();
+                          context.read<TableCubit>().deleteTable(
+                            tableNum: int.parse(_tableNumController.text),
+                          );
+                          Navigator.popAndPushNamed(context, '/home-admin');
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('New Table Successfully Added!'),
+                              content: Text('Table Successfully Deleted!'),
                               backgroundColor: primaryColor,
                             ),
                           );

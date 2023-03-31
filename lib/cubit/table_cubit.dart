@@ -60,10 +60,10 @@ class TableCubit extends Cubit<TableState> {
     }
   }
 
-  void deleteTable({required String id}) async {
+  void deleteTable({required int tableNum}) async {
     try {
       emit(TableLoading());
-      await TableService().deleteTable(id: id);
+      await TableService().deleteTable(tableNum: tableNum);
       emit(TableSuccess([]));
     } catch (e) {
       emit(TableFailed(e.toString()));

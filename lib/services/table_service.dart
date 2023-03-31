@@ -61,9 +61,26 @@ class TableService{
     }
   }
 
-  Future<void> deleteTable({required String id}) async {
+  // Future<void> deleteTable({required String id}) async {
+  //   try {
+  //     await _tableCollection.doc(id).delete();
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
+
+  // Delete table by table num
+  Future<void> deleteTable({required int tableNum}) async {
     try {
-      await _tableCollection.doc(id).delete();
+      QuerySnapshot querySnapshot = await _tableCollection.get();
+      List<TableModel> tables = querySnapshot.docs.map((e) {
+        return TableModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      }).toList();
+      for (var table in tables) {
+        if (table.tableNum == tableNum) {
+          await _tableCollection.doc(table.id).delete();
+        }
+      }
     } catch (e) {
       throw e;
     }
