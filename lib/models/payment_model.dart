@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class PaymentModel extends Equatable {
-  // final String id;
+  final String id;
   final String paymentReceipt;
   final String paymentOption;
   final String diningOption;
@@ -12,7 +12,7 @@ class PaymentModel extends Equatable {
   final String customerName;
 
   const PaymentModel({
-    // required this.id,
+    required this.id,
     required this.paymentReceipt,
     required this.paymentOption,
     required this.diningOption,
@@ -24,7 +24,7 @@ class PaymentModel extends Equatable {
 
   factory PaymentModel.fromJson(String id, Map<String, dynamic> json) {
     return PaymentModel(
-      // id: id,
+      id: id,
       paymentReceipt: json['paymentReceipt'],
       paymentOption: json['paymentOption'],
       diningOption: json['diningOption'],
@@ -49,7 +49,7 @@ class PaymentModel extends Equatable {
 
   @override
   List<Object?> get props => [
-    // id,
+    id,
     paymentReceipt,
     paymentOption,
     diningOption,

@@ -26,7 +26,7 @@ class PaymentService{
         'customerName' : customerName,
       });
       return PaymentModel(
-        // id: '',
+        id: '',
         paymentReceipt: paymentReceipt,
         paymentOption: paymentOption,
         diningOption: diningOption,
@@ -52,20 +52,21 @@ class PaymentService{
     }
   }
 
-//change payment status by index without using id
+
+//change payment status by index 
   Future<void> changePaymentStatusByIndex({
     required int index,
     required String status,
   }) async{
     try{
-      final paymentRef = 
-      FirebaseFirestore.instance.collection('payments').doc(status);
-      await paymentRef.update({
+      QuerySnapshot querySnapshot = await _paymentCollection.get();
+      Iterable<PaymentModel> payments = querySnapshot.docs.map((e) {
+        return PaymentModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      });
+      await _paymentCollection.doc(payments.elementAt(index).id).update({
         'status' : status,
       });
-      status = status;
-    }
-    catch(e){
+    }catch(e){
       throw e;
     }
   }
@@ -178,4 +179,21 @@ class PaymentService{
       throw e;
     }
   }
+
+  //get payment by index
+  Future<PaymentModel> getPaymentByIndex({
+    required int index,
+  }) async{
+    try{
+      QuerySnapshot querySnapshot = await _paymentCollection.get();
+      Iterable<PaymentModel> payments = querySnapshot.docs.map((e) {
+        return PaymentModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      });
+      return payments.elementAt(index);
+    }catch(e){
+      throw e;
+    }
+  }
+
+
 }
