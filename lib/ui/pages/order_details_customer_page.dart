@@ -441,7 +441,7 @@ Future<OrderModel> getOrderModelById(String orderID) async {
 
                 // Quantity
                 Text(
-                  'Qty: 1',
+                  'Qty: $qty',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   softWrap: false,

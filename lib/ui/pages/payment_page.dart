@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
@@ -65,6 +66,24 @@ Future<int> orderLength() async {
   }
 
 class _PaymentPageState extends State<PaymentPage> {
+
+late Timer _timer;
+
+@override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      // do something
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+
   bool isUploaded = false;
   String addOn = Timestamp.now().toString();
   String fileName = 'paymentreceipt1.png';
