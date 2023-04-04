@@ -23,7 +23,6 @@ class OrderDetailsPage extends StatefulWidget {
 }
 
 class _OrderDetailsPageState extends State<OrderDetailsPage> {
- 
   @override
   void initState() {
     // context.read<OrderCubit>();
@@ -36,7 +35,6 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   // bool isOpen = false;
   List<MenuModel> listMenu = [];
 
-
   final CollectionReference<Map<String, dynamic>> orderList =
       FirebaseFirestore.instance.collection('orders');
 
@@ -45,10 +43,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
   final CollectionReference<Map<String, dynamic>> menuList =
       FirebaseFirestore.instance.collection('menus');
-  
+
   final CollectionReference<Map<String, dynamic>> userList =
       FirebaseFirestore.instance.collection('users');
-
 
   //get order length
   Future<int> orderLength() async {
@@ -59,9 +56,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
   //get order id by order number
   Future<String> getOrderIdByOrderNumber(int orderNumber) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await orderList
-        .where('number', isEqualTo: orderNumber)
-        .get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await orderList.where('number', isEqualTo: orderNumber).get();
     if (querySnapshot.docs.isNotEmpty) {
       String id = querySnapshot.docs.first.id;
       return id;
@@ -72,9 +68,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
   //get order timestamp by order number
   Future<Timestamp> getOrderTimestampByOrderNumber(int orderNumber) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await orderList
-        .where('number', isEqualTo: orderNumber)
-        .get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await orderList.where('number', isEqualTo: orderNumber).get();
     if (querySnapshot.docs.isNotEmpty) {
       Timestamp timestamp = querySnapshot.docs.first.data()['orderDateTime'];
       return timestamp;
@@ -88,7 +83,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     PaymentModel payment = await context
         .read<PaymentCubit>()
         .getPaymentByTimestamp(paymentDateTime: timestamp);
-    
+
     return payment;
   }
 
@@ -145,9 +140,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       String menuTitle = menuListHere[i]['title'];
 
       //get menuModel by comparing menuTitle with menuList
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await menuList
-          .where('title', isEqualTo: menuTitle)
-          .get();
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await menuList.where('title', isEqualTo: menuTitle).get();
       if (querySnapshot.docs.isNotEmpty) {
         String menuId = querySnapshot.docs.first.id;
         menuIdList.add(menuId);
@@ -167,7 +161,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     for (int i = 0; i < menuIdList.length; i++) {
       DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
           await menuList.doc(menuIdList[i]).get();
-            Map<String, dynamic> data = documentSnapshot.data()!;
+      Map<String, dynamic> data = documentSnapshot.data()!;
       MenuModel menuModel = MenuModel(
         id: documentSnapshot.id,
         title: data['title'],
@@ -193,11 +187,10 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await orderList.doc(orderId).get();
     String userEmail = documentSnapshot.data()!['user']['email'];
-    
+
     //get user document by comparing userName with userList
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await userList
-          .where('email', isEqualTo: userEmail)
-          .get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await userList.where('email', isEqualTo: userEmail).get();
     if (querySnapshot.docs.isNotEmpty) {
       String userId = querySnapshot.docs.first.id;
       // print('User ID: $userId');
@@ -222,7 +215,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   }
 
   //get payment status by paymentmodel
-    Future<String> getPaymentStatusByPaymentModel(PaymentModel payment) async {
+  Future<String> getPaymentStatusByPaymentModel(PaymentModel payment) async {
     String status = payment.status;
     // print('Total Price: $totalPrice');
     return status;
@@ -252,6 +245,12 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     return menuQuantity;
   }
 
+  //update totalOrdered in list menu based on order number
+  Future<void> incrementTotalOrdered(
+      int orderNumber, List<MenuModel> menu, int quantity) async {
+    List<MenuModel> menu = await getMenuList2(orderNumber);
+  }
+
   //method to get menus by lopping through listMenu length and call orderContent
   Widget getMenus() {
     return FutureBuilder<int>(
@@ -267,16 +266,15 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Container(
-                        width: 0.8 * MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.all(10),
-                        child: Center(
-                          child: Column(
-                            children: [
-                              snapshot.data!,
-                            ],
-                          ),
-                        )
-                      );
+                          width: 0.8 * MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.all(10),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                snapshot.data!,
+                              ],
+                            ),
+                          ));
                     } else {
                       return const Center(
                         child: CircularProgressIndicator(),
@@ -295,12 +293,15 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       },
     );
   }
+
   bool isConfirm = false;
-  
+
   Future<Widget> orderDetails() async {
     String orderNumber = widget.orderNumber.toString();
-    String customerName = await getCustomerNameByOrderNumber(widget.orderNumber!);
-    Timestamp orderTime = await getOrderTimestampByOrderNumber(widget.orderNumber!);
+    String customerName =
+        await getCustomerNameByOrderNumber(widget.orderNumber!);
+    Timestamp orderTime =
+        await getOrderTimestampByOrderNumber(widget.orderNumber!);
     PaymentModel payment = await getPaymentByTimestamp(orderTime);
     String diningOption = await getDiningOptionByPaymentModel(payment);
     int tableNumber = await getTableNumberByOrderNumber(widget.orderNumber!);
@@ -309,21 +310,16 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     String paymentStatus = await getPaymentStatusByPaymentModel(payment);
     List<MenuModel> menuList2 = await getMenuByOrderNumber(widget.orderNumber!);
 
-
-    if(orderStatus == 'Pending'){
+    if (orderStatus == 'Pending') {
       isConfirm = false;
-    }
-    else{
+    } else {
       isConfirm = true;
     }
 
-
-    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-
-      // spacer line
+        // spacer line
         const SizedBox(height: 5),
         Container(
           width: 0.8 * MediaQuery.of(context).size.width,
@@ -352,8 +348,6 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         ),
         const SizedBox(height: 10),
 
-
-
         //* Customer Name
         Text(
           'Customer Name: $customerName',
@@ -365,7 +359,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
             fontWeight: medium,
           ),
         ),
-        
+
         const SizedBox(height: 10),
 
         // spacer line
@@ -391,8 +385,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         const SizedBox(height: 10),
         //* Table Number
         Visibility(
-          visible:
-              diningOption == 'Dine In' ? true : false,
+          visible: diningOption == 'Dine In' ? true : false,
           child: Text(
             'Table Number: $tableNumber',
             maxLines: 2,
@@ -409,8 +402,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         // spacer line
         const SizedBox(height: 5),
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
@@ -419,8 +411,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
         // spacer line
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
@@ -463,8 +454,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         // spacer line
         const SizedBox(height: 5),
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
@@ -525,8 +515,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         // spacer line
         const SizedBox(height: 5),
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
@@ -536,8 +525,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 35),
           child: Visibility(
-            visible: !isConfirm &&
-                paymentStatus == 'Confirmed',
+            visible: !isConfirm && paymentStatus == 'Confirmed',
             child: CustomButton(
                 title: 'Confirm order',
                 onPressed: () {
@@ -545,23 +533,25 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                         orderNumber: widget.orderNumber!,
                         orderStatus: 'Confirmed',
                       );
+                  context
+                      .read<OrderCubit>()
+                      .updateTotalOrdered(widget.orderNumber!, menuList2);
                   //* Snackbar
-                    SnackBar snackBar = SnackBar(
-                      content: Text(
-                        'Order confirmed',
-                        style: greenTextStyle.copyWith(
-                          fontSize: 16,
-                          fontWeight: medium,
-                        ),
+                  SnackBar snackBar = SnackBar(
+                    content: Text(
+                      'Order confirmed',
+                      style: greenTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: medium,
                       ),
-                      backgroundColor: primaryColor,
-                    );
+                    ),
+                    backgroundColor: primaryColor,
+                  );
                   setState(() {
                     isConfirm = true;
                     orderStatus = 'Confirmed';
 
-                    Navigator.pushReplacementNamed(
-                        context, '/home-admin');
+                    Navigator.pushReplacementNamed(context, '/home-admin');
                   });
                 }),
           ),
@@ -572,8 +562,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 35),
           child: Visibility(
-            visible: !isConfirm &&
-                paymentStatus == 'Confirmed',
+            visible: !isConfirm && paymentStatus == 'Confirmed',
             child: CustomButtonRed(
               title: 'Reject order',
               onPressed: () {
@@ -584,8 +573,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 setState(() {
                   isConfirm = true;
                   orderStatus = 'Rejected';
-                  Navigator.pushReplacementNamed(
-                        context, '/home-admin');
+                  Navigator.pushReplacementNamed(context, '/home-admin');
                 });
               },
             ),

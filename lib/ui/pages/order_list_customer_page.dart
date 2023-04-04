@@ -700,7 +700,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 12),
                           child: Text(
-                            'Customer Order Lists',
+                            'Your Order Lists',
                             style: greenTextStyle.copyWith(
                               fontSize: 26,
                               fontWeight: bold,

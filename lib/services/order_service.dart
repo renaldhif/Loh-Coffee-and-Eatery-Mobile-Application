@@ -6,9 +6,11 @@ import 'package:loh_coffee_eatery/models/user_model.dart';
 import '../cubit/payment_cubit.dart';
 import '/models/order_model.dart';
 
-class OrderService{
-  final CollectionReference _orderCollection = FirebaseFirestore.instance.collection('orders');
-    final CollectionReference _paymentCollection = FirebaseFirestore.instance.collection('payments');
+class OrderService {
+  final CollectionReference _orderCollection =
+      FirebaseFirestore.instance.collection('orders');
+  final CollectionReference _paymentCollection =
+      FirebaseFirestore.instance.collection('payments');
 
   Future<void> createOrder({
     required int number,
@@ -19,18 +21,16 @@ class OrderService{
     required String orderStatus,
     required Timestamp orderDateTime,
   }) async {
-    try{
-      _orderCollection.add(
-        {
-          'number' : number,
-          'user' : user.toJson(),
-          'menu' : menu.map((e) => e.toJson()).toList(),
-          'tableNum' : tableNum,
-          'payment' : payment.toJson(),
-          'orderStatus' : orderStatus,
-          'orderDateTime' : orderDateTime,
-        }
-      );
+    try {
+      _orderCollection.add({
+        'number': number,
+        'user': user.toJson(),
+        'menu': menu.map((e) => e.toJson()).toList(),
+        'tableNum': tableNum,
+        'payment': payment.toJson(),
+        'orderStatus': orderStatus,
+        'orderDateTime': orderDateTime,
+      });
     } catch (e) {
       print(e.toString());
     }
@@ -70,15 +70,13 @@ class OrderService{
   //   }
   // }
 
-
-
 //   Future<List<OrderModel>> getOrders() async {
 //   try {
 //     QuerySnapshot querySnapshot = await _orderCollection.get();
 //     List<OrderModel> orders = querySnapshot.docs.map((e) {
 //       return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
 //     }).toList();
-  
+
 //     return orders;
 //   } catch (e) {
 //     throw e;
@@ -102,9 +100,12 @@ class OrderService{
   Future<List<OrderModel>> getOrders() async {
     try {
       QuerySnapshot querySnapshot = await _orderCollection.get();
-      List<OrderModel> orders = querySnapshot.docs.map((e) {
-        return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
-      }).cast<OrderModel>().toList();
+      List<OrderModel> orders = querySnapshot.docs
+          .map((e) {
+            return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+          })
+          .cast<OrderModel>()
+          .toList();
       return orders;
     } catch (e) {
       throw e;
@@ -138,7 +139,7 @@ class OrderService{
 //       for (var i = 0; i < orders.length; i++) {
 //         if (orders.elementAt(i).number == orderNumber) {
 //           index = i;
-          
+
 //         }
 //       }
 //       return index;
@@ -146,7 +147,6 @@ class OrderService{
 //     throw e;
 //   }
 // }
-
 
   //get customer name by index
   // Future<String> getCustomerNameByIndex({
@@ -191,67 +191,66 @@ class OrderService{
   //     throw e;
   //   }
   // }
-Future<PaymentModel> getPaymentByOrderIndex({
-  required int index,
-}) async {
-  try {
-    QuerySnapshot querySnapshot = await _orderCollection.get();
-    List<OrderModel> orders = querySnapshot.docs.map((e) {
-      return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
-    }).toList();
-    return orders[index].payment;
-  } catch (e) {
-    throw e;
-  }
-}
-
-
-Future<String> getCustomerNameByIndex({
-  required int index,
-}) async {
-  try {
-    PaymentModel payment = await getPaymentByOrderIndex(index: index);
-    if(payment.customerName != null) {
-      return payment.customerName;
-    } else {
-      return "No customer name found";
+  Future<PaymentModel> getPaymentByOrderIndex({
+    required int index,
+  }) async {
+    try {
+      QuerySnapshot querySnapshot = await _orderCollection.get();
+      List<OrderModel> orders = querySnapshot.docs.map((e) {
+        return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      }).toList();
+      return orders[index].payment;
+    } catch (e) {
+      throw e;
     }
   }
-  catch (e) {
-  if (e != null) {
-    throw e;
-  } else {
-    throw Exception("Unknown error occurred");
-  }
-  }
-  // try {
-  //   QuerySnapshot querySnapshot = await _orderCollection.get();
-  //   List<OrderModel> orders = querySnapshot.docs.map((e) {
-  //     return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
-  //   }).cast<OrderModel>().toList();
-  //   if (orders[index].payment != null) {
-  //     return orders[index].payment.customerName;
-  //   } else {
-  //     throw Exception('Payment is null.');
-  //   }
-  // } catch (e) {
-  //   return 'error';
-  // }
-}
 
-
+  Future<String> getCustomerNameByIndex({
+    required int index,
+  }) async {
+    try {
+      PaymentModel payment = await getPaymentByOrderIndex(index: index);
+      if (payment.customerName != null) {
+        return payment.customerName;
+      } else {
+        return "No customer name found";
+      }
+    } catch (e) {
+      if (e != null) {
+        throw e;
+      } else {
+        throw Exception("Unknown error occurred");
+      }
+    }
+    // try {
+    //   QuerySnapshot querySnapshot = await _orderCollection.get();
+    //   List<OrderModel> orders = querySnapshot.docs.map((e) {
+    //     return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+    //   }).cast<OrderModel>().toList();
+    //   if (orders[index].payment != null) {
+    //     return orders[index].payment.customerName;
+    //   } else {
+    //     throw Exception('Payment is null.');
+    //   }
+    // } catch (e) {
+    //   return 'error';
+    // }
+  }
 
   //get dining option by index
   Future<String> getDiningOptionByIndex({
     required int index,
-  }) async{
-    try{
+  }) async {
+    try {
       QuerySnapshot querySnapshot = await _orderCollection.get();
-      List<OrderModel> orders = querySnapshot.docs.map((e) {
-        return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
-      }).cast<OrderModel>().toList();
+      List<OrderModel> orders = querySnapshot.docs
+          .map((e) {
+            return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+          })
+          .cast<OrderModel>()
+          .toList();
       return orders[index].payment.diningOption;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
@@ -259,14 +258,17 @@ Future<String> getCustomerNameByIndex({
   //get table number by index
   Future<int> getTableNumberByIndex({
     required int index,
-  }) async{
-    try{
+  }) async {
+    try {
       QuerySnapshot querySnapshot = await _orderCollection.get();
-      List<OrderModel> orders = querySnapshot.docs.map((e) {
-        return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
-      }).cast<OrderModel>().toList();
+      List<OrderModel> orders = querySnapshot.docs
+          .map((e) {
+            return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+          })
+          .cast<OrderModel>()
+          .toList();
       return orders[index].tableNum;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
@@ -274,14 +276,17 @@ Future<String> getCustomerNameByIndex({
   //get list of menu by index
   Future<List<MenuModel>> getListOfMenuByIndex({
     required int index,
-  }) async{
-    try{
+  }) async {
+    try {
       QuerySnapshot querySnapshot = await _orderCollection.get();
-      List<OrderModel> orders = querySnapshot.docs.map((e) {
-        return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
-      }).cast<OrderModel>().toList();
+      List<OrderModel> orders = querySnapshot.docs
+          .map((e) {
+            return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+          })
+          .cast<OrderModel>()
+          .toList();
       return orders[index].menu;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
@@ -289,30 +294,35 @@ Future<String> getCustomerNameByIndex({
   //get total price by order index from the payment list in order
   Future<int> getTotalPriceByIndex({
     required int index,
-  }) async{
-    try{
+  }) async {
+    try {
       QuerySnapshot querySnapshot = await _orderCollection.get();
-      List<OrderModel> orders = querySnapshot.docs.map((e) {
-        return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
-      }).cast<OrderModel>().toList();
+      List<OrderModel> orders = querySnapshot.docs
+          .map((e) {
+            return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+          })
+          .cast<OrderModel>()
+          .toList();
       return orders[index].payment.totalPrice;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-
   //get payment status by index from the payment list in order
   Future<String> getPaymentStatusByIndex({
     required int index,
-  }) async{
-    try{
+  }) async {
+    try {
       QuerySnapshot querySnapshot = await _orderCollection.get();
-      List<OrderModel> orders = querySnapshot.docs.map((e) {
-        return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
-      }).cast<OrderModel>().toList();
+      List<OrderModel> orders = querySnapshot.docs
+          .map((e) {
+            return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+          })
+          .cast<OrderModel>()
+          .toList();
       return orders[index].payment.status;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
@@ -320,14 +330,17 @@ Future<String> getCustomerNameByIndex({
   //get order status by index
   Future<String> getOrderStatusByIndex({
     required int index,
-  }) async{
-    try{
+  }) async {
+    try {
       QuerySnapshot querySnapshot = await _orderCollection.get();
-      List<OrderModel> orders = querySnapshot.docs.map((e) {
-        return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
-      }).cast<OrderModel>().toList();
+      List<OrderModel> orders = querySnapshot.docs
+          .map((e) {
+            return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+          })
+          .cast<OrderModel>()
+          .toList();
       return orders[index].orderStatus;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
@@ -335,24 +348,27 @@ Future<String> getCustomerNameByIndex({
   //get order date time by index
   Future<Timestamp> getOrderDateTimeByIndex({
     required int index,
-  }) async{
-    try{
+  }) async {
+    try {
       QuerySnapshot querySnapshot = await _orderCollection.get();
-      List<OrderModel> orders = querySnapshot.docs.map((e) {
-        return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
-      }).cast<OrderModel>().toList();
+      List<OrderModel> orders = querySnapshot.docs
+          .map((e) {
+            return OrderModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+          })
+          .cast<OrderModel>()
+          .toList();
       return orders[index].orderDateTime;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
   //update order status based on its order number
-Future<void> updateOrderStatusByNumber(int orderNumber, String orderStatus) async {
+  Future<void> updateOrderStatusByNumber(
+      int orderNumber, String orderStatus) async {
     try {
-      QuerySnapshot querySnapshot = await _orderCollection
-          .where('number', isEqualTo: orderNumber)
-          .get();
+      QuerySnapshot querySnapshot =
+          await _orderCollection.where('number', isEqualTo: orderNumber).get();
 
       if (querySnapshot.docs.isNotEmpty) {
         DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
@@ -365,13 +381,36 @@ Future<void> updateOrderStatusByNumber(int orderNumber, String orderStatus) asyn
     }
   }
 
+Future<void> updateTotalOrdered(int orderNumber, List<MenuModel> menu) async {
+  try {
+    QuerySnapshot querySnapshot =
+        await _orderCollection.where('number', isEqualTo: orderNumber).get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+      Map<String, dynamic> orderData = documentSnapshot.data() as Map<String, dynamic>;
+      List<dynamic> menuList = orderData['menu'];
+      for (int i = 0; i < menu.length; i++) {
+        int qty = menu[i].quantity;
+        Map<String, dynamic> menuItem = menuList[i];
+        menuItem['totalOrdered'] = menuItem['totalOrdered'] + qty;
+        menuList[i] = menuItem;
+      }
+      await documentSnapshot.reference.update({'menu': menuList});
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+
 
   //---------
   //get order id by Timestamp
   Future<String> getOrderIdByOrderNumber(Timestamp orderDateTime) async {
     QuerySnapshot querySnapshot = await _orderCollection
-          .where('orderDateTime', isEqualTo: orderDateTime)
-          .get();
+        .where('orderDateTime', isEqualTo: orderDateTime)
+        .get();
     if (querySnapshot.docs.isNotEmpty) {
       String id = querySnapshot.docs.first.id;
       return id;
@@ -380,19 +419,17 @@ Future<void> updateOrderStatusByNumber(int orderNumber, String orderStatus) asyn
     }
   }
 
-    Future<void> changePaymentStatusByPayment({
+  Future<void> changePaymentStatusByPayment({
     required Timestamp orderDateTime,
     required String status,
-  }) async{
-    try{
+  }) async {
+    try {
       String id = await getOrderIdByOrderNumber(orderDateTime);
       await _orderCollection.doc(id).update({
         'payment.status': status,
       });
-
-    }catch(e){
+    } catch (e) {}
   }
-}
 
 // Future<void> changePaymentStatusByPayment({
 //   required Timestamp orderDateTime,
@@ -432,43 +469,38 @@ Future<void> updateOrderStatusByNumber(int orderNumber, String orderStatus) asyn
   Future<void> updateOrderStatusByOrderDateTime({
     required Timestamp orderDateTime,
     required String orderStatus,
-  }) async{
-    try{
+  }) async {
+    try {
       String id = await getOrderIdByOrderNumber(orderDateTime);
       await _orderCollection.doc(id).update({
         'orderStatus': orderStatus,
       });
-
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
-
-
 
   //get list of order id by user email
-  Future<List<String>> getOrderIdListByUserEmail(String email) async{
-    try{
-      QuerySnapshot querySnapshot = await _orderCollection
-          .where('user.email', isEqualTo: email)
-          .get();
+  Future<List<String>> getOrderIdListByUserEmail(String email) async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _orderCollection.where('user.email', isEqualTo: email).get();
       List<String> orderIdList = querySnapshot.docs.map((e) => e.id).toList();
       return orderIdList;
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-
-
-    //get payment by timestamp in payment cubit
+  //get payment by timestamp in payment cubit
   Future<PaymentModel> getPaymentByTimestamp(Timestamp timestamp) async {
-    QuerySnapshot querySnapshot = await _paymentCollection.where('paymentDateTime', isEqualTo: timestamp).get();
-      Iterable<PaymentModel> payments = querySnapshot.docs.map((e) {
-        return PaymentModel.fromJson(e.id, e.data() as Map<String, dynamic>);
-      });
-      return payments.first;
-
+    QuerySnapshot querySnapshot = await _paymentCollection
+        .where('paymentDateTime', isEqualTo: timestamp)
+        .get();
+    Iterable<PaymentModel> payments = querySnapshot.docs.map((e) {
+      return PaymentModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+    });
+    return payments.first;
   }
 
 //get dining option that's stored by payment subcollection in order collection by order id

@@ -36,6 +36,46 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
     return query.count;
   }
 
+  Future<List<DateTime>> paymentDateTimeList() async {
+    QuerySnapshot<Map<String, dynamic>> snapshot = await paymentList.get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshot.docs;
+    List<DateTime> paymentDateTimeList = [];
+    for (var doc in docs) {
+      Timestamp paymentTimestamp = doc['paymentDateTime'];
+      DateTime paymentDateTime = paymentTimestamp.toDate();
+      paymentDateTimeList.add(paymentDateTime);
+    }
+    return paymentDateTimeList;
+  }
+
+  Future<List<DateTime>> sortedPaymentDateTimeList() async {
+    List<DateTime> paymentDateTimeList2 = await paymentDateTimeList();
+    paymentDateTimeList2.sort();
+    for (int i = 0; i < paymentDateTimeList2.length; i++) {
+      print(paymentDateTimeList2[i]);
+    }
+    return paymentDateTimeList2;
+  }
+
+  // Future<int> sortedPaymentDateTimeList() async {
+  //   List<DateTime> paymentDateTimeList2 = await paymentDateTimeList();
+  //   // paymentDateTimeList2.sort();
+  //   // for (int i = 0; i < paymentDateTimeList2.length; i++) {
+  //   //   print(paymentDateTimeList2[i]);
+  //   // }
+  //   paymentDateTimeList2.sort();
+  //   return paymentDateTimeList2.length;
+  // }
+
+//sortedPayemntDateTime length
+  Future<int> sortedPaymentDateTimeLength() async {
+    List<DateTime> paymentDateTimeList3 = await sortedPaymentDateTimeList();
+    int length = paymentDateTimeList3.length;
+    return length;
+  }
+
+  //-----------------------
+
   //getCustomerNameByIndex string from paymentCubit
   Future<String> getCustomerNameByIndex(int index) async {
     String name =
@@ -75,23 +115,19 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
   }
 
   Future<int> getTotalPriceByIndex(int index) async {
-    int totalPrice = (await context
-        .read<PaymentCubit>()
-        .getTotalPriceByIndex(index: index));
+    int totalPrice =
+        (await context.read<PaymentCubit>().getTotalPriceByIndex(index: index));
     print('Total Price: $totalPrice');
     return totalPrice;
   }
 
   //get payment by index
   Future<PaymentModel> getPaymentByIndex(int index) async {
-    PaymentModel payment = await context
-        .read<PaymentCubit>()
-        .getPaymentByIndex(index: index);
+    PaymentModel payment =
+        await context.read<PaymentCubit>().getPaymentByIndex(index: index);
     print('Payment: $payment');
     return payment;
   }
-
-
 
   bool isConfirm = false;
   // String paymentStatus = 'Waiting to be confirmed';
@@ -100,7 +136,7 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
   //method to get payments by lopping through paymentLength and combine with paymentTiles
   Widget payments() {
     return FutureBuilder<int>(
-      future: paymentLength(),
+      future: sortedPaymentDateTimeLength(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           //call paymentHeader without using ListView.builder
@@ -112,34 +148,33 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Container(
-                        width: 0.8 * MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 1,
-                              offset: const Offset(0, 1),
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              snapshot.data!,
-                              const SizedBox(
-                                height: 10,
+                          width: 0.8 * MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 1,
+                                offset: const Offset(0, 1),
                               ),
                             ],
                           ),
-                        )
-                      );
+                          child: Center(
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                snapshot.data!,
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          ));
                     } else {
                       return const Center(
                         child: CircularProgressIndicator(),
@@ -167,13 +202,18 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
     String paymentStatus = await getPaymentStatusByIndex(index);
     // PaymentModel payment = await getPaymentByIndex(index);
 
+    // sortedPaymentDateTimeList();
+    sortedPaymentDateTimeList();
+
     return GestureDetector(
       onTap: () {
         setState(() {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PaymentDetailsPage(index: index,),
+              builder: (context) => PaymentDetailsPage(
+                index: index,
+              ),
             ),
           );
         });
@@ -268,7 +308,7 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
                   ],
                 ),
               ), // Header End
-              
+
               //* Payment Cards
               payments(),
               const SizedBox(height: 30),

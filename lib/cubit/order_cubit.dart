@@ -37,43 +37,6 @@ class OrderCubit extends Cubit<OrderState> {
       emit(OrderFailed(e.toString()));
     }
   }
-  // }) async {
-  //   try {
-  //     emit(OrderLoading());
-  //     await OrderService().createOrder(order);
-  //     emit(OrderSuccess([]));
-  //   } catch (e) {
-  //     emit(OrderFailed(e.toString()));
-  //   }
-  // }
-
-
-  // void addOrder( {
-  //   required int number,
-  //   required UserModel user,
-  //   required List<MenuModel> menu,
-  //   required int tableNum,
-  //   required PaymentModel payment,
-  //   required String orderStatus,
-  //   required Timestamp orderDateTime,
-    
-  // }) async {
-  //   try {
-  //     emit(OrderLoading());
-  //     OrderModel order = await OrderService().addOrder(
-  //       number: number,
-  //       user: user,
-  //       menu: menu,
-  //       tableNum: tableNum,
-  //       payment: payment,
-  //       orderStatus: orderStatus,
-  //       orderDateTime: orderDateTime,
-  //     );
-  //     emit(OrderSuccess([]));
-  //   } catch (e) {
-  //     emit(OrderFailed(e.toString()));
-  //   }
-  // }
 
   void getOrders() async {
     try {
@@ -85,58 +48,26 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  // Future<int> getIndexByOrderNumber({
-  //   required int orderNumber,
-  // }) async{
-  //   try {
-  //     emit(OrderLoading());
-  //     int index = await OrderService().getIndexByOrderNumber(orderNumber: orderNumber);
-  //     // emit(OrderSuccess([]));
-  //     return index;
-  //   } catch (e) {
-  //     // emit(OrderFailed(e.toString()));
-  //     throw e;
-  //   }
-  // }
-
-  // Future<String> getCustomerNameByIndex({
-  //   required int index, 
-  // }) async{
-  //   try { 
-  //     emit(OrderLoading());
-  //     String customerName = await OrderService().getCustomerNameByIndex(index: index);
-  //     emit(OrderSuccess([]));
-  //     return customerName;
-  //   } catch (e) {
-  //     emit(OrderFailed(e.toString()));
-  //     throw e;
-  //   }
-  // }
-
-    Future<String> getCustomerNameByIndex({
+  Future<String> getCustomerNameByIndex({
     required int index,
-  }) async{
-    try{
+  }) async {
+    try {
       emit(OrderLoading());
-      
+
       String customerName = await OrderService().getCustomerNameByIndex(
         index: index,
       );
       return customerName.toString();
-
-
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-
-  Future<String> getDiningOptionByIndex({
-    required int index
-  }) async{
+  Future<String> getDiningOptionByIndex({required int index}) async {
     try {
       emit(OrderLoading());
-      String diningOption = await OrderService().getDiningOptionByIndex(index: index);
+      String diningOption =
+          await OrderService().getDiningOptionByIndex(index: index);
       emit(OrderSuccess([]));
       return diningOption;
     } catch (e) {
@@ -147,10 +78,11 @@ class OrderCubit extends Cubit<OrderState> {
 
   Future<int> getTableNumberByIndex({
     required int index,
-  }) async{
+  }) async {
     try {
       emit(OrderLoading());
-      int tableNumber = await OrderService().getTableNumberByIndex(index: index);
+      int tableNumber =
+          await OrderService().getTableNumberByIndex(index: index);
       emit(OrderSuccess([]));
       return tableNumber;
     } catch (e) {
@@ -159,12 +91,11 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  Future<List<MenuModel>> getMenuByIndex({
-    required int index
-  }) async{
+  Future<List<MenuModel>> getMenuByIndex({required int index}) async {
     try {
       emit(OrderLoading());
-      List<MenuModel> menu = await OrderService().getListOfMenuByIndex(index: index);
+      List<MenuModel> menu =
+          await OrderService().getListOfMenuByIndex(index: index);
       emit(OrderSuccess([]));
       return menu;
     } catch (e) {
@@ -173,9 +104,9 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-   Future<int> getTotalPriceByIndex({
+  Future<int> getTotalPriceByIndex({
     required int index,
-  }) async{
+  }) async {
     try {
       emit(OrderLoading());
       int totalPrice = await OrderService().getTotalPriceByIndex(index: index);
@@ -189,10 +120,11 @@ class OrderCubit extends Cubit<OrderState> {
 
   Future<String> getPaymentStatusByIndex({
     required int index,
-  }) async{
+  }) async {
     try {
       emit(OrderLoading());
-      String paymentStatus = await OrderService().getPaymentStatusByIndex(index: index);
+      String paymentStatus =
+          await OrderService().getPaymentStatusByIndex(index: index);
       emit(OrderSuccess([]));
       return paymentStatus;
     } catch (e) {
@@ -201,12 +133,11 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  Future<String> getOrderStatusByIndex({
-    required int index
-  }) async{
+  Future<String> getOrderStatusByIndex({required int index}) async {
     try {
       emit(OrderLoading());
-      String orderStatus = await OrderService().getOrderStatusByIndex(index: index);
+      String orderStatus =
+          await OrderService().getOrderStatusByIndex(index: index);
       emit(OrderSuccess([]));
       return orderStatus;
     } catch (e) {
@@ -215,12 +146,11 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  Future<Timestamp> getOrderDateTimeByIndex({
-    required int index
-  }) async{
+  Future<Timestamp> getOrderDateTimeByIndex({required int index}) async {
     try {
       emit(OrderLoading());
-      Timestamp orderDateTime = await OrderService().getOrderDateTimeByIndex(index: index);
+      Timestamp orderDateTime =
+          await OrderService().getOrderDateTimeByIndex(index: index);
       emit(OrderSuccess([]));
       return orderDateTime;
     } catch (e) {
@@ -232,7 +162,7 @@ class OrderCubit extends Cubit<OrderState> {
   Future<void> updateOrderStatusByNumber({
     required int orderNumber,
     required String orderStatus,
-  }) async{
+  }) async {
     try {
       emit(OrderLoading());
       await OrderService().updateOrderStatusByNumber(orderNumber, orderStatus);
@@ -243,15 +173,14 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  //------------
-
   Future<void> changePaymentStatusByPayment({
     required Timestamp orderDateTime,
     required String status,
-  }) async{
+  }) async {
     try {
       emit(OrderLoading());
-      await OrderService().changePaymentStatusByPayment(orderDateTime: orderDateTime, status: status);
+      await OrderService().changePaymentStatusByPayment(
+          orderDateTime: orderDateTime, status: status);
       emit(OrderSuccess([]));
     } catch (e) {
       emit(OrderFailed(e.toString()));
@@ -259,14 +188,15 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-    //update order status by order datetime
+  //update order status by order datetime
   Future<void> updateOrderStatusByOrderDateTime({
     required Timestamp orderDateTime,
     required String orderStatus,
-  }) async{
+  }) async {
     try {
       emit(OrderLoading());
-      await OrderService().updateOrderStatusByOrderDateTime(orderDateTime: orderDateTime, orderStatus: orderStatus);
+      await OrderService().updateOrderStatusByOrderDateTime(
+          orderDateTime: orderDateTime, orderStatus: orderStatus);
       emit(OrderSuccess([]));
     } catch (e) {
       emit(OrderFailed(e.toString()));
@@ -274,29 +204,28 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-    Future<List<String>> getOrderIdListByUserEmail(String email) async{
-    try{
+  Future<List<String>> getOrderIdListByUserEmail(String email) async {
+    try {
       emit(OrderLoading());
-      List<String> orderIdList = await OrderService().getOrderIdListByUserEmail(email);
+      List<String> orderIdList =
+          await OrderService().getOrderIdListByUserEmail(email);
       emit(OrderSuccess([]));
       return orderIdList;
-    }
-    catch(e){
+    } catch (e) {
       emit(OrderFailed(e.toString()));
       throw e;
     }
-    }
+  }
 
-    // Future<String?> getDiningOptionByOrderId(String orderId) async{
-    // try{
-    //   emit(OrderLoading());
-    //   String? diningOption = await OrderService().getDiningOptionByOrderId(orderId);
-    //   emit(OrderSuccess([]));
-    //   return diningOption;
-    // }
-    // catch(e){
-    //   emit(OrderFailed(e.toString()));
-    //   throw e;
-    // }
-    // }
+  Future<void> updateTotalOrdered(
+      int orderNumber, List<MenuModel> menu) async {
+    try {
+      emit(OrderLoading());
+      await OrderService().updateTotalOrdered(orderNumber, menu);
+      emit(OrderSuccess([]));
+    } catch (e) {
+      emit(OrderFailed(e.toString()));
+      throw e;
+    }
+  }
 }
