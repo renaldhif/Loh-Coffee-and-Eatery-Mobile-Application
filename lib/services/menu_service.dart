@@ -324,4 +324,15 @@ class MenuService {
       throw e;
     }
   }
+
+  //update totalOrdered field in menu collection
+  Future<void> updateTotalOrdered(MenuModel menu) async {
+    try {
+      await _menuCollection.doc(menu.id).update({
+        'totalOrdered': menu.totalOrdered + 1,
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
 }
