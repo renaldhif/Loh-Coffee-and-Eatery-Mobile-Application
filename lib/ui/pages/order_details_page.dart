@@ -6,6 +6,7 @@ import 'package:loh_coffee_eatery/cubit/menu_cubit.dart';
 import 'package:loh_coffee_eatery/cubit/order_cubit.dart';
 import 'package:loh_coffee_eatery/models/menu_model.dart';
 import 'package:loh_coffee_eatery/models/payment_model.dart';
+import '../../cubit/order_state.dart';
 import '../../cubit/payment_cubit.dart';
 import '../../cubit/payment_state.dart';
 import '../../cubit/table_cubit.dart';
@@ -221,9 +222,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     return status;
   }
 
-  Future<int> listMenuLength() async {
-    return listMenu.length;
-  }
+  List<MenuModel> listMenu2 = [];
 
   //get list of menuModel in orderList by orderNumber
   Future<List<MenuModel>> getMenuList2(int orderNumber) async {
@@ -231,8 +230,16 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await orderList.doc(orderId).get();
     List<MenuModel> menu = documentSnapshot.data()!['menu'];
+    listMenu2 = menu;
     return menu;
   }
+
+  //get lenght of list menu
+  Future<int> listMenuLength() async {
+    return listMenu2.length;
+  }
+
+
 
   //get menu quantity by index
   Future<int> getMenuQuantityByOrderNumber(int orderNumber, int index) async {
@@ -526,34 +533,42 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           padding: const EdgeInsets.symmetric(horizontal: 35),
           child: Visibility(
             visible: !isConfirm && paymentStatus == 'Confirmed',
-            child: CustomButton(
-                title: 'Confirm order',
-                onPressed: () {
-                  context.read<OrderCubit>().updateOrderStatusByNumber(
-                        orderNumber: widget.orderNumber!,
-                        orderStatus: 'Confirmed',
-                      );
-                  context
-                      .read<OrderCubit>()
-                      .updateTotalOrdered(widget.orderNumber!, menuList2);
-                  //* Snackbar
-                  SnackBar snackBar = SnackBar(
-                    content: Text(
-                      'Order confirmed',
-                      style: greenTextStyle.copyWith(
-                        fontSize: 16,
-                        fontWeight: medium,
-                      ),
+            child: BlocConsumer<OrderCubit, OrderState>(
+              listener: (context, state) {
+                // TODO: implement listener
+                if (state is OrderSuccess) {
+                        print('order success');
+                } else if (state is OrderFailed) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.error),
+                      backgroundColor: Colors.red,
                     ),
-                    backgroundColor: primaryColor,
                   );
-                  setState(() {
-                    isConfirm = true;
-                    orderStatus = 'Confirmed';
+                }
+              },
+              builder: (context, state) {
+                return CustomButton(
+                    title: 'Confirm order',
+                    onPressed: () {
+                      
 
-                    Navigator.pushReplacementNamed(context, '/home-admin');
-                  });
-                }),
+                      setState(() {
+                        context.read<OrderCubit>().updateOrderStatusByNumber(
+                            orderNumber: widget.orderNumber!,
+                            orderStatus: 'Confirmed',
+                          );
+                      context
+                          .read<OrderCubit>()
+                          .updateTotalOrdered(widget.orderNumber!, menuList2);
+                        isConfirm = true;
+                        orderStatus = 'Confirmed';
+
+                        // Navigator.pushReplacementNamed(context, '/home-admin');
+                      });
+                    });
+              },
+            ),
           ),
         ),
         const SizedBox(height: 15),

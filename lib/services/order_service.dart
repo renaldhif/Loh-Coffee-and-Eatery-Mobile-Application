@@ -11,6 +11,9 @@ class OrderService {
       FirebaseFirestore.instance.collection('orders');
   final CollectionReference _paymentCollection =
       FirebaseFirestore.instance.collection('payments');
+  
+  final CollectionReference _menuCollection =
+      FirebaseFirestore.instance.collection('menus');
 
   Future<void> createOrder({
     required int number,
@@ -385,6 +388,7 @@ Future<void> updateTotalOrdered(int orderNumber, List<MenuModel> menu) async {
   try {
     QuerySnapshot querySnapshot =
         await _orderCollection.where('number', isEqualTo: orderNumber).get();
+    QuerySnapshot menuQuerySnapshot = await _menuCollection.get();
 
     if (querySnapshot.docs.isNotEmpty) {
       DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
@@ -398,10 +402,31 @@ Future<void> updateTotalOrdered(int orderNumber, List<MenuModel> menu) async {
       }
       await documentSnapshot.reference.update({'menu': menuList});
     }
-  } catch (e) {
+
+for (int i = 0; i < menu.length; i++) {
+  int qty = menu[i].quantity;
+  String name = menu[i].title;
+  QuerySnapshot menuQuerySnapshot = await _menuCollection
+      .where('title', isEqualTo: name)
+      .get();
+  if (menuQuerySnapshot.docs.isNotEmpty) {
+    DocumentSnapshot documentSnapshot = menuQuerySnapshot.docs.first;
+    Map<String, dynamic> menuData =
+        documentSnapshot.data() as Map<String, dynamic>;
+    int totalOrdered = menuData['totalOrdered'];
+    await documentSnapshot.reference.update({
+      'totalOrdered': totalOrdered + qty,
+    });
+    
+
+  } 
+  }
+  }
+  catch (e) {
     throw e;
   }
 }
+
 
 
 
