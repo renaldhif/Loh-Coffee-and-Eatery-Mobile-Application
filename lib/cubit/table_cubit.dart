@@ -80,4 +80,41 @@ class TableCubit extends Cubit<TableState> {
     }
   }
 
+  Future<List<int>> getAvailableTableNumbers() async {
+    try {
+      emit(TableLoading());
+      List<int> tableNum = await TableService().getAvailableTableNumbers();
+      emit(TableSuccess([]));
+      return tableNum; // Add this line to return the table numbers list
+    } catch (e) {
+      emit(TableFailed(e.toString()));
+      throw e; // Add this line to re-throw the error
+    }
+  }
+
+  Future<int> getTableSizeByTableNumber(int tableNum) async {
+    try {
+      emit(TableLoading());
+      int tableSize = await TableService().getTableSizeByTableNumber(tableNum: tableNum);
+      emit(TableSuccess([]));
+      return tableSize; // Add this line to return the table size
+    } catch (e) {
+      emit(TableFailed(e.toString()));
+      throw e; // Add this line to re-throw the error
+    }
+  }
+
+  Future<String> getTableLocationByTableNumber(int tableNum) async{
+    try {
+      emit(TableLoading());
+      String tableLocation = await TableService().getTableLocationByTableNumber(tableNum: tableNum);
+      emit(TableSuccess([]));
+      return tableLocation; // Add this line to return the table size
+    } catch (e) {
+      emit(TableFailed(e.toString()));
+      throw e; // Add this line to re-throw the error
+    }
+  }
+
+
 }

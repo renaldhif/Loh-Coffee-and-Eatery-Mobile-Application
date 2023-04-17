@@ -99,4 +99,57 @@ class TableService{
       throw e;
     }
   }
+
+  // get the table num based on isBooked == false
+  Future<List<int>> getAvailableTableNumbers() async {
+    try {
+      QuerySnapshot querySnapshot = await _tableCollection
+      .where('isBooked', isEqualTo: false)
+      .orderBy('tableNum', descending: false)
+      .get();
+      
+      List<int> tableNumbers = querySnapshot.docs.map((doc) => TableModel.fromJson(doc.id, doc.data()! as Map<String, dynamic>).tableNum).toList();
+      return tableNumbers;
+
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
+  // get the table size based on tableNum
+  Future<int> getTableSizeByTableNumber({required int tableNum}) async {
+    try {
+      QuerySnapshot querySnapshot = await _tableCollection.get();
+      List<TableModel> tables = querySnapshot.docs.map((e) {
+        return TableModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      }).toList();
+      for (var table in tables) {
+        if (table.tableNum == tableNum) {
+          return table.sizeOfPeople;
+        }
+      }
+      return 0;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // get the table location based on tableNum
+  Future<String> getTableLocationByTableNumber({required int tableNum}) async {
+    try {
+      QuerySnapshot querySnapshot = await _tableCollection.get();
+      List<TableModel> tables = querySnapshot.docs.map((e) {
+        return TableModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      }).toList();
+      for (var table in tables) {
+        if (table.tableNum == tableNum) {
+          return table.location;
+        }
+      }
+      return '';
+    } catch (e) {
+      throw e;
+    }
+  }
 }
