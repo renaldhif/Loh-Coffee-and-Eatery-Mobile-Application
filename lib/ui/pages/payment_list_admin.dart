@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
@@ -186,8 +187,8 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
           );
         } else {
           //return no payments
-          return const Center(
-            child: Text('No Payments'),
+          return Center(
+            child: Text("no_payments".tr()),
           );
         }
       },
@@ -223,7 +224,7 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
           children: [
             //* Customer Name
             Text(
-              'Customer Name: $name',
+              'customer_name'.tr() + ': $name',
               style: greenTextStyle.copyWith(
                 fontSize: 14,
                 fontWeight: semiBold,
@@ -231,7 +232,7 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
             ),
             //* Payment Date
             Text(
-              'Payment Date: $time',
+              'payment_date'.tr() + ': $time',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
@@ -280,7 +281,7 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 12),
                           child: Text(
-                            'Payment Details',
+                            'payment_list'.tr(),
                             style: greenTextStyle.copyWith(
                               fontSize: 26,
                               fontWeight: bold,

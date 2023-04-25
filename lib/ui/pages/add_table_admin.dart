@@ -1,4 +1,5 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,7 +59,7 @@ class _AddTablePageAdminState extends State<AddTablePageAdmin> {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Add New Table',
+                        "add_new_table".tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 32,
                           fontWeight: bold,
@@ -71,23 +72,23 @@ class _AddTablePageAdminState extends State<AddTablePageAdmin> {
 
               //* Table Number
               CustomTextFormField(
-                  title: 'Table Number',
-                  label: 'Table Number',
-                  hintText: 'input table number',
+                  title: "table_number".tr(),
+                  label: "table_number".tr(),
+                  hintText: "text_table_number".tr(),
                   controller: _tableNumController),
               
               //* Num Of People
               CustomTextFormField(
-                  title: 'Num of People',
-                  label: 'Num of People',
-                  hintText: 'input num of people',
+                  title: 'num_of_people'.tr(),
+                  label: 'num_of_people'.tr(),
+                  hintText: 'text_num_of_people'.tr(),
                   controller: _numOfPeopleController),
 
               //* Location
               CustomTextFormField(
-                  title: 'Location',
-                  label: 'Indoor/Outdoor',
-                  hintText: 'input location',
+                  title: 'location'.tr(),
+                  label: 'indoor_outdoor'.tr(),
+                  hintText: 'text_location'.tr(),
                   controller: _locationController),
               
               const SizedBox(
@@ -119,20 +120,20 @@ class _AddTablePageAdminState extends State<AddTablePageAdmin> {
                       );
                     }
                     return CustomButton(
-                      title: 'Add Table',
+                      title: 'add_table'.tr(),
                       onPressed: () {
                         if(_tableNumController.text.contains(RegExp(r'[a-zA-Z]'))) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Please input a valid table number'),
+                            SnackBar(
+                              content: Text('validation_table_number'.tr()),
                               backgroundColor: Colors.red,
                             ),
                           );
                         }
                         if(_numOfPeopleController.text.contains(RegExp(r'[a-zA-Z]'))) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Please input a valid table number'),
+                            SnackBar(
+                              content: Text('validation_num_of_people'.tr()),
                               backgroundColor: Colors.red,
                             ),
                           );
@@ -141,8 +142,8 @@ class _AddTablePageAdminState extends State<AddTablePageAdmin> {
                             _numOfPeopleController.text.isEmpty ||
                             _locationController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Please fill all the fields'),
+                            SnackBar(
+                              content: Text('validation_all_field'.tr()),
                               backgroundColor: Colors.red,
                             ),
                           );
@@ -155,8 +156,8 @@ class _AddTablePageAdminState extends State<AddTablePageAdmin> {
                             isBooked: false,
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('New Table Successfully Added!'),
+                          SnackBar(
+                            content: Text('table_add_success'.tr()),
                             backgroundColor: primaryColor,
                           ),
                         );

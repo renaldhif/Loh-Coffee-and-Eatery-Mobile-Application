@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -78,9 +79,9 @@ class _AddReviewPageState extends State<AddReviewPage> {
                   horizontal: 15,
                   vertical: 15,
                 ),
-                labelText: 'Input Review', // this field is required
+                labelText: 'input_review'.tr(), // this field is required
                 floatingLabelBehavior: FloatingLabelBehavior.never,
-                hintText: 'Submit your review here', // this field is required
+                hintText: 'submit_your_review_here'.tr(), // this field is required
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -134,7 +135,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Submit Review',
+                        'submit_review'.tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 40,
                           fontWeight: bold,
@@ -159,9 +160,9 @@ class _AddReviewPageState extends State<AddReviewPage> {
                         listener: (context, state) {
                           if (state is ReviewSuccess) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
+                              SnackBar(
                                 content: Text(
-                                    'Review Submitted. Thank you for your review!'),
+                                    'review_submit_success'.tr()),
                                 backgroundColor: primaryColor,
                               ),
                             );
@@ -186,7 +187,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
                             );
                           }
                           return CustomButton(
-                            title: 'Submit Review',
+                            title: 'submit_review'.tr(),
                             onPressed: () async {
                               // get Date now
                               // DateTime now = DateTime.now();

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,9 +39,6 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
   bool isOpen = false;
   bool isConfirm = false;
 
-
-
-
   final CollectionReference<Map<String, dynamic>> orderList =
       FirebaseFirestore.instance.collection('orders');
 
@@ -49,10 +47,9 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
 
   final CollectionReference<Map<String, dynamic>> menuList =
       FirebaseFirestore.instance.collection('menus');
-  
+
   final CollectionReference<Map<String, dynamic>> userList =
       FirebaseFirestore.instance.collection('users');
-
 
   //get order length
   Future<int> orderLength() async {
@@ -63,9 +60,8 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
 
   //get order id by order number
   Future<String> getOrderIdByOrderNumber(int orderNumber) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await orderList
-        .where('number', isEqualTo: orderNumber)
-        .get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await orderList.where('number', isEqualTo: orderNumber).get();
     if (querySnapshot.docs.isNotEmpty) {
       String id = querySnapshot.docs.first.id;
       return id;
@@ -76,9 +72,8 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
 
   //get order timestamp by order number
   Future<Timestamp> getOrderTimestampByOrderNumber(int orderNumber) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await orderList
-        .where('number', isEqualTo: orderNumber)
-        .get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await orderList.where('number', isEqualTo: orderNumber).get();
     if (querySnapshot.docs.isNotEmpty) {
       Timestamp timestamp = querySnapshot.docs.first.data()['orderDateTime'];
       return timestamp;
@@ -92,7 +87,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
     PaymentModel payment = await context
         .read<PaymentCubit>()
         .getPaymentByTimestamp(paymentDateTime: timestamp);
-    
+
     return payment;
   }
 
@@ -145,14 +140,12 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
     List<dynamic> menuListHere = documentSnapshot.data()!['menu'];
     List<String> menuIdList = [];
 
-
     for (int i = 0; i < menuListHere.length; i++) {
       String menuTitle = menuListHere[i]['title'];
 
       //get menuModel by comparing menuTitle with menuList
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await menuList
-          .where('title', isEqualTo: menuTitle)
-          .get();
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await menuList.where('title', isEqualTo: menuTitle).get();
       if (querySnapshot.docs.isNotEmpty) {
         String menuId = querySnapshot.docs.first.id;
         menuIdList.add(menuId);
@@ -172,7 +165,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
     for (int i = 0; i < menuIdList.length; i++) {
       DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
           await menuList.doc(menuIdList[i]).get();
-            Map<String, dynamic> data = documentSnapshot.data()!;
+      Map<String, dynamic> data = documentSnapshot.data()!;
       MenuModel menuModel = MenuModel(
         id: documentSnapshot.id,
         title: data['title'],
@@ -197,11 +190,10 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await orderList.doc(orderId).get();
     String userEmail = documentSnapshot.data()!['user']['email'];
-    
+
     //get user document by comparing userName with userList
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await userList
-          .where('email', isEqualTo: userEmail)
-          .get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await userList.where('email', isEqualTo: userEmail).get();
     if (querySnapshot.docs.isNotEmpty) {
       String userId = querySnapshot.docs.first.id;
       print('User ID: $userId');
@@ -211,15 +203,12 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
     }
   }
 
-  
-
   //get list of order by email userNow
   Future<List<int>> getOrderListNumberByUserEmail(String userEmail) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await orderList
-        .where('user.email', isEqualTo: userEmail)
-        .get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await orderList.where('user.email', isEqualTo: userEmail).get();
     List<int> orderListNew = [];
-    
+
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       int orderNumber = querySnapshot.docs[i].data()['number'];
       orderListNew.add(orderNumber);
@@ -233,7 +222,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
   Future<int> orderListNewLength() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
     String userEmail = currentUser!.email!;
-        
+
     List<int> orderListNew = await getOrderListNumberByUserEmail(userEmail);
     int orderListNewLength = orderListNew.length;
     print('Order List New Length: $orderListNewLength');
@@ -244,15 +233,12 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
   Future<int> retrieveNumber(int index) async {
     User? currentUser = FirebaseAuth.instance.currentUser;
     String userEmail = currentUser!.email!;
-        
+
     List<int> orderListNew = await getOrderListNumberByUserEmail(userEmail);
     int orderNumber = orderListNew[index];
     print('Order Number retrieve: $orderNumber');
     return orderNumber;
   }
-
-
-
 
   //method to get orders by lopping through orderList length and call orderHeader
   Widget getOrders() {
@@ -269,34 +255,33 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Container(
-                        width: 0.8 * MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 1,
-                              offset: const Offset(0, 1),
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              snapshot.data!,
-                              const SizedBox(
-                                height: 10,
+                          width: 0.8 * MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 1,
+                                offset: const Offset(0, 1),
                               ),
                             ],
                           ),
-                        )
-                      );
+                          child: Center(
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                snapshot.data!,
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          ));
                     } else {
                       return const Center(
                         child: CircularProgressIndicator(),
@@ -308,14 +293,13 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
           );
         } else {
           //return no payments
-          return const Center(
-            child: Text('No Orders'),
+          return Center(
+            child: Text('no_order'.tr()),
           );
         }
       },
     );
   }
-
 
   Future<Widget> orderHeader(int orderNumber) async {
     int orderNum = await retrieveNumber(orderNumber);
@@ -324,7 +308,6 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
     String time = await formatTime(payment);
     // String customerName = await getCustomerNameByOrderNumber(orderNumber + 1);
     return GestureDetector(
-      
       onTap: () async {
         // String name = await getCustomerNameByIndex(orderNumber);
         // print('Customer Name: $name');
@@ -334,67 +317,63 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
         // getMenuIdByOrderNumber(orderNumber + 1);
         // getMenuByOrderNumber(orderNumber + 1);
         // getUserIdByOrderNumber(orderNumber + 1);
-        //get user now 
+        //get user now
         // User? currentUser = FirebaseAuth.instance.currentUser;
         // String userEmail = currentUser!.email!;
-        
+
         // getOrderListByUserEmail(userEmail);
-        
-       
-        
+
         setState(() {
           // Navigator.pushNamed(context, '/order-details');
           Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    OrderDetailsCustomerPage(orderNumber: orderNum)));
-          
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      OrderDetailsCustomerPage(orderNumber: orderNum)));
         });
       },
       child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Order No: $orderNum',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                softWrap: false,
-                style: greenTextStyle.copyWith(
-                  fontSize: 14,
-                  fontWeight: black,
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'order'.tr() + ' No: ${orderNumber + 1}',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: greenTextStyle.copyWith(
+                fontSize: 14,
+                fontWeight: black,
               ),
-    
-              const SizedBox(height: 5),
-    
-              //* Order Date
-              Text(
-                'Order Date: ${time}',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                softWrap: false,
-                style: mainTextStyle.copyWith(
-                  fontSize: 14,
-                  fontWeight: black,
-                ),
+            ),
+
+            const SizedBox(height: 5),
+
+            //* Order Date
+            Text(
+              'order_date'.tr() + ': ${time}',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: mainTextStyle.copyWith(
+                fontSize: 14,
+                fontWeight: black,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 
-  Widget orderContent(){
+  Widget orderContent() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-      // spacer line
+        // spacer line
         const SizedBox(height: 5),
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
@@ -415,8 +394,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
         // spacer line
         const SizedBox(height: 5),
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
@@ -436,8 +414,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
         const SizedBox(height: 10),
         //* Table Number
         Visibility(
-          visible:
-              diningOption == 'Dine In' ? true : false,
+          visible: diningOption == 'Dine In' ? true : false,
           child: Text(
             'Table Number: \${1}',
             maxLines: 2,
@@ -454,8 +431,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
         // spacer line
         const SizedBox(height: 5),
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
@@ -463,8 +439,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
         orderContent(),
         // spacer line
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
@@ -506,8 +481,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
         // spacer line
         const SizedBox(height: 5),
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
@@ -568,8 +542,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
         // spacer line
         const SizedBox(height: 5),
         Container(
-          width:
-              0.8 * MediaQuery.of(context).size.width,
+          width: 0.8 * MediaQuery.of(context).size.width,
           height: 5,
           color: kUnavailableColor,
         ),
@@ -700,7 +673,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 12),
                           child: Text(
-                            'Your Order Lists',
+                            'your_order_list'.tr(),
                             style: greenTextStyle.copyWith(
                               fontSize: 26,
                               fontWeight: bold,
@@ -728,10 +701,9 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
                   ],
                 ),
               ), // Header End
-              
+
               //* Order Header
               getOrders(),
-              
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loh_coffee_eatery/models/review_model.dart';
@@ -62,7 +63,7 @@ class _ReviewPageAdminState extends State<ReviewPageAdmin> {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Reviews',
+                        'review_list'.tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 40,
                           fontWeight: bold,
@@ -95,8 +96,8 @@ class _ReviewPageAdminState extends State<ReviewPageAdmin> {
                   } else if (state is ReviewSuccess) {
                     return reviewCard(state.reviews);
                   } else {
-                    return const Center(
-                      child: Text('Something went wrong!'),
+                    return Center(
+                      child: Text('something_wrong'.tr()),
                     );
                   }
                 },

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:loh_coffee_eatery/cubit/auth_cubit.dart';
 import '../../models/user_model.dart';
 import '/ui/widgets/custom_button_red.dart';
@@ -17,10 +19,9 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
   // boolean for dark mode
   bool _isDarkMode = false;
   // boolean for switch language
-  bool _isSwitched = false;
 
   // To change the selected value of bottom navigation bar
-  int _selectedIndex = 4;
+  int _selectedIndex = 5;
   void _changeSelectedIndex(int index) {
     setState(() {
       _selectedIndex = index;
@@ -34,18 +35,25 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
         //   break;
         case 2:
           Navigator.pushNamed(context, '/orderlist-admin');
+          _selectedIndex = 2;
           break;
         case 3:
           Navigator.pushNamed(context, '/payment-admin');
+          _selectedIndex = 3;
           break;
         // case 4:
         //   break;
         case 5:
           Navigator.pushNamed(context, '/profile-admin');
+          _selectedIndex = 5;
           // _selectedIndex = 0;
           break;
       }
     });
+  }
+
+  String LocalizedText(String key) {
+    return tr(key);
   }
 
   Widget signOutButton() {
@@ -70,7 +78,7 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: CustomButtonRed(
-              title: 'Sign Out',
+              title: "sign_out".tr(),
               onPressed: () {
                 context.read<AuthCubit>().signOut();
               }),
@@ -81,6 +89,12 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    Box<bool> isLanguageEnglishBox =
+        Hive.box<bool>('isLanguageEnglishBox_${user!.uid}');
+    bool _isSwitched =
+        isLanguageEnglishBox.get('isLanguageEnglish') ?? false;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -110,12 +124,12 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Profile Menu',
+                        "profile_menu",
                         style: greenTextStyle.copyWith(
                           fontSize: 40,
                           fontWeight: bold,
                         ),
-                      ),
+                      ).tr(),
                     ),
                   ],
                 ),
@@ -195,13 +209,13 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 15, bottom: 10),
                 child: Text(
-                  'Table Management',
+                  "table_management",
                   style: greenTextStyle.copyWith(
                     fontSize: 14,
                     fontWeight: bold,
                   ),
                   textAlign: TextAlign.left,
-                ),
+                ).tr(),
               ),
               // Add Table
               Container(
@@ -226,13 +240,13 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Add Table",
+                          "add_table",
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
                           ),
                           textAlign: TextAlign.start,
-                        ),
+                        ).tr(),
                       ],
                     ),
                     IconButton(
@@ -271,13 +285,13 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Delete Table",
+                          "delete_table",
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
                           ),
                           textAlign: TextAlign.start,
-                        ),
+                        ).tr(),
                       ],
                     ),
                     IconButton(
@@ -298,13 +312,13 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 15, bottom: 10),
                 child: Text(
-                  'Reviews & Ratings',
+                  "review_ratings",
                   style: greenTextStyle.copyWith(
                     fontSize: 14,
                     fontWeight: bold,
                   ),
                   textAlign: TextAlign.left,
-                ),
+                ).tr(),
               ),
 
               Container(
@@ -329,13 +343,13 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "View Review",
+                          "view_reviews",
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
                           ),
                           textAlign: TextAlign.start,
-                        ),
+                        ).tr(),
                       ],
                     ),
                     IconButton(
@@ -356,13 +370,13 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 15, bottom: 10),
                 child: Text(
-                  'General Settings',
+                  "general_settings",
                   style: greenTextStyle.copyWith(
                     fontSize: 14,
                     fontWeight: bold,
                   ),
                   textAlign: TextAlign.left,
-                ),
+                ).tr(),
               ),
 
               // General Setting Content
@@ -390,13 +404,13 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Dark Mode",
+                          "dark_mode",
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
                           ),
                           textAlign: TextAlign.start,
-                        ),
+                        ).tr(),
                       ],
                     ),
                     Switch(
@@ -436,22 +450,35 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Switch Language to Indonesia",
+                          "language",
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
                           ),
                           textAlign: TextAlign.start,
-                        ),
+                        ).tr(),
                       ],
                     ),
                     Switch(
                       //TODO: Iteration 3: Implement Switch Language
-                      onChanged: (value) {
+                      onChanged: (value) async {
+                        if (user != null) {
+                          final box = Hive.box<bool>(
+                              'isLanguageEnglishBox_${user.uid}');
+                          await box.put('isLanguageEnglish', value);
+                        }
                         setState(() {
                           _isSwitched = value;
                         });
+                        if (value) {
+                          await EasyLocalization.of(context)!
+                              .setLocale(Locale('id', 'ID'));
+                        } else {
+                          await EasyLocalization.of(context)!
+                              .setLocale(Locale('en', 'US'));
+                        }
                       },
+
                       value: _isSwitched,
                       activeColor: primaryColor,
                     ),
@@ -467,32 +494,32 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_rounded),
-            label: 'Reserves',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_bulleted_rounded),
-            label: 'Orders',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.payments_outlined),
-            label: 'Payments',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.post_add_rounded),
-            label: 'Posts',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "nav_home".tr(),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_rounded),
+              label: "nav_reservations".tr(),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_rounded),
+              label: "nav_orders".tr(),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.payments_outlined),
+              label: "nav_payments".tr(),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.post_add_rounded),
+              label: "nav_posts".tr(),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "nav_profile".tr(),
+            ),
+          ],
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
           selectedItemColor: primaryColor,

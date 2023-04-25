@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -483,7 +484,7 @@ Future<OrderModel> getOrderModelById(String orderID) async {
         const SizedBox(height: 10),
 
         Text(
-          'Order Number: $orderNumber',
+          'order_number'.tr() + ': $orderNumber',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -506,7 +507,7 @@ Future<OrderModel> getOrderModelById(String orderID) async {
 
         //* Customer Name
         Text(
-          'Customer Name: $customerName',
+          'customer_name'.tr() + ': $customerName',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -529,7 +530,7 @@ Future<OrderModel> getOrderModelById(String orderID) async {
 
         //* Order Details
         Text(
-          'Dining Option: $diningOption',
+          'dining_option'.tr() + ': $diningOption',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -580,7 +581,7 @@ Future<OrderModel> getOrderModelById(String orderID) async {
         //* TOTAL PRICE
         const SizedBox(height: 10),
         Text(
-          'Total Price:',
+          'total_price'.tr() + ':',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -624,7 +625,7 @@ Future<OrderModel> getOrderModelById(String orderID) async {
 
         //* Payment Status
         Text(
-          'Payment Status:',
+          'payment_status'.tr() + ': ',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -648,7 +649,7 @@ Future<OrderModel> getOrderModelById(String orderID) async {
 
         //* order Status
         Text(
-          'Order Status:',
+          'order_status'.tr() + ': ',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -663,7 +664,7 @@ Future<OrderModel> getOrderModelById(String orderID) async {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
-          style: orderStatus == 'Order confirmed'
+          style: orderStatus == 'Confirmed'
               ? greenTextStyle.copyWith(
                   fontSize: 14,
                   fontWeight: medium,
@@ -717,7 +718,7 @@ Future<OrderModel> getOrderModelById(String orderID) async {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Your Order🍽',
+                        'your_order'.tr() + '🍽',
                         style: greenTextStyle.copyWith(
                           fontSize: 28,
                           fontWeight: bold,
@@ -729,7 +730,7 @@ Future<OrderModel> getOrderModelById(String orderID) async {
                 ),
               ), // Header End
               //* Order Cards
-             FutureBuilder<Widget>(
+            FutureBuilder<Widget>(
                 future: orderDetailCard(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {

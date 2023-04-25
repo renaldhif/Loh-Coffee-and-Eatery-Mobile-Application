@@ -665,45 +665,42 @@ class _CartPageState extends State<CartPage> {
                                 child: Center(
                                   child: ButtonTheme(
                                     alignedDropdown: true,
-
                                     //* Dropdown
-                                    child: //* Dropdown
-DropdownButton(
-  // value: dropdownvalue,
-  hint: Text(
-    dropdownvalue,
-    style: greenTextStyle.copyWith(
-      fontWeight: semiBold,
-      fontSize: 15,
-    ),
-  ),
-  menuMaxHeight: 150,
-  icon: const Icon(
-    Icons.keyboard_arrow_down,
-    color: primaryColor,
-  ),
-  items: List.generate(snapshot.data!,
-      (index) {
-    return DropdownMenuItem(
-      value: index + 1,
-      child: Text((index + 1).toString()),
-    );
-  }).toList(),
-  onChanged: (int? newValue) {
-    setState(() {
-      dropdownvalue = newValue!.toString();
-      print('dropdownvalue ${dropdownvalue}');
-      tableChoosen = newValue!;
-      print('tableChoosen $tableChoosen');
-    });
-  },
-  // isExpanded: true,
-  underline: Container(
-    height: 1,
-    color: primaryColor,
-  ),
-),
-
+                                    child: DropdownButton(
+                                      // value: dropdownvalue,
+                                      hint: Text(
+                                        dropdownvalue,
+                                        style: greenTextStyle.copyWith(
+                                          fontWeight: semiBold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      menuMaxHeight: 150,
+                                      icon: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: primaryColor,
+                                      ),
+                                      items: List.generate(snapshot.data!,
+                                          (index) {
+                                        return DropdownMenuItem(
+                                          value: index + 1,
+                                          child: Text((index + 1).toString()),
+                                        );
+                                      }).toList(),
+                                      onChanged: (int? newValue) {
+                                        setState(() {
+                                          dropdownvalue = newValue!.toString();
+                                          print('dropdownvalue ${dropdownvalue}');
+                                          tableChoosen = newValue;
+                                          print('tableChoosen $tableChoosen');
+                                        });
+                                      },
+                                      // isExpanded: true,
+                                      underline: Container(
+                                        height: 1,
+                                        color: primaryColor,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               );

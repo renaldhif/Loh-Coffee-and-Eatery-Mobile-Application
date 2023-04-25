@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -293,8 +294,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           );
         } else {
           //return no payments
-          return const Center(
-            child: Text('No Orders'),
+          return Center(
+            child: Text('no_order'.tr()),
           );
         }
       },
@@ -336,7 +337,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         const SizedBox(height: 10),
 
         Text(
-          'Order Number: $orderNumber',
+          'order_number'.tr() + ' : $orderNumber',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -357,7 +358,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
         //* Customer Name
         Text(
-          'Customer Name: $customerName',
+          'customer_name'.tr() + ': $customerName',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -380,7 +381,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
         //* Order Details
         Text(
-          'Dining Option: $diningOption',
+          'dining_option'.tr() + ' : $diningOption',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -394,7 +395,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         Visibility(
           visible: diningOption == 'Dine In' ? true : false,
           child: Text(
-            'Table Number: $tableNumber',
+            'table_number'.tr() + ': $tableNumber',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             softWrap: false,
@@ -426,7 +427,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         //* TOTAL PRICE
         const SizedBox(height: 10),
         Text(
-          'Total Price:',
+          'total_price'.tr() + ' :',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -469,7 +470,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
         //* Payment Status
         Text(
-          'Payment Status:',
+          'payment_status'.tr() + ':',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -493,7 +494,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
         //* order Status
         Text(
-          'Order Status:',
+          'order_status'.tr() + ':',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -549,7 +550,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
               },
               builder: (context, state) {
                 return CustomButton(
-                    title: 'Confirm order',
+                    title: "confirm".tr(),
                     onPressed: () {
                       
 
@@ -579,7 +580,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           child: Visibility(
             visible: !isConfirm && paymentStatus == 'Confirmed',
             child: CustomButtonRed(
-              title: 'Reject order',
+              title: "reject".tr(),
               onPressed: () {
                 context.read<OrderCubit>().updateOrderStatusByNumber(
                       orderNumber: widget.orderNumber!,
@@ -621,7 +622,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         const SizedBox(height: 5),
 
         Text(
-          'Quantity: $qty',
+          'quantity'.tr() + ': $qty',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -667,7 +668,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
               // The detail of the menu selected
               Text(
-                'Order Details',
+                'order_details'.tr(),
                 style: greenTextStyle.copyWith(
                   fontSize: 22,
                   fontWeight: black,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -222,7 +223,7 @@ class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
-                                  'Add to Cart',
+                                  'add_to_cart'.tr(),
                                   style: greenTextStyle.copyWith(
                                     fontSize: 12,
                                     fontWeight: extraBold,
