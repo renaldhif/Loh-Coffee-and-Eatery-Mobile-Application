@@ -8,77 +8,18 @@ import '/ui/widgets/custom_button_red.dart';
 import '/shared/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfileMenuPage extends StatefulWidget {
-  const ProfileMenuPage({super.key});
+class HowToUsePage extends StatefulWidget {
+  const HowToUsePage({super.key});
 
   @override
-  State<ProfileMenuPage> createState() => _ProfileMenuPageState();
+  State<HowToUsePage> createState() => _HowToUsePageState();
 }
 
-class _ProfileMenuPageState extends State<ProfileMenuPage> {
-  // boolean for dark mode
-  // bool _isDarkMode = false;
-  // boolean for switch language
-  bool _isSwitched = false;
+class _HowToUsePageState extends State<HowToUsePage> {
 
-    void initState() {
+  void initState() {
     super.initState();
     initializeTheme(false); 
-// Call the initializeTheme function here
-  }
-
-  // To change the selected value of bottom navigation bar
-  int _selectedIndex = 4;
-  void _changeSelectedIndex(int index) {
-    setState(() {
-      _selectedIndex = index;
-      switch (index) {
-        case 0:
-          // Navigator.pushReplacementNamed(context, '/home');
-          Navigator.pop(context);
-          break;
-        // case 2:
-        //   Navigator.pushNamed(context, '/order');
-        //   break;
-        // case 3:
-        //   Navigator.pushNamed(context, '/notification');
-        //   break;
-        // case 4:
-        //   Navigator.pushNamed(context, '/profilemenu');
-        //   break;
-      }
-    });
-  }
-
-  Widget signOutButton() {
-    return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthFailed) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.red,
-              content: Text(state.error),
-            ),
-          );
-        } else if (state is AuthInitial) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/login', (route) => false);
-        }
-      },
-      builder: (context, state) {
-        if (state is AuthLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CustomButtonRed(
-              title: 'Sign Out',
-              onPressed: () {
-                context.read<AuthCubit>().signOut();
-              }),
-        );
-      },
-    );
   }
 
   @override
@@ -113,13 +54,12 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         size: 55,
                       ),
                     ),
-                    const SizedBox(height: 30),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12),
+                    const SizedBox(height: 20), 
+                    Center(
                       child: Text(
-                        'Profile Menu',
+                        'How to Use',
                         style: greenTextStyle.copyWith(
-                          fontSize: 40,
+                          fontSize: 28,
                           fontWeight: bold,
                         ),
                       ),
@@ -127,82 +67,12 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                   ],
                 ),
               ),
-              // profile detail
-              const SizedBox(height: 15),
 
-              // profile card
-              Container(
-                width: double.infinity,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  border: Border.all(
-                    color: backgroundColor,
-                    width: 2,
-                  ),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 15),
-                        ),
-                        const SizedBox(width: 20),
-                        BlocBuilder<AuthCubit, AuthState>(
-                          builder: (context, state) {
-                            if (state is AuthSuccess) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '${state.user.name}',
-                                    style: mainTextStyle.copyWith(
-                                      fontSize: 20,
-                                      fontWeight: bold,
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 5),
-                                  ),
-                                  Text(
-                                    '${state.user.email}',
-                                    style: mainTextStyle.copyWith(
-                                      fontSize: 15,
-                                      fontWeight: bold,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            } else {}
-                            return const SizedBox();
-                          },
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/update-profile');
-                      },
-                      icon:  Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: primaryColor,
-                        size: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Account Setting title
               const SizedBox(height: 25),
               Padding(
                 padding: const EdgeInsets.only(left: 15, bottom: 10),
                 child: Text(
-                  'Account Settings',
+                  'About Us',
                   style: greenTextStyle.copyWith(
                     fontSize: 14,
                     fontWeight: bold,
@@ -211,9 +81,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 ),
               ),
 
-              // Account Setting Content
-
-              // Edit Preferences
+              // About Us
               Container(
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 height: 50,
@@ -230,13 +98,13 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                     Row(
                       children: [
                          Icon(
-                          Icons.fastfood_rounded,
+                          Icons.description,
                           color: primaryColor,
                           size: 26,
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Edit Menu Preferences",
+                          "About Us",
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -247,7 +115,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                     ),
                     IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/custpreferences');
+                        Navigator.pushNamed(context, '/aboutus');
                       },
                       icon:  Icon(
                         Icons.arrow_forward,
@@ -258,57 +126,209 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 ),
               ),
 
-              // Submit Review
-              Container(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                height: 50,
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  border: Border.all(
-                    color: backgroundColor,
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                         Icon(
-                          Icons.rate_review_rounded,
-                          size: 26,
-                          color: primaryColor,
-                        ),
-                        const SizedBox(width: 20),
-                        Text(
-                          "Submit Review",
-                          style: greenTextStyle.copyWith(
-                            fontSize: 17,
-                            fontWeight: bold,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/submit-review');
-                      },
-                      icon:  Icon(
-                        Icons.arrow_forward,
-                        color: primaryColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
 
-              // General Setting title
+              // FAQ
               const SizedBox(height: 25),
               Padding(
                 padding: const EdgeInsets.only(left: 15, bottom: 10),
                 child: Text(
-                  'General Settings',
+                  'Frequently Asked Questions (FAQ)',
+                  style: greenTextStyle.copyWith(
+                    fontSize: 14,
+                    fontWeight: bold,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              
+
+              // FAQ Managing Account
+              Container(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                height: 50,
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  border: Border.all(
+                    color: backgroundColor,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                         Icon(
+                          Icons.manage_accounts_rounded,
+                          color: primaryColor,
+                          size: 26,
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          "Managing Account",
+                          style: greenTextStyle.copyWith(
+                            fontSize: 17,
+                            fontWeight: bold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/faq-account');
+                      },
+                      icon:  Icon(
+                        Icons.arrow_forward,
+                        color: primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // FAQ Order Management
+              Container(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                height: 50,
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  border: Border.all(
+                    color: backgroundColor,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                         Icon(
+                          Icons.restaurant_menu_rounded,
+                          color: primaryColor,
+                          size: 26,
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          "Ordering Food and Payment",
+                          style: greenTextStyle.copyWith(
+                            fontSize: 17,
+                            fontWeight: bold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/faq-order');
+                      },
+                      icon:  Icon(
+                        Icons.arrow_forward,
+                        color: primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // FAQ Make a Reservation
+              Container(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                height: 50,
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  border: Border.all(
+                    color: backgroundColor,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                         Icon(
+                          Icons.book_online_rounded,
+                          color: primaryColor,
+                          size: 26,
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          "Make a Reservation",
+                          style: greenTextStyle.copyWith(
+                            fontSize: 17,
+                            fontWeight: bold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/faq-reservation');
+                      },
+                      icon:  Icon(
+                        Icons.arrow_forward,
+                        color: primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              //General questions
+              Container(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                height: 50,
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  border: Border.all(
+                    color: backgroundColor,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                         Icon(
+                          Icons.question_answer_rounded,
+                          color: primaryColor,
+                          size: 26,
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          "General Questions",
+                          style: greenTextStyle.copyWith(
+                            fontSize: 17,
+                            fontWeight: bold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/faq-general');
+                      },
+                      icon:  Icon(
+                        Icons.arrow_forward,
+                        color: primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+
+              // Privacy Policy
+              const SizedBox(height: 25),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, bottom: 10),
+                child: Text(
+                  'Privacy Policy',
                   style: greenTextStyle.copyWith(
                     fontSize: 14,
                     fontWeight: bold,
@@ -317,9 +337,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 ),
               ),
 
-              // General Setting Content
-
-              // Dark Mode
+              // Privacy Policy Button
               Container(
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 height: 50,
@@ -336,107 +354,13 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                     Row(
                       children: [
                          Icon(
-                          Icons.dark_mode_rounded,
+                          Icons.privacy_tip_rounded,
                           size: 26,
                           color: primaryColor,
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Dark Mode",
-                          style: greenTextStyle.copyWith(
-                            fontSize: 17,
-                            fontWeight: bold,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ],
-                    ),
-                    Switch(
-                      onChanged: (value) {
-                        setState(() {
-                          isDarkModeBox.put('isDarkMode', value);
-                          initializeTheme(value);
-                          _isDarkMode = value;
-                          context.read<ThemeCubit>().toggleTheme();
-                        });
-                      },
-                      value: _isDarkMode,
-                      activeColor: primaryColor,
-                    ),
-                  ],
-                ),
-              ),
-
-              // Switch Language
-              Container(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                height: 50,
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  border: Border.all(
-                    color: backgroundColor,
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                         Icon(
-                          Icons.translate_rounded,
-                          size: 26,
-                          color: primaryColor,
-                        ),
-                        const SizedBox(width: 20),
-                        Text(
-                          "Switch Language to Indonesia",
-                          style: greenTextStyle.copyWith(
-                            fontSize: 17,
-                            fontWeight: bold,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ],
-                    ),
-                    Switch(
-                      // * TODO: Iteration 3: Implement Switch Language
-                      onChanged: (value) {
-                        setState(() {
-                          _isSwitched = value;
-                        });
-                      },
-                      value: _isSwitched,
-                      activeColor: primaryColor,
-                    ),
-                  ],
-                ),
-              ),
-
-              // How to Use Loh App
-              Container(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                height: 50,
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  border: Border.all(
-                    color: backgroundColor,
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                         Icon(
-                          Icons.help_rounded,
-                          size: 26,
-                          color: primaryColor,
-                        ),
-                        const SizedBox(width: 20),
-                        Text(
-                          "How to Use Loh App",
+                          "Privacy Policy",
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -447,7 +371,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                     ),
                     IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/howtouse');
+                        Navigator.pushNamed(context, '/privacy-policy');
                       },
                       icon:  Icon(
                         Icons.arrow_forward,
@@ -459,42 +383,10 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
               ),
 
               const SizedBox(height: 25),
-              // Sign Out Button
-              signOutButton(),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: whiteColor,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month_rounded),
-              label: 'Reserve',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_rounded),
-              label: 'Order List',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_rounded),
-              label: 'Notification',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _selectedIndex,
-          selectedItemColor: primaryColor,
-          unselectedItemColor: greyColor,
-          showUnselectedLabels: true,
-          onTap: _changeSelectedIndex),
     );
   }
 }

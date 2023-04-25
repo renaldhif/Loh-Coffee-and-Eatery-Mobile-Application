@@ -143,11 +143,29 @@ class ReservationService {
       });
       //delete reservation
       await _reservationCollection.doc(id).delete();
-
-
-      
     } catch (e) {
       throw e;
     }
   }
+
+  // Done Reservation
+  Future<void> doneReservation(String id) async {
+    try {
+      DocumentSnapshot documentSnapshot =
+          await _reservationCollection.doc(id).get();
+      //get table number from document snapshot
+      Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+      int tableNum = data['tableNum'];
+      //update table isBooked to false
+      QuerySnapshot querySnapshot = await _tableCollection
+          .where('tableNum', isEqualTo: tableNum)
+          .get();
+      querySnapshot.docs.forEach((element) {
+        _tableCollection.doc(element.id).update({'isBooked': false});
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
 }

@@ -120,6 +120,7 @@ class _HomePageRecommendState extends State<HomePageRecommend> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -135,7 +136,7 @@ class _HomePageRecommendState extends State<HomePageRecommend> {
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/home');
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
@@ -164,10 +165,13 @@ class _HomePageRecommendState extends State<HomePageRecommend> {
                           children: [
                             Visibility(
                               visible: state.menuRecommend.isEmpty,
-                              child: const Padding(
-                                padding: EdgeInsets.all(24),
+                              child: Padding(
+                                padding: const EdgeInsets.all(24),
                                 child: Text(
                                   'We are sorry, we cannot provide the recommendation menu due to your menu preferences do not match with our recommendation menu.\n\n To get our recommended menu, you can either update your menu preferences or empty the your menu preferences.\n\nThank you.',
+                                  style: mainTextStyle.copyWith(
+                                    fontSize: 14,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -200,7 +204,7 @@ class _HomePageRecommendState extends State<HomePageRecommend> {
         },
         label: Text(_shoppingBox.length.toString()),
         icon: const Icon(Icons.shopping_cart_rounded),
-        backgroundColor: primaryColor,
+        backgroundColor: greenButtonColor,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -225,6 +229,7 @@ class _HomePageRecommendState extends State<HomePageRecommend> {
             label: 'Profile',
           ),
         ],
+        backgroundColor: whiteColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: primaryColor,

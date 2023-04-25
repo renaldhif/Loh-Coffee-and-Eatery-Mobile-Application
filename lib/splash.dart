@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
               fit: BoxFit.contain,
             ),
           ),
-          const CircularProgressIndicator(
+           CircularProgressIndicator(
             color: primaryColor,
           )
         ],

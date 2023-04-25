@@ -33,7 +33,7 @@ class CustomButtonRed extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: whiteTextStyle.copyWith(
+          style: whiteTextButtonStyle.copyWith(
             fontSize: fontSize,
             fontWeight: bold,
           ),

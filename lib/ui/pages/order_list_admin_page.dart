@@ -50,11 +50,25 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
       FirebaseFirestore.instance.collection('users');
 
 
+  //method to change orderList to descending order
+  Future<void> changeOrderListToDescending() async {
+    await orderList.orderBy('number', descending: true).get();
+  }
   //get order length
   Future<int> orderLength() async {
     AggregateQuerySnapshot query = await orderList.count().get();
     print('The number of order: ${query.count}');
     return query.count;
+  }
+
+  //get order number by index
+  Future<int> getOrderNumberByIndex(int index) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await orderList
+        .orderBy('number', descending: true)
+        .limit(index + 1)
+        .get();
+    int orderNumber = querySnapshot.docs[index].data()['number'];
+    return orderNumber;
   }
 
   
@@ -228,7 +242,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                         width: 0.8 * MediaQuery.of(context).size.width,
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: whiteColor,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
@@ -273,12 +287,13 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
   }
 
 
-  Future<Widget> orderHeader(int orderNumber) async {
-    Timestamp orderTime = await getOrderTimestampByOrderNumber(orderNumber + 1);
+  Future<Widget> orderHeader(int index) async {
+    int orderNumber = await getOrderNumberByIndex(index);
+    Timestamp orderTime = await getOrderTimestampByOrderNumber(orderNumber);
     PaymentModel payment = await getPaymentByTimestamp(orderTime);
     String time = await formatTime(payment);
 
-    String orderStatus = await getOrderStatusByOrderNumber(orderNumber + 1);
+    String orderStatus = await getOrderStatusByOrderNumber(orderNumber);
     if(orderStatus == 'Pending'){
       isConfirm = false;
     }
@@ -288,27 +303,19 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
 
     // String customerName = await getCustomerNameByOrderNumber(orderNumber + 1);
     return GestureDetector(
-      
       onTap: () async {
-        // String name = await getCustomerNameByIndex(orderNumber);
-        // print('Customer Name: $name');
-        getCustomerNameByOrderNumber(orderNumber + 1);
-        getTableNumberByOrderNumber(orderNumber + 1);
-        getOrderStatusByOrderNumber(orderNumber + 1);
-        getMenuIdByOrderNumber(orderNumber + 1);
-        getMenuByOrderNumber(orderNumber + 1);
-        getUserIdByOrderNumber(orderNumber + 1);
-        
-       
-        
         setState(() {
           // Navigator.pushNamed(context, '/order-details');
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    OrderDetailsPage(orderNumber: orderNumber + 1)));
-          
+            MaterialPageRoute( 
+              builder: (context) =>
+                //di bawah ini tdnya +1
+                OrderDetailsPage(
+                  orderNumber: orderNumber
+                  ),
+                ),
+              );
         });
       },
       child: Center(
@@ -316,7 +323,8 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Order No: ${orderNumber + 1}',
+                //di bawah ini tdnya +1
+                'Order No: ${orderNumber}',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 softWrap: false,
@@ -631,7 +639,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          color: whiteColor,
+          color: backgroundColor,
           width: double.infinity,
           child: Column(
             children: [
@@ -646,7 +654,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon:  Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
@@ -675,7 +683,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                           },
                           duration: const Duration(seconds: 1),
                           splashColor: Colors.transparent,
-                          icons: const <AnimatedIconItem>[
+                          icons: <AnimatedIconItem>[
                             AnimatedIconItem(
                               icon: Icon(Icons.refresh, color: primaryColor),
                             ),

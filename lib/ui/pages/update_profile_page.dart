@@ -45,7 +45,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          icon: const Icon(
+                          icon:  Icon(
                             Icons.arrow_circle_left_rounded,
                             color: primaryColor,
                             size: 55,
@@ -112,10 +112,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                                 return FittedBox(
                                   child: Theme(
                                     data: ThemeData.light().copyWith(
-                                      colorScheme: const ColorScheme.light(
+                                      colorScheme:  ColorScheme.light(
                                         primary: primaryColor,
                                       ),
-                                      buttonTheme: const ButtonThemeData(
+                                      buttonTheme:  ButtonThemeData(
                                         textTheme: ButtonTextTheme.primary,
                                       ),
                                     ),
@@ -141,13 +141,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
+                              borderSide:  BorderSide(
                                 color: primaryColor,
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
+                              borderSide:  BorderSide(
                                 color: primaryColor,
                                 width: 1.5,
                               ),
