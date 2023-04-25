@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loh_coffee_eatery/cubit/menu_cubit.dart';
@@ -34,11 +35,11 @@ class _HomePageAdminState extends State<HomePageAdmin> {
         case 3:
           Navigator.pushNamed(context, '/payment-admin');
           break;
-        // case 4:
-        //   break;
+        case 4:
+          Navigator.pushNamed(context, '/addpromo');
+          break;
         case 5:
           Navigator.pushNamed(context, '/profile-admin');
-          // _selectedIndex = 0;
           break;
       }
     });
@@ -50,6 +51,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
     super.initState();
     initializeTheme(false);
   }
+
 
   Widget menuCard(List<MenuModel> menus) {
     return Container(
@@ -111,8 +113,8 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                 if (state is MenuSuccess) {
                   return menuCard(state.menus);
                 } else {
-                  return const Center(
-                    child: Text('Something went wrong'),
+                  return Center(
+                    child: Text("something_wrong".tr()),
                   );
                 }
               }),
@@ -126,35 +128,35 @@ class _HomePageAdminState extends State<HomePageAdmin> {
         onPressed: () {
           Navigator.pushNamed(context, '/addmenu');
         },
-        label: const Text('Add Menu'),
+        label: Text('add_menu'.tr()),
         icon: const Icon(Icons.add),
         backgroundColor: greenButtonColor,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: "nav_home".tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_rounded),
-            label: 'Reserves',
+            label: "nav_reservations".tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.format_list_bulleted_rounded),
-            label: 'Orders',
+            label: "nav_orders".tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.payments_outlined),
-            label: 'Payments',
+            label: "nav_payments".tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.post_add_rounded),
-            label: 'Posts',
+            label: "nav_posts".tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: "nav_profile".tr(),
           ),
         ],
         backgroundColor: whiteColor,

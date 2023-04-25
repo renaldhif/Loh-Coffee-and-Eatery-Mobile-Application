@@ -1,5 +1,6 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -51,15 +52,15 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
         isLoading = true;
         if( isLoading == true){
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
-              content: Text('Uploading Image. Please wait for a moment...'),
+            SnackBar(
+              content: Text("loading_upload_image".tr()),
               backgroundColor: secondaryColor,
             ),
           );
         }
       });
     } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+      print('failed_upload_image'.tr() + ': $e');
     }
 
     Reference refStorage = FirebaseStorage.instance.ref().child('images/menus/${image!.path}');
@@ -71,8 +72,8 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
       _imageController.text = urlImg;
       if ( isLoading == false){
         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
-            content: Text('Image Uploaded'),
+          SnackBar(
+            content: Text("success_upload_image".tr()),
             backgroundColor: primaryColor,
           ),
         );
@@ -110,7 +111,7 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Update Menu',
+                        'update_menu'.tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 40,
                           fontWeight: bold,
@@ -124,33 +125,33 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
               // Add Menu Content
               //* Menu Name
               CustomTextFormField(
-                  title: 'Menu Name',
+                  title: 'menu_name'.tr(),
                   label: widget.inMenu!.title.toString(),
-                  hintText: 'input menu name',
+                  hintText: "text_menu_name".tr(),
                   controller: _menuNameController),
               //* Description
               CustomTextFormField(
-                  title: 'Menu Description',
+                  title: 'menu_description'.tr(),
                   label: widget.inMenu!.description.toString(),
-                  hintText: 'input menu description',
+                  hintText: "text_menu_description".tr(),
                   controller: _descriptionController),
               //* Price
               CustomTextFormField(
-                  title: 'Menu Price',
+                  title: 'menu_price'.tr(),
                   label: widget.inMenu!.price.toString(),
-                  hintText: 'input menu price',
+                  hintText: "text_menu_price".tr(),
                   controller: _priceController),
               //* Tag
               CustomTextFormField(
                   readOnly: true,
-                  title: 'Menu Tag',
+                  title: 'menu_tag'.tr(),
                   label: widget.inMenu!.tag.toString(),
                   hintText: widget.inMenu!.tag.toString(),
                   controller: _tagController),
               //* Checkboxes
               const SizedBox(height: 25,),
               Text(
-                'Please choose the menu tag below:',
+                "choose_tag".tr(),
                 style: greenTextStyle.copyWith(
                   fontSize: 18,
                   fontWeight: bold,
@@ -220,7 +221,7 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                 height: 15,
               ),
               Text(
-                'Upload an image',
+                'upload_image'.tr(),
                 style: greenTextStyle.copyWith(
                   fontSize: 18,
                   fontWeight: bold,
@@ -230,7 +231,7 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                 height: 15,
               ),
               CustomButtonWhite(
-                title: _imageController.text.isEmpty ? 'Choose an Image' : image!.path.split('/').last,
+                title: _imageController.text.isEmpty ? "choose_image".tr() : image!.path.split('/').last,
                 fontSize: _imageController.text.isEmpty ? 18 : 12,
                 onPressed: () {
                   getImage();
@@ -264,7 +265,7 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                       );
                     }
                     return CustomButton(
-                      title: 'Update Menu',
+                      title: 'update_menu'.tr(),
                       onPressed: () {
                         if (_menuNameController.text.isEmpty) {
                           _menuNameController.text =
@@ -287,8 +288,8 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                         }
                         if(_priceController.text.contains(RegExp(r'[a-zA-Z]'))) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Please input a valid price'),
+                            SnackBar(
+                              content: Text("validation_price".tr()),
                               backgroundColor: Colors.red,
                             ),
                           );
@@ -304,10 +305,9 @@ class _AddMenuPageAdminState extends State<UpdateMenuPageAdmin> {
                             );
                             // Navigator.popAndPushNamed(context, '/home-admin');
                             ScaffoldMessenger.of(context).showSnackBar(
-                             SnackBar(
-                              content: Text(
-                                'Menu Successfully Updated!',
-                                style: whiteTextButtonStyle
+                            SnackBar(
+                              content: Text("menu_update_success".tr(),
+                              style: whiteTextButtonStyle
                               ),
                               backgroundColor: greenButtonColor,
                             ),

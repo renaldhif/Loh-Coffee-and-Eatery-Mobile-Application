@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -21,11 +22,29 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
   // boolean for switch language
   bool _isSwitched = false;
 
-    void initState() {
+
+  @override
+  void initState() {
     super.initState();
     initializeTheme(false); 
-// Call the initializeTheme function here
+    // Call the initializeTheme function here
   }
+  
+  // void initState() {
+  //   super.initState();
+  //   final user = FirebaseAuth.instance.currentUser;
+  //   print(user!.uid);
+
+
+  //   setState(() {
+  //         Box<bool> isLanguageEnglishBox =
+  //       Hive.box<bool>('isLanguageEnglishBox_${user!.uid}');
+  //     _isSwitched = isLanguageEnglishBox.get('isLanguageEnglish')!;
+  //     print(_isSwitched);
+  //       EasyLocalization.of(context)!.setLocale(
+  //     _isSwitched ? Locale('en', 'US') : Locale('id', 'ID'));
+  //   });
+  // }
 
   // To change the selected value of bottom navigation bar
   int _selectedIndex = 4;
@@ -34,8 +53,8 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
       _selectedIndex = index;
       switch (index) {
         case 0:
-          // Navigator.pushReplacementNamed(context, '/home');
-          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, '/home');
+          // Navigator.pop(context);
           break;
         // case 2:
         //   Navigator.pushNamed(context, '/order');
@@ -72,7 +91,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: CustomButtonRed(
-              title: 'Sign Out',
+              title: 'sign_out'.tr(),
               onPressed: () {
                 context.read<AuthCubit>().signOut();
               }),
@@ -84,6 +103,13 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
+    Box<bool> isLanguageEnglishBox =
+        Hive.box<bool>('isLanguageEnglishBox_${user!.uid}');
+    _isSwitched = isLanguageEnglishBox.get('isLanguageEnglish')!;
+    print('isSwitched: $_isSwitched');
+    EasyLocalization.of(context)!.setLocale(
+      _isSwitched ? Locale('id', 'ID') : Locale('en', 'US'));
+      
     Box<bool> isDarkModeBox = Hive.box<bool>('isDarkModeBox_${user!.uid}');
     bool _isDarkMode = isDarkModeBox.get('isDarkMode') ?? false;
 
@@ -117,7 +143,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Profile Menu',
+                        'profile_menu'.tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 40,
                           fontWeight: bold,
@@ -202,7 +228,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 15, bottom: 10),
                 child: Text(
-                  'Account Settings',
+                  'account_settings'.tr(),
                   style: greenTextStyle.copyWith(
                     fontSize: 14,
                     fontWeight: bold,
@@ -236,7 +262,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Edit Menu Preferences",
+                          'edit_menu_preferences'.tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -281,7 +307,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Submit Review",
+                          "submit_review".tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -308,7 +334,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 15, bottom: 10),
                 child: Text(
-                  'General Settings',
+                  'general_settings'.tr(),
                   style: greenTextStyle.copyWith(
                     fontSize: 14,
                     fontWeight: bold,
@@ -342,7 +368,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Dark Mode",
+                          "dark_mode".tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -390,7 +416,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Switch Language to Indonesia",
+                          "language".tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -401,10 +427,31 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                     ),
                     Switch(
                       // * TODO: Iteration 3: Implement Switch Language
-                      onChanged: (value) {
+                      onChanged: (value) async {
+                        final user = FirebaseAuth.instance.currentUser;
+                        if (user != null) {
+                          final box = Hive.box<bool>(
+                              'isLanguageEnglishBox_${user.uid}');
+                          await box.put('isLanguageEnglish', value);
+                        }
                         setState(() {
                           _isSwitched = value;
                         });
+                        if (value) {
+                          await EasyLocalization.of(context)!
+                              .setLocale(Locale('id', 'ID'));
+                        } else {
+                          await EasyLocalization.of(context)!
+                              .setLocale(Locale('en', 'US'));
+
+                        }
+                        // if (value) {
+                        //   await EasyLocalization.of(context)!.setLocale(
+                        //       Locale('en', 'US')); // Set English locale
+                        // } else {
+                        //   await EasyLocalization.of(context)!.setLocale(
+                        //       Locale('id', 'ID')); // Set Indonesian locale
+                        // }
                       },
                       value: _isSwitched,
                       activeColor: primaryColor,
@@ -436,7 +483,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "How to Use Loh App",
+                          "how_to_use".tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -467,26 +514,26 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: whiteColor,
-          items: const [
+          items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              label: 'nav_home'.tr(),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month_rounded),
-              label: 'Reserve',
+              label: 'nav_reservations'.tr(),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.format_list_bulleted_rounded),
-              label: 'Order List',
+              label: 'nav_orders'.tr(),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications_rounded),
-              label: 'Notification',
+              label: 'nav_posts'.tr(),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'Profile',
+              label: 'nav_profile'.tr(),
             ),
           ],
           type: BottomNavigationBarType.fixed,

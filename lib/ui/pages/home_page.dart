@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -19,16 +20,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Box<MenuModel> _shoppingBox = Hive.box('shopping_box');
-
-  // Initial Selected Value
-  int counter = 0;
-  String dropdownvalue = 'All Menu';
-
-  // List of items in our dropdown menu
-  var items = [
-    'All Menu',
-    'Our recommendation',
-  ];
 
   // To change the selected value of bottom navigation bar
   int _selectedIndex = 0;
@@ -92,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     const SizedBox(height: 5),
                     Text(
-                      'Welcome to Loh Coffee! \nWhat would you like to eat?',
+                      'welcome'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 22,
                         fontWeight: black,
@@ -103,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       children: [
                         Text(
-                          'Want to try our recommendation?',
+                          'want_to_try'.tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 16,
                             fontWeight: light,
@@ -119,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                           },
                           child: Center(
                             child: Text(
-                              'Click here',
+                              'click_here'.tr(),
                               style: orangeTextStyle.copyWith(
                                 fontSize: 16,
                                 fontWeight: black,
@@ -148,8 +139,8 @@ class _HomePageState extends State<HomePage> {
                   print('state is menu success');
                   return menuCard(state.menus);
                 } else {
-                  return const Center(
-                    child: Text('Something went wrong'),
+                  return Center(
+                    child: Text('something_wrong'.tr()),
                   );
                 }
               }),
@@ -167,26 +158,26 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: greenButtonColor,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'nav_home'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_rounded),
-            label: 'Reserve',
+            label: 'nav_reservations'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.format_list_bulleted_rounded),
-            label: 'Order List',
+            label: 'nav_orders'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.local_post_office_sharp),
-            label: 'Promo',
+            label: 'nav_promo'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'nav_profile'.tr(),
           ),
         ],
         backgroundColor: whiteColor,

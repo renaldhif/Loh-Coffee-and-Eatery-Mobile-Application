@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loh_coffee_eatery/ui/pages/update_menu_admin.dart';
@@ -130,7 +131,7 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                         width: 0.2 * MediaQuery.of(context).size.width,
                         height: 35,
                         child: CustomButton(
-                          title: 'Update',
+                          title: 'update'.tr(),
                           fontSize: 14,
                           onPressed: () {
                             Navigator.push(
@@ -169,20 +170,20 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                               );
                             }
                             return CustomButtonRed(
-                              title: 'Delete',
+                              title: 'delete'.tr(),
                               fontSize: 14,
                               onPressed: () {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: const Text("Delete Menu"),
-                                      content: const Text(
-                                          "Are you sure you want to delete this menu?"),
+                                      title:  Text("delete_menu".tr()),
+                                      content: Text(
+                                          "delete_menu_message".tr()),
                                       actions: [
                                         TextButton(
                                           child: Text(
-                                            "Cancel",
+                                            "cancel".tr(),
                                             style: greenTextButtonStyle
                                           ),
                                           onPressed: () {
@@ -190,22 +191,16 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                                           },
                                         ),
                                         TextButton(
-                                          child: Text(
-                                            "Delete",
-                                            style: greenTextButtonStyle,
-                                          ),
+                                          child: Text("delete".tr()),
                                           onPressed: () {
                                             context
                                               .read<MenuCubit>()
                                               .deleteMenu(menu);
                                               // Navigator.pushNamed(context, '/home-admin');
-                                              Navigator.of(context).pop();
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                content: Text(
-                                                  'Menu Successfully Deleted!',
-                                                  style: whiteTextButtonStyle
-                                                ),
+                                            Navigator.of(context).pop();
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text("menu_delete_success".tr()),
                                                 backgroundColor: greenButtonColor,
                                               ),
                                             );

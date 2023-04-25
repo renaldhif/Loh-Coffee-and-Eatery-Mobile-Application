@@ -1,4 +1,5 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +78,7 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Edit your preferences',
+                        'edit_your_preferences'.tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 28,
                           fontWeight: bold,
@@ -88,7 +89,7 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Your preferences are: ',
+                        'your_preferences'.tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 16,
                             fontWeight: bold,
@@ -111,7 +112,7 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
                             );
                           } else {
                             return Text(
-                              'Loading...', // or any other placeholder text
+                              'loading'.tr(), // or any other placeholder text
                               style: greenTextStyle.copyWith(
                                 fontSize: 16,
                                 fontWeight: medium,
@@ -128,16 +129,16 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
               //* Tag
               CustomTextFormField(
                   readOnly: true,
-                  title: 'Menu Preferences',
-                  label: 'Menu Preferences',
-                  hintText: 'Choose the menu preferences below',
+                  title: 'menu_preferences'.tr(),
+                  label: 'menu_preferences'.tr(),
+                  hintText: 'choose_menu'.tr(),
                   controller: _tagController),
               //* Checkboxes
               const SizedBox(
                 height: 25,
               ),
               Text(
-                'Please choose the menu preferences below:',
+                'please_choose_menu'.tr(),
                 style: greenTextStyle.copyWith(
                   fontSize: 16,
                   fontWeight: bold,
@@ -227,19 +228,28 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
                       );
                     }
                     return CustomButton(
-                      title: 'Edit Preferences',
+                      title: 'edit_preferences'.tr(),
                       onPressed: () {
                         // User ? user = FirebaseAuth.instance.currentUser;
                         String uid = user!.uid;
-                        context.read<AuthCubit>().updateFoodPreferences(
-                          id: uid, 
-                          foodPreference: newPreferences,
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Preferences Successfully Edited!',
-                              style: whiteTextButtonStyle,
+
+                        // if (_tagController.text.isEmpty) {
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     const SnackBar(
+                        //       content: Text('Please fill the preferences'),
+                        //       backgroundColor: Colors.red,
+                        //     ),
+                        //   );
+                        // }
+                        // else{
+                          context.read<AuthCubit>().updateFoodPreferences(
+                            id: uid, 
+                            foodPreference: newPreferences,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('preferences_update_success'.tr(),
+                                style: whiteTextButtonStyle,
                             ),
                             backgroundColor: greenButtonColor,
                           ),

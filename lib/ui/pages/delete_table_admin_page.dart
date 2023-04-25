@@ -1,4 +1,5 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,7 +58,7 @@ class _DeleteTableAdminPageState extends State<DeleteTableAdminPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Delete Table',
+                        'delete_table'.tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 32,
                           fontWeight: bold,
@@ -71,9 +72,9 @@ class _DeleteTableAdminPageState extends State<DeleteTableAdminPage> {
 
               //* Table Number
               CustomTextFormField(
-                title: 'Table Number',
-                label: 'Table Number',
-                hintText: 'input table number',
+                title: 'table_number'.tr(),
+                label: 'table_number'.tr(),
+                hintText: 'text_table_number'.tr(),
                 controller: _tableNumController,
               ),
 
@@ -101,22 +102,22 @@ class _DeleteTableAdminPageState extends State<DeleteTableAdminPage> {
                       );
                     }
                     return CustomButton(
-                      title: 'Delete Table',
+                      title: 'delete_table'.tr(),
                       onPressed: () {
                         if (_tableNumController.text
                             .contains(RegExp(r'[a-zA-Z]'))) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content:
-                                  Text('Please input a valid table number'),
+                                  Text('validation_table_number'.tr()),
                               backgroundColor: Colors.red,
                             ),
                           );
                         }
                         if (_tableNumController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Please fill the fields'),
+                            SnackBar(
+                              content: Text('validation_all_field'.tr()),
                               backgroundColor: Colors.red,
                             ),
                           );
@@ -126,12 +127,11 @@ class _DeleteTableAdminPageState extends State<DeleteTableAdminPage> {
                           );
                           Navigator.popAndPushNamed(context, '/home-admin');
                           ScaffoldMessenger.of(context).showSnackBar(
-                             SnackBar(
-                              content: Text(
-                                'Table Successfully Deleted!',
-                                style: whiteTextButtonStyle,
-                              ),
-                              backgroundColor: greenButtonColor,
+                            SnackBar(
+                              content: Text('table_delete_success'.tr(),
+                              style: whiteTextButtonStyle,
+                            ),
+                            backgroundColor: greenButtonColor,
                             ),
                           );
                         }

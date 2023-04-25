@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -30,10 +31,9 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
   // bool _isDarkMode = Hive.box<bool>('isDarkModeBox').get('isDarkMode') ?? false;
 
   // boolean for switch language
-  bool _isSwitched = false;
 
   // To change the selected value of bottom navigation bar
-  int _selectedIndex = 4;
+  int _selectedIndex = 5;
   void _changeSelectedIndex(int index) {
     setState(() {
       _selectedIndex = index;
@@ -47,18 +47,25 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
         //   break;
         case 2:
           Navigator.pushNamed(context, '/orderlist-admin');
+          _selectedIndex = 2;
           break;
         case 3:
           Navigator.pushNamed(context, '/payment-admin');
+          _selectedIndex = 3;
           break;
         // case 4:
         //   break;
         case 5:
           Navigator.pushNamed(context, '/profile-admin');
+          _selectedIndex = 5;
           // _selectedIndex = 0;
           break;
       }
     });
+  }
+
+  String LocalizedText(String key) {
+    return tr(key);
   }
 
   Widget signOutButton() {
@@ -85,7 +92,7 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: CustomButtonRed(
-              title: 'Sign Out',
+              title: "sign_out".tr(),
               onPressed: () {
                 context.read<AuthCubit>().signOut();
               }),
@@ -96,9 +103,56 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-  final user = FirebaseAuth.instance.currentUser;
+    final user = FirebaseAuth.instance.currentUser;
+    Box<bool> isLanguageEnglishBox =
+        Hive.box<bool>('isLanguageEnglishBox_${user!.uid}');
+    bool _isSwitched =
+        isLanguageEnglishBox.get('isLanguageEnglish') ?? false;
+        
   Box<bool> isDarkModeBox = Hive.box<bool>('isDarkModeBox_${user!.uid}');
   bool _isDarkMode = isDarkModeBox.get('isDarkMode') ?? false;
+
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        color: kUnavailableColor,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                color: whiteColor,
+                width: double.infinity,
+                margin: const EdgeInsets.only(top: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_circle_left_rounded,
+                        color: primaryColor,
+                        size: 55,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Text(
+                        "profile_menu",
+                        style: greenTextStyle.copyWith(
+                          fontSize: 40,
+                          fontWeight: bold,
+                        ),
+                      ).tr(),
+                    ),
+                  ],
+                ),
+              ),
+              // profile detail
+              const SizedBox(height: 15),
 
     return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, state) {
@@ -226,6 +280,20 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                       ),
                       textAlign: TextAlign.left,
                     ),
+                    
+                     // Reviews
+              const SizedBox(height: 25),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, bottom: 10),
+                child: Text(
+                  "table_management",
+                  style: greenTextStyle.copyWith(
+                    fontSize: 14,
+                    fontWeight: bold,
+                  ),
+                  textAlign: TextAlign.left,
+                ).tr(),
+              ),
                   ),
                   // Add Table
                   Container(
@@ -250,13 +318,13 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                             ),
                             const SizedBox(width: 20),
                             Text(
-                              "Add Table",
+                              "add_table",
                               style: greenTextStyle.copyWith(
                                 fontSize: 17,
                                 fontWeight: bold,
                               ),
                               textAlign: TextAlign.start,
-                            ),
+                            ).tr(),
                           ],
                         ),
                         IconButton(
@@ -295,15 +363,16 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                             ),
                             const SizedBox(width: 20),
                             Text(
-                              "Delete Table",
-                              style: greenTextStyle.copyWith(
-                                fontSize: 17,
-                                fontWeight: bold,
-                              ),
-                              textAlign: TextAlign.start,
+                            "delete_table",
+                            style: greenTextStyle.copyWith(
+                              fontSize: 17,
+                              fontWeight: bold,
                             ),
+                            textAlign: TextAlign.start,
+                            ).tr(),
                           ],
                         ),
+                        const SizedBox(width: 20),
                         IconButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/deletetable');
@@ -317,19 +386,19 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                     ),
                   ),
 
-                  // Reviews
+                // Reviews
                   const SizedBox(height: 25),
                   Padding(
                     padding: const EdgeInsets.only(left: 15, bottom: 10),
                     child: Text(
-                      'Reviews & Ratings',
+                      "review_ratings",
                       style: greenTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
                       ),
                       textAlign: TextAlign.left,
-                    ),
-                  ),
+                    ).tr(),
+                  ),  
 
                   Container(
                     padding: const EdgeInsets.only(left: 15, right: 15),
@@ -353,13 +422,13 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                             ),
                             const SizedBox(width: 20),
                             Text(
-                              "View Review",
+                              "view_reviews",
                               style: greenTextStyle.copyWith(
                                 fontSize: 17,
                                 fontWeight: bold,
                               ),
                               textAlign: TextAlign.start,
-                            ),
+                            ).tr(),
                           ],
                         ),
                         IconButton(
@@ -380,15 +449,17 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 15, bottom: 10),
                     child: Text(
-                      'General Settings',
+                      "general_settings",
                       style: greenTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
                       ),
                       textAlign: TextAlign.left,
-                    ),
+                    ).tr(),
                   ),
-
+                  ],
+                ),
+              ),
                   // General Setting Content
 
                   // Dark Mode
@@ -411,15 +482,16 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                             ),
                             const SizedBox(width: 20),
                             Text(
-                              "Dark Mode",
+                              "dark_mode",
                               style: greenTextStyle.copyWith(
                                 fontSize: 17,
                                 fontWeight: bold,
                               ),
                               textAlign: TextAlign.start,
-                            ),
+                            ).tr(),
                           ],
                         ),
+
                         Switch(
                           //TODO: Iteration 3: Implement Dark Mode
                           onChanged: (value) {
@@ -458,75 +530,84 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
                               size: 26,
                               color: primaryColor,
                             ),
-                            const SizedBox(width: 20),
-                            Text(
-                              "Switch Language to Indonesia",
-                              style: greenTextStyle.copyWith(
-                                fontSize: 17,
-                                fontWeight: bold,
-                              ),
-                              textAlign: TextAlign.start,
-                            ),
-                          ],
-                        ),
-                        Switch(
-                          //TODO: Iteration 3: Implement Switch Language
-                          onChanged: (value) {
-                            setState(() {
-                              _isSwitched = value;
-                            });
-                          },
-                          value: _isSwitched,
-                          activeColor: primaryColor,
-                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          "language",
+                          style: greenTextStyle.copyWith(
+                            fontSize: 17,
+                            fontWeight: bold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ).tr(),
                       ],
                     ),
-                  ),
+                    Switch(
+                      //TODO: Iteration 3: Implement Switch Language
+                      onChanged: (value) async {
+                        if (user != null) {
+                          final box = Hive.box<bool>(
+                              'isLanguageEnglishBox_${user.uid}');
+                          await box.put('isLanguageEnglish', value);
+                        }
+                        setState(() {
+                          _isSwitched = value;
+                        });
+                        if (value) {
+                          await EasyLocalization.of(context)!
+                              .setLocale(Locale('id', 'ID'));
+                        } else {
+                          await EasyLocalization.of(context)!
+                              .setLocale(Locale('en', 'US'));
+                        }
+                      },
 
-                  const SizedBox(height: 25),
-                  // Sign Out Button
-                  signOutButton(),
-                  const SizedBox(height: 25),
-                ],
+                      value: _isSwitched,
+                      activeColor: primaryColor,
+                    ),
+                  ],
+                ),
               ),
-            ),
+
+              const SizedBox(height: 25),
+              // Sign Out Button
+              signOutButton(),
+            ],
           ),
-          bottomNavigationBar: BottomNavigationBar(
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_month_rounded),
-                  label: 'Reserves',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.format_list_bulleted_rounded),
-                  label: 'Orders',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.payments_outlined),
-                  label: 'Payments',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.post_add_rounded),
-                  label: 'Posts',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Profile',
-                ),
-              ],
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: whiteColor,
-              currentIndex: _selectedIndex,
-              selectedItemColor: primaryColor,
-              unselectedItemColor: greyColor,
-              showUnselectedLabels: true,
-              onTap: _changeSelectedIndex),
-        );
-      },
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "nav_home".tr(),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_rounded),
+              label: "nav_reservations".tr(),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_rounded),
+              label: "nav_orders".tr(),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.payments_outlined),
+              label: "nav_payments".tr(),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.post_add_rounded),
+              label: "nav_posts".tr(),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "nav_profile".tr(),
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          selectedItemColor: primaryColor,
+          unselectedItemColor: greyColor,
+          showUnselectedLabels: true,
+          onTap: _changeSelectedIndex),
     );
   }
 }

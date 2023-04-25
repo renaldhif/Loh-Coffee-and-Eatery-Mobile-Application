@@ -702,7 +702,6 @@ class _CartPageState extends State<CartPage> {
                                         color: primaryColor,
                                       ),
                                     ),
-
                                   ),
                                 ),
                               );

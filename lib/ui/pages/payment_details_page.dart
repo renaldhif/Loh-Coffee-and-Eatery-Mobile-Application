@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -107,7 +108,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
         children: [
           //* Customer Name
           Text(
-            'Customer Name: $name',
+            'customer_name'.tr() + ': $name',
             style: greenTextStyle.copyWith(
               fontSize: 16,
               fontWeight: semiBold,
@@ -115,7 +116,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
           ),
           //* Payment Date
           Text(
-            'Payment Date: $time',
+            'payment_date'.tr() + ': $time',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             softWrap: false,
@@ -172,7 +173,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
               Visibility(
                 visible: paymentReceipt == 'none',
                 child: Text(
-                  'Customer pay at the cashier',
+                  "detail_payment_opt".tr(),
                   style: mainTextStyle.copyWith(
                     fontSize: 14,
                     fontWeight: black,
@@ -180,10 +181,10 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                 ),
               ),
 
-               const SizedBox(height: 20),
+              const SizedBox(height: 20),
               //* Payment Status
               Text(
-                'Total Price:',
+                'total_price'.tr() + ': ',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 softWrap: false,
@@ -204,7 +205,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
               const SizedBox(height: 20),
               //* Payment Status
               Text(
-                'Payment Status:',
+                'payment_status'.tr() + ': ',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 softWrap: false,
@@ -261,7 +262,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                     },
                     builder: (context, state) {
                       return CustomButton(
-                          title: 'Confirm payment',
+                          title: 'confirm_payment'.tr(),
                           onPressed: () {
                             setState(() {
                               print('confirm button');
@@ -316,7 +317,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                     },
                     builder: (context, state) {
                       return CustomButtonRed(
-                        title: 'Reject payment',
+                        title: 'reject_payment'.tr(),
                         onPressed: () {
                           setState(() {
                             print('reject button');
@@ -394,7 +395,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
 
               // The detail of the menu selected
               Text(
-                'Payment Details',
+                'payment_details'.tr(),
                 style: greenTextStyle.copyWith(
                   fontSize: 22,
                   fontWeight: black,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:loh_coffee_eatery/models/user_model.dart';
@@ -39,7 +40,24 @@ class AuthService{
     }
   }
 
-  Future<UserModel> signIn({
+  // Future<UserModel> signIn({
+  //   required String email, 
+  //   required String password
+  // }) async{
+  //   try{
+  //     UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+  //       email: email, 
+  //       password: password,
+  //     );
+  //     UserModel user = await UserService().getUserById(userCredential.user!.uid);
+  //     var user2 = FirebaseAuth.instance.currentUser;
+  //         await Hive.openBox<bool>('isLanguageEnglishBox_${user2!.uid}');
+  //     return user;
+  //   }catch(e){
+  //     throw e;
+  //   }
+  // }
+    Future<UserModel> signIn({
     required String email, 
     required String password
   }) async{
@@ -49,21 +67,34 @@ class AuthService{
         password: password,
       );
       UserModel user = await UserService().getUserById(userCredential.user!.uid);
+      
       if (user != null) {
         await Hive.openBox<bool>('isDarkModeBox_${user.id}');
       }
+      
+      var user2 = FirebaseAuth.instance.currentUser;
+      if (user2 != null) {
+        await Hive.openBox<bool>('isLanguageEnglishBox_${user2.uid}');
+      }
+      
       return user;
     }catch(e){
       throw e;
     }
   }
 
-Future<void> signOut() async{
-  try {
-    // Close the Hive box if it is open
-    var user = FirebaseAuth.instance.currentUser;
-    if (user != null && Hive.isBoxOpen('isDarkModeBox_${user.uid}')) {
+    Future<void> signOut() async{
+    try{
+      var user = FirebaseAuth.instance.currentUser;
+      if (user != null && Hive.isBoxOpen('isLanguageEnglishBox_${user.uid}')) {
+        await Hive.box<bool>('isLanguageEnglishBox_${user.uid}').close();
+      }
+      if (user != null && Hive.isBoxOpen('isDarkModeBox_${user.uid}')) {
       await Hive.box<bool>('isDarkModeBox_${user.uid}').close();
+      }
+      await _auth.signOut();
+    }catch(e){
+      throw e;
     }
 
     // Sign out the user
@@ -72,6 +103,7 @@ Future<void> signOut() async{
     throw e;
   }
 }
+
 
 
   Future<void> resetPassword(String email) async{
