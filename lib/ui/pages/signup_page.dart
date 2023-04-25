@@ -24,7 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteColor,
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -82,22 +82,34 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
+                      style: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                      ),
                       decoration: InputDecoration(
                         labelText: 'Email',
+                        labelStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         hintText: 'Enter your email',
+                        hintStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(defaultRadius),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(defaultRadius),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(defaultRadius),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                             width: 1.5,
                           ),
@@ -124,9 +136,21 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: TextFormField(
                       controller: _passwordController,
                       obscureText: _isObsecure,
+                      style: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                      ),
                       decoration: InputDecoration(
                         labelText: 'Password',
+                        labelStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         hintText: 'Enter your password',
+                        hintStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         suffixIcon: IconButton(
                           onPressed: () {
@@ -146,13 +170,13 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(defaultRadius),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(defaultRadius),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                             width: 1.5,
                           ),
@@ -177,22 +201,34 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: TextFormField(
                       controller: _fullnameController,
                       keyboardType: TextInputType.emailAddress,
+                      style: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                       decoration: InputDecoration(
                         labelText: 'Full Name',
+                        labelStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         hintText: 'Enter your full name',
+                        hintStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(defaultRadius),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                             width: 1.5,
                           ),
@@ -216,6 +252,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(
                     height: 50,
                     child: TextFormField(
+                      style: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                      ),
                       controller: _dateInputController,
                       keyboardType: TextInputType.datetime,
                       readOnly: true,
@@ -228,8 +268,14 @@ class _SignUpPageState extends State<SignUpPage> {
                           builder: (context, child) {
                             return FittedBox(
                               child: Theme(
-                                data: ThemeData.light().copyWith(
-                                  colorScheme: const ColorScheme.light(
+                                data: isDarkMode 
+                                ? ThemeData.dark().copyWith(
+                                  colorScheme: ColorScheme.dark(
+                                    primary: primaryColor,
+                                  ),
+                                ) 
+                                : ThemeData.light().copyWith(
+                                  colorScheme:  ColorScheme.light(
                                     primary: primaryColor,
                                   ),
                                   buttonTheme: const ButtonThemeData(
@@ -251,20 +297,28 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                       decoration: InputDecoration(
                         labelText: 'Date of Birth',
+                        labelStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         hintText: 'Enter your date of birth',
+                        hintStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                             width: 1.5,
                           ),
@@ -290,7 +344,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                     builder: (context, state) {
                       if (state is AuthLoading) {
-                        return const Center(
+                        return  Center(
                           child: CircularProgressIndicator(
                             color: primaryColor,
                           ),

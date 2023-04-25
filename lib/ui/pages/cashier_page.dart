@@ -8,6 +8,7 @@ class CashierPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       resizeToAvoidBottomInset: false,
       body: Container(
         width: double.infinity,

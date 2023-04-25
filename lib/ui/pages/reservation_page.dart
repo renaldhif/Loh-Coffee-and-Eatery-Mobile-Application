@@ -254,6 +254,14 @@ class _ReservationPageState extends State<ReservationPage>
     String reservationId = await getReservationIdByIndex(index);
     bool isCanceled = false;
 
+    DateFormat dateFormat = DateFormat('dd-MM-yyyy HH:mm');
+    String combinedString = '$date $time';
+    DateTime dateTimeConvert = dateFormat.parse(combinedString);
+
+    // Get the current date and time in the local timezone
+    DateTime dtNow = DateTime.now().toLocal();
+    bool isAfterReserveDate = dtNow.isAfter(dateTimeConvert);
+
     return Visibility(
       visible: isCanceled == false,
       child: Padding(
@@ -266,7 +274,7 @@ class _ReservationPageState extends State<ReservationPage>
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
+                color: isDarkMode? backgroundColor : Colors.grey.withOpacity(0.5),
                 spreadRadius: 1,
                 blurRadius: 7,
                 offset: const Offset(0, 3),
@@ -348,22 +356,25 @@ class _ReservationPageState extends State<ReservationPage>
                         ],
                       ),
                       const Spacer(),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: 40,
-                        child: CustomButtonRed(
-                          title: 'Cancel',
-                          fontSize: 16,
-                          onPressed: () {
-                            setState(() {
-                              context
-                                  .read<ReservationCubit>()
-                                  .cancelReservation(reservationId);
-                              _deletedIndex = index;
-                              isCanceled = true;
-                              // Navigator.of(context).pushNamed('/home'); 
-                            });
-                          },
+                      Visibility(
+                        visible: isAfterReserveDate == false,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          height: 40,
+                          child: CustomButtonRed(
+                            title: 'Cancel',
+                            fontSize: 16,
+                            onPressed: () {
+                              setState(() {
+                                context
+                                    .read<ReservationCubit>()
+                                    .cancelReservation(reservationId);
+                                _deletedIndex = index;
+                                isCanceled = true;
+                                // Navigator.of(context).pushNamed('/home'); 
+                              });
+                            },
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -579,6 +590,10 @@ class _ReservationPageState extends State<ReservationPage>
                 controller: _dateInputController,
                 keyboardType: TextInputType.datetime,
                 readOnly: true,
+                style: mainTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                ),
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(
                     context: context,
@@ -588,8 +603,14 @@ class _ReservationPageState extends State<ReservationPage>
                     builder: (context, child) {
                       return FittedBox(
                         child: Theme(
-                          data: ThemeData.light().copyWith(
-                            colorScheme: const ColorScheme.light(
+                          data: isDarkMode 
+                          ? ThemeData.dark().copyWith(
+                            colorScheme: ColorScheme.dark(
+                              primary: primaryColor,
+                            ),
+                          )
+                          : ThemeData.light().copyWith(
+                            colorScheme: ColorScheme.light(
                               primary: primaryColor,
                             ),
                             buttonTheme: const ButtonThemeData(
@@ -621,25 +642,33 @@ class _ReservationPageState extends State<ReservationPage>
                   }
                 },
                 decoration: InputDecoration(
-                  suffixIcon: const Icon(
+                  suffixIcon: Icon(
                     Icons.calendar_today,
                     color: primaryColor,
                   ),
                   labelText: 'Reservation Date',
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  labelStyle: mainTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                  ),
                   hintText: 'Enter reservation date',
+                  hintStyle: mainTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
+                    borderSide: BorderSide(
                       color: primaryColor,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
+                    borderSide: BorderSide(
                       color: primaryColor,
                       width: 1.5,
                     ),
@@ -669,6 +698,10 @@ class _ReservationPageState extends State<ReservationPage>
                 controller: _timeController,
                 keyboardType: TextInputType.datetime,
                 readOnly: true,
+                style: mainTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                ),
                 onTap: () async {
                   TimeOfDay? pickedTime = await showTimePicker(
                     context: context,
@@ -676,8 +709,14 @@ class _ReservationPageState extends State<ReservationPage>
                     builder: (context, child) {
                       return FittedBox(
                         child: Theme(
-                          data: ThemeData.light().copyWith(
-                            colorScheme: const ColorScheme.light(
+                          data: isDarkMode 
+                          ? ThemeData.dark().copyWith(
+                            colorScheme: ColorScheme.dark(
+                              primary: primaryColor,
+                            ),
+                          )
+                          : ThemeData.light().copyWith(
+                            colorScheme: ColorScheme.light(
                               primary: primaryColor,
                             ),
                             buttonTheme: const ButtonThemeData(
@@ -711,25 +750,33 @@ class _ReservationPageState extends State<ReservationPage>
                   }
                 },
                 decoration: InputDecoration(
-                  suffixIcon: const Icon(
+                  suffixIcon: Icon(
                     Icons.access_time,
                     color: primaryColor,
                   ),
                   labelText: 'Reservation Time',
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  labelStyle: mainTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                  ),
                   hintText: 'Enter reservation time',
+                  hintStyle: mainTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
+                    borderSide: BorderSide(
                       color: primaryColor,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
+                    borderSide: BorderSide(
                       color: primaryColor,
                       width: 1.5,
                     ),
@@ -766,18 +813,19 @@ class _ReservationPageState extends State<ReservationPage>
                     return Text('Error: ${snapshot.error}');
                   } else {
                     final tableNumbers = snapshot.data ?? [];
-
                     return DropdownButtonFormField(
-                      isExpanded: true,
+                      dropdownColor: whiteColor,
+                      focusColor: primaryColor,
+                      menuMaxHeight: 200,
+                      isExpanded: false,
                       value: _tableNumber,
                       items: tableNumbers.map((tableNumber) {
                         return DropdownMenuItem(
                           value: tableNumber,
                           child: Text(
                             tableNumber.toString(),
-                            style: greenTextStyle.copyWith(
-                              fontSize: 16,
-                              fontWeight: regular,
+                              style: greenTextStyle.copyWith(
+                                fontSize: 16,
                             ),
                           ),
                         );
@@ -808,20 +856,28 @@ class _ReservationPageState extends State<ReservationPage>
                       },
                       decoration: InputDecoration(
                         labelText: 'Tap to get available table number',
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         hintText: 'Tap to get available table number',
+                        hintStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide: BorderSide(
                             color: primaryColor,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide: BorderSide(
                             color: primaryColor,
                             width: 1.5,
                           ),
@@ -978,7 +1034,7 @@ class _ReservationPageState extends State<ReservationPage>
 
                   Navigator.pushNamed(context, '/reservation-success');
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text('Reservation success!'),
                       backgroundColor: primaryColor,
                     ),
@@ -994,7 +1050,7 @@ class _ReservationPageState extends State<ReservationPage>
 
   Widget reservationHistory() {
     return Container(
-      color: whiteColor,
+      color: backgroundColor,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -1023,10 +1079,18 @@ class _ReservationPageState extends State<ReservationPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: greenButtonColor,
         automaticallyImplyLeading: true,
-        title: const Text('Reservation'),
+        title: Text(
+          'Reservation',
+          style: whiteTextButtonStyle.copyWith(
+            fontSize: 18,
+            fontWeight: semiBold,
+            letterSpacing: 1.5,
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

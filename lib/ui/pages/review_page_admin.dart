@@ -36,9 +36,10 @@ class _ReviewPageAdminState extends State<ReviewPageAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Container(
-          color: whiteColor,
+          color: backgroundColor,
           width: double.infinity,
           child: Column(
             children: [
@@ -53,7 +54,7 @@ class _ReviewPageAdminState extends State<ReviewPageAdmin> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
@@ -88,7 +89,7 @@ class _ReviewPageAdminState extends State<ReviewPageAdmin> {
                 },
                 builder: (context, state) {
                   if (state is ReviewLoading) {
-                    return const Center(
+                    return Center(
                       child: CircularProgressIndicator(
                         color: primaryColor,
                       ),

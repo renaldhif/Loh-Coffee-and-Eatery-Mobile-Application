@@ -49,11 +49,12 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Container(
-          color: whiteColor,
+          color: backgroundColor,
           child: Column(
             children: [
               // Header
@@ -67,7 +68,7 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
@@ -143,51 +144,63 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
                   fontWeight: bold,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: SimpleGroupedCheckbox<String>(
-                  controller: controller,
-                  itemsTitle: const [
-                    "Rice",
-                    "Chicken",
-                    "Beef",
-                    "Seafood",
-                    "Noodles",
-                    "Pasta",
-                    "Fish",
-                    "Soup",
-                    "Snacks",
-                    "Vegetables",
-                    "Cake and Dessert",
-                    "Coffee",
-                    "Milk",
-                    "Tea",
-                    "Spicy",
-                  ],
-                  values: const [
-                    "Rice",
-                    "Chicken",
-                    "Beef",
-                    "Seafood",
-                    "Noodles",
-                    "Pasta",
-                    "Fish",
-                    "Soup",
-                    "Snacks",
-                    "Vegetables",
-                    "Cake and Dessert",
-                    "Coffee",
-                    "Milk",
-                    "Tea",
-                    "Spicy",
-                  ],
-                  groupStyle: GroupStyle(activeColor: primaryColor),
-                  onItemSelected: (selected) {
-                    setState(() {
-                      _tagController.text = selected.join(',');
-                      newPreferences = selected;
-                    });
-                  },
+              Theme(
+                data: ThemeData(
+                  unselectedWidgetColor: primaryColor,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: SimpleGroupedCheckbox<String>(
+                    controller: controller,
+                    itemsTitle: const [
+                      "Rice",
+                      "Chicken",
+                      "Beef",
+                      "Seafood",
+                      "Noodles",
+                      "Pasta",
+                      "Fish",
+                      "Soup",
+                      "Snacks",
+                      "Vegetables",
+                      "Cake and Dessert",
+                      "Coffee",
+                      "Milk",
+                      "Tea",
+                      "Spicy",
+                    ],
+                    values: const [
+                      "Rice",
+                      "Chicken",
+                      "Beef",
+                      "Seafood",
+                      "Noodles",
+                      "Pasta",
+                      "Fish",
+                      "Soup",
+                      "Snacks",
+                      "Vegetables",
+                      "Cake and Dessert",
+                      "Coffee",
+                      "Milk",
+                      "Tea",
+                      "Spicy",
+                    ],
+                    groupStyle: GroupStyle(
+                      activeColor: primaryColor,
+                      itemTitleStyle: greenTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: medium,
+                      ),
+                      groupTitleStyle: greenTextStyle,
+                    ),
+                    onItemSelected: (selected) {
+                      setState(() {
+                        _tagController.text = selected.join(',');
+                        newPreferences = selected;
+                      });
+                    },
+                  ),
                 ),
               ),
 
@@ -208,7 +221,7 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
                   },
                   builder: (context, state) {
                     if (state is AuthLoading) {
-                      return const Center(
+                      return Center(
                         child: CircularProgressIndicator(
                           color: primaryColor,
                         ),
@@ -235,11 +248,13 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('preferences_update_success'.tr()),
-                              backgroundColor: primaryColor,
+                              content: Text('preferences_update_success'.tr(),
+                                style: whiteTextButtonStyle,
                             ),
-                          );
-                        }
+                            backgroundColor: greenButtonColor,
+                          ),
+                        );
+                      }
                       // },
                     );
                   },

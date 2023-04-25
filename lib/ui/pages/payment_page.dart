@@ -102,7 +102,7 @@ late Timer _timer;
         isLoading = true;
         if (isLoading == true) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+             SnackBar(
               content: Text('Uploading Image. Please wait for a moment...'),
               backgroundColor: secondaryColor,
             ),
@@ -126,9 +126,12 @@ late Timer _timer;
       _imageController.text = urlImg;
       if (isLoading == false) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Image Uploaded'),
-            backgroundColor: primaryColor,
+           SnackBar(
+            content: Text(
+              'Image Uploaded',
+              style: whiteTextButtonStyle
+            ),
+            backgroundColor: greenButtonColor,
           ),
         );
         setState(() {
@@ -141,6 +144,7 @@ late Timer _timer;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.all(defaultRadius),
@@ -216,7 +220,6 @@ late Timer _timer;
                   ),
                   child: CustomButton(
                     title: 'Upload Payment Receipt',
-                    //TODO: Implement upload payment receipt
                     onPressed: () {
                       getImage();
                     },
@@ -232,7 +235,6 @@ late Timer _timer;
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: BlocConsumer<PaymentCubit, PaymentState>(
                     listener: (context, state) {
-                      // TODO: implement listener
                       if (state is PaymentSuccess) {
                         Navigator.pushNamedAndRemoveUntil(context, '/confirmpayment', (route) => false);
                       } else if (state is PaymentFailed) {
@@ -246,7 +248,7 @@ late Timer _timer;
                     },
                     builder: (context, state) {
                       if(state is PaymentLoading){
-                        return const Center(
+                        return  Center(
                           child: CircularProgressIndicator(
                             color: primaryColor,
                           ),
@@ -259,9 +261,6 @@ late Timer _timer;
                           int num = await orderLength();
                           if (FirebaseAuth.instance.currentUser != null) {
                                 User? user = FirebaseAuth.instance.currentUser;
-                                // Future<UserModel> userNow = context
-                                //     .read<AuthCubit>()
-                                //     .getCurrentUser(user!.uid)
                                 UserModel userNow = await context
                                     .read<AuthCubit>()
                                     .getCurrentUser(user!.uid);
@@ -269,42 +268,16 @@ late Timer _timer;
                           
                           if (isUploaded == true) {
                             context.read<PaymentCubit>().addPayment(
-                                paymentReceipt: _imageController.text,
-                                paymentOption: widget.paymentOption!,
-                                diningOption: widget.diningOption!,
-                                totalPrice: widget.totalPrice!,
-                                status: 'Pending',
-                                paymentDateTime: now,
-                                customerName: name,
-                                );
-                          
-                            //get payment model from cubit
+                              paymentReceipt: _imageController.text,
+                              paymentOption: widget.paymentOption!,
+                              diningOption: widget.diningOption!,
+                              totalPrice: widget.totalPrice!,
+                              status: 'Pending',
+                              paymentDateTime: now,
+                              customerName: name,
+                            );
                             
-                            PaymentModel payment = await context.read<PaymentCubit>().getPaymentByTimestamp(
-                              paymentDateTime: now);
-                            
-                            // PaymentModel payment1 = PaymentModel(
-                            //   paymentReceipt: _imageController.text,
-                            //   paymentOption: widget.paymentOption!,
-                            //   diningOption: widget.diningOption!,
-                            //   totalPrice: widget.totalPrice!,
-                            //   status: 'Pending',
-                            //   paymentDateTime: now,
-                            //   customerName: name,
-                            // );
-                            
-                            // OrderModel order1 = OrderModel(
-                            //   number: num + 1,
-                            //   user: userNow,
-                            //   menu: localDBBox.values.toList(),
-                            //   tableNum: widget.tableNumber!,
-                            //   payment: payment, 
-                            //   orderStatus: 'Pending',
-                            //   orderDateTime: now,
-                            // );
-
-                            
-
+                            PaymentModel payment = await context.read<PaymentCubit>().getPaymentByTimestamp(paymentDateTime: now);
                             context.read<OrderCubit>().createOrder(
                               number: num + 1,
                               user: userNow,
@@ -316,9 +289,12 @@ late Timer _timer;
                             );
                             localDBBox.clear();
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Payment Uploaded'),
-                                backgroundColor: primaryColor,
+                               SnackBar(
+                                content: Text(
+                                  'Payment Uploaded',
+                                  style: whiteTextButtonStyle
+                                ),
+                                backgroundColor: greenButtonColor,
                               ),
                             );
                           }

@@ -148,18 +148,18 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(defaultRadius),
                     border: Border.all(
-                      color: kUnavailableColor,
+                      color: whiteColor,
                       width: 1,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
+                        color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
                         spreadRadius: 3,
                         blurRadius: 7,
                         offset: const Offset(1, 3),
                       ),
                     ],
-                    color: whiteColor,
+                    color: backgroundColor,
                   ),
                   child: Center(
                     child: Image.network(
@@ -365,9 +365,10 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Container(
-          color: whiteColor,
+          color: backgroundColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -382,7 +383,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,

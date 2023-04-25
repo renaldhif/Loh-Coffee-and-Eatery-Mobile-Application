@@ -43,7 +43,7 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
         isLoading = true;
         if (isLoading == true) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+             SnackBar(
               content: Text('Uploading Image. Please wait for a moment...'),
               backgroundColor: secondaryColor,
             ),
@@ -64,9 +64,12 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
       _imageController.text = urlImg;
       if (isLoading == false) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Image Uploaded'),
-            backgroundColor: primaryColor,
+           SnackBar(
+            content: Text(
+              'Image Uploaded',
+               style: whiteTextButtonStyle
+            ),
+            backgroundColor: greenButtonColor,
           ),
         );
       }
@@ -76,9 +79,10 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Container(
-          color: whiteColor,
+          color: backgroundColor,
           child: Column(
             children: [
               // Header
@@ -92,7 +96,7 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
@@ -151,51 +155,63 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                   fontWeight: bold,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: SimpleGroupedCheckbox<String>(
-                  controller: controller,
-                  itemsTitle: const [
-                    "Rice",
-                    "Chicken",
-                    "Beef",
-                    "Seafood",
-                    "Noodles",
-                    "Pasta",
-                    "Fish",
-                    "Soup",
-                    "Snacks",
-                    "Vegetables",
-                    "Cake and Dessert",
-                    "Coffee",
-                    "Milk",
-                    "Tea",
-                    "Spicy",
-                  ],
-                  values: const [
-                    "Rice",
-                    "Chicken",
-                    "Beef",
-                    "Seafood",
-                    "Noodles",
-                    "Pasta",
-                    "Fish",
-                    "Soup",
-                    "Snacks",
-                    "Vegetables",
-                    "Cake and Dessert",
-                    "Coffee",
-                    "Milk",
-                    "Tea",
-                    "Spicy",
-                  ],
-                  groupStyle: GroupStyle(activeColor: primaryColor),
-                  onItemSelected: (selected) {
-                    setState(() {
-                      // print(selected.join(','));
-                      _tagController.text = selected.join(',');
-                    });
-                  },
+              Theme(
+                data: ThemeData(
+                  unselectedWidgetColor: primaryColor,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: SimpleGroupedCheckbox<String>(
+                    controller: controller,
+                    itemsTitle: const [
+                      "Rice",
+                      "Chicken",
+                      "Beef",
+                      "Seafood",
+                      "Noodles",
+                      "Pasta",
+                      "Fish",
+                      "Soup",
+                      "Snacks",
+                      "Vegetables",
+                      "Cake and Dessert",
+                      "Coffee",
+                      "Milk",
+                      "Tea",
+                      "Spicy",
+                    ],
+                    values: const [
+                      "Rice",
+                      "Chicken",
+                      "Beef",
+                      "Seafood",
+                      "Noodles",
+                      "Pasta",
+                      "Fish",
+                      "Soup",
+                      "Snacks",
+                      "Vegetables",
+                      "Cake and Dessert",
+                      "Coffee",
+                      "Milk",
+                      "Tea",
+                      "Spicy",
+                    ],
+                    groupStyle: GroupStyle(
+                      activeColor: primaryColor,
+                      itemTitleStyle: greenTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: regular,
+                      ),
+                      groupTitleStyle: greenTextStyle,
+                    ),
+                    onItemSelected: (selected) {
+                      setState(() {
+                        // print(selected.join(','));
+                        _tagController.text = selected.join(',');
+                      });
+                    },
+                  ),
                 ),
               ),
 
@@ -203,7 +219,7 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                 height: 15,
               ),
               Text(
-                'Upload an image',
+                'Upload menu image',
                 style: greenTextStyle.copyWith(
                   fontSize: 18,
                   fontWeight: bold,
@@ -239,7 +255,7 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                   },
                   builder: (context, state) {
                     if (state is MenuLoading) {
-                      return const Center(
+                      return Center(
                         child: CircularProgressIndicator(
                           color: primaryColor,
                         ),
@@ -279,9 +295,12 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                             totalOrdered: 0,
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Menu Successfully Added!'),
-                            backgroundColor: primaryColor,
+                          SnackBar(
+                            content: Text(
+                              'Menu Successfully Added!',
+                              style: whiteTextButtonStyle
+                            ),
+                            backgroundColor: greenButtonColor,
                           ),
                         );
                         }

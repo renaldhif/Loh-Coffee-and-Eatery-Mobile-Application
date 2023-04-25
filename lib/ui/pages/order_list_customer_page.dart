@@ -255,17 +255,29 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Container(
-                          width: 0.8 * MediaQuery.of(context).size.width,
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 1,
-                                offset: const Offset(0, 1),
+                        width: 0.8 * MediaQuery.of(context).size.width,
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: whiteColor,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              spreadRadius: 1,
+                              blurRadius: 1,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              snapshot.data!,
+                              const SizedBox(
+                                height: 10,
                               ),
                             ],
                           ),
@@ -308,29 +320,19 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
     String time = await formatTime(payment);
     // String customerName = await getCustomerNameByOrderNumber(orderNumber + 1);
     return GestureDetector(
-      onTap: () async {
-        // String name = await getCustomerNameByIndex(orderNumber);
-        // print('Customer Name: $name');
-        // getCustomerNameByOrderNumber(orderNumber + 1);
-        // getTableNumberByOrderNumber(orderNumber + 1);
-        // getOrderStatusByOrderNumber(orderNumber + 1);
-        // getMenuIdByOrderNumber(orderNumber + 1);
-        // getMenuByOrderNumber(orderNumber + 1);
-        // getUserIdByOrderNumber(orderNumber + 1);
-        //get user now
-        // User? currentUser = FirebaseAuth.instance.currentUser;
-        // String userEmail = currentUser!.email!;
-
-        // getOrderListByUserEmail(userEmail);
-
+      onTap: () async {  
         setState(() {
-          // Navigator.pushNamed(context, '/order-details');
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      OrderDetailsCustomerPage(orderNumber: orderNum)));
-        });
+            context,
+            MaterialPageRoute(
+              builder: (context) 
+              => OrderDetailsCustomerPage(
+                orderNumber: orderNum
+                ),
+              ),
+            );
+          }
+        );
       },
       child: Center(
         child: Column(
@@ -643,9 +645,10 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
       orderStatus = 'Order rejected';
     }
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Container(
-          color: whiteColor,
+          color: backgroundColor,
           width: double.infinity,
           child: Column(
             children: [
@@ -660,7 +663,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon:  Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
@@ -689,7 +692,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
                           },
                           duration: const Duration(seconds: 1),
                           splashColor: Colors.transparent,
-                          icons: const <AnimatedIconItem>[
+                          icons:  <AnimatedIconItem>[
                             AnimatedIconItem(
                               icon: Icon(Icons.refresh, color: primaryColor),
                             ),

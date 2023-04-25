@@ -97,4 +97,15 @@ class ReservationCubit extends Cubit<ReservationState> {
       emit(ReservationFailed(e.toString()));
     }
   }
+
+  Future<void> doneReservation(String id) async {
+    try {
+      emit(ReservationLoading());
+      await ReservationService().doneReservation(id);
+      emit(ReservationSuccess([]));
+    } catch (e) {
+      emit(ReservationFailed(e.toString()));
+    }
+  }
+
 }

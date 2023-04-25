@@ -152,7 +152,7 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
                           width: 0.8 * MediaQuery.of(context).size.width,
                           margin: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: whiteColor,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
@@ -251,9 +251,10 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Container(
-          color: whiteColor,
+          color: backgroundColor,
           width: double.infinity,
           child: Column(
             children: [
@@ -268,7 +269,7 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon:  Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
@@ -297,7 +298,7 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
                           },
                           duration: const Duration(seconds: 1),
                           splashColor: Colors.transparent,
-                          icons: const <AnimatedIconItem>[
+                          icons:  <AnimatedIconItem>[
                             AnimatedIconItem(
                               icon: Icon(Icons.refresh, color: primaryColor),
                             ),

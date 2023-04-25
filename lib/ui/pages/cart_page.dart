@@ -221,7 +221,7 @@ class _CartPageState extends State<CartPage> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
             spreadRadius: 3,
             blurRadius: 7,
             offset: const Offset(1, 3),
@@ -321,7 +321,7 @@ class _CartPageState extends State<CartPage> {
                           children: [
                             //* Minus Button
                             GestureDetector(
-                              child: const Icon(
+                              child: Icon(
                                 Icons.remove,
                                 color: primaryColor,
                               ),
@@ -357,7 +357,7 @@ class _CartPageState extends State<CartPage> {
 
                             //* Plus Button
                             GestureDetector(
-                              child: const Icon(
+                              child: Icon(
                                 Icons.add,
                                 color: primaryColor,
                               ),
@@ -383,7 +383,7 @@ class _CartPageState extends State<CartPage> {
 
                       //* Delete Button
                       GestureDetector(
-                        child: const Icon(
+                        child: Icon(
                           Icons.delete,
                           color: primaryColor,
                           size: 28,
@@ -420,6 +420,7 @@ class _CartPageState extends State<CartPage> {
     // bool isDineIn = false;
 
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -480,7 +481,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
+                      color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
                       spreadRadius: 3,
                       blurRadius: 7,
                       offset: const Offset(1, 3),
@@ -551,7 +552,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
+                      color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
                       spreadRadius: 3,
                       blurRadius: 7,
                       offset: const Offset(1, 3),
@@ -624,7 +625,7 @@ class _CartPageState extends State<CartPage> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
+                        color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
                         spreadRadius: 3,
                         blurRadius: 7,
                         offset: const Offset(1, 3),
@@ -676,7 +677,7 @@ class _CartPageState extends State<CartPage> {
                                         ),
                                       ),
                                       menuMaxHeight: 150,
-                                      icon: const Icon(
+                                      icon: Icon(
                                         Icons.keyboard_arrow_down,
                                         color: primaryColor,
                                       ),
@@ -691,7 +692,7 @@ class _CartPageState extends State<CartPage> {
                                         setState(() {
                                           dropdownvalue = newValue!.toString();
                                           print('dropdownvalue ${dropdownvalue}');
-                                          tableChoosen = newValue;
+                                          tableChoosen = newValue!;
                                           print('tableChoosen $tableChoosen');
                                         });
                                       },
@@ -750,7 +751,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
+                      color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
                       spreadRadius: 3,
                       blurRadius: 7,
                       offset: const Offset(1, 3),
@@ -897,6 +898,7 @@ class _CartPageState extends State<CartPage> {
             label: 'Profile',
           ),
         ],
+        backgroundColor: whiteColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: primaryColor,

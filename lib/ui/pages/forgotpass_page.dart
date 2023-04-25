@@ -23,7 +23,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       },
       builder: (context, state) {
         if (state is AuthLoading) {
-          return const Center(
+          return Center(
             child: CircularProgressIndicator(
               color: primaryColor,
             ),
@@ -41,8 +41,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               );
             } else {
               context
-                  .read<AuthCubit>()
-                  .resetPassword(email: _emailController.text);
+                .read<AuthCubit>()
+                .resetPassword(email: _emailController.text);
             }
           },
         );
@@ -53,6 +53,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 30),
@@ -69,7 +70,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 38,
@@ -106,7 +107,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     // Subtitle
                     const SizedBox(height: 10),
                     Text(
-                      'Don’t worry! It happens. Please enter your email address associated with your account and we’ll send an email with instructions to reset your password.',
+                      'Don\'t worry! It happens. Please enter your email address associated with your account and we\'ll send an email with instructions to reset your password.',
                       style: mainTextStyle.copyWith(
                         fontSize: 16,
                         fontWeight: medium,
@@ -128,22 +129,34 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       child: TextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
+                        style: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         decoration: InputDecoration(
                           labelText: 'Email',
+                          labelStyle: mainTextStyle.copyWith(
+                            fontSize: 16,
+                            fontWeight: medium,
+                          ),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           hintText: 'Enter your email',
+                          hintStyle: mainTextStyle.copyWith(
+                            fontSize: 16,
+                            fontWeight: medium,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: primaryColor,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
+                            borderSide: BorderSide(
                               color: primaryColor,
                               width: 1.5,
                             ),

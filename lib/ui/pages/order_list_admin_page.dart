@@ -49,11 +49,27 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
   final CollectionReference<Map<String, dynamic>> userList =
       FirebaseFirestore.instance.collection('users');
 
+  //method to change orderList to descending order
+  Future<void> changeOrderListToDescending() async {
+    await orderList.orderBy('number', descending: true).get();
+  }
+  
   //get order length
   Future<int> orderLength() async {
     AggregateQuerySnapshot query = await orderList.count().get();
     print('The number of order: ${query.count}');
     return query.count;
+  }
+
+
+  //get order number by index
+  Future<int> getOrderNumberByIndex(int index) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await orderList
+        .orderBy('number', descending: true)
+        .limit(index + 1)
+        .get();
+    int orderNumber = querySnapshot.docs[index].data()['number'];
+    return orderNumber;
   }
 
   //get order id by order number
@@ -216,17 +232,29 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Container(
-                          width: 0.8 * MediaQuery.of(context).size.width,
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 1,
-                                offset: const Offset(0, 1),
+                        width: 0.8 * MediaQuery.of(context).size.width,
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: whiteColor,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              spreadRadius: 1,
+                              blurRadius: 1,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              snapshot.data!,
+                              const SizedBox(
+                                height: 10,
                               ),
                             ],
                           ),
@@ -262,13 +290,14 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     );
   }
 
-  Future<Widget> orderHeader(int orderNumber) async {
-    Timestamp orderTime = await getOrderTimestampByOrderNumber(orderNumber + 1);
+  Future<Widget> orderHeader(int index) async {
+    int orderNumber = await getOrderNumberByIndex(index);
+    Timestamp orderTime = await getOrderTimestampByOrderNumber(orderNumber);
     PaymentModel payment = await getPaymentByTimestamp(orderTime);
     String time = await formatTime(payment);
 
-    String orderStatus = await getOrderStatusByOrderNumber(orderNumber + 1);
-    if (orderStatus == 'Pending') {
+    String orderStatus = await getOrderStatusByOrderNumber(orderNumber);
+    if(orderStatus == 'Pending'){
       isConfirm = false;
     } else {
       isConfirm = true;
@@ -277,6 +306,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     // String customerName = await getCustomerNameByOrderNumber(orderNumber + 1);
     return GestureDetector(
       onTap: () async {
+
         // String name = await getCustomerNameByIndex(orderNumber);
         // print('Customer Name: $name');
         getCustomerNameByOrderNumber(orderNumber + 1);
@@ -603,7 +633,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          color: whiteColor,
+          color: backgroundColor,
           width: double.infinity,
           child: Column(
             children: [
@@ -618,7 +648,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon:  Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
@@ -647,7 +677,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                           },
                           duration: const Duration(seconds: 1),
                           splashColor: Colors.transparent,
-                          icons: const <AnimatedIconItem>[
+                          icons: <AnimatedIconItem>[
                             AnimatedIconItem(
                               icon: Icon(Icons.refresh, color: primaryColor),
                             ),

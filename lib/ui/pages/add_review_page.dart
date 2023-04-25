@@ -38,13 +38,15 @@ class _AddReviewPageState extends State<AddReviewPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               RatingBar.builder(
+                glowColor: primaryColor,
+                unratedColor: kUnavailableColor,
                 initialRating: 3,
                 minRating: 1,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
                 itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                itemBuilder: (context, _) => const Icon(
+                itemBuilder: (context, _) => Icon(
                   Icons.star,
                   color: primaryColor,
                 ),
@@ -74,26 +76,39 @@ class _AddReviewPageState extends State<AddReviewPage> {
               controller: _reviewController,
               minLines: 5,
               maxLines: 5,
+              style: mainTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: regular,
+              ),
               decoration: InputDecoration(
+                floatingLabelBehavior: FloatingLabelBehavior.never,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 15,
                   vertical: 15,
                 ),
                 labelText: 'input_review'.tr(), // this field is required
+                labelStyle: mainTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: regular,
+                ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 hintText: 'submit_your_review_here'.tr(), // this field is required
+                hintStyle: mainTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: regular,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
+                  borderSide: BorderSide(
                     color: primaryColor,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
+                  borderSide: BorderSide(
                     color: primaryColor,
                     width: 1.5,
                   ),
@@ -109,9 +124,10 @@ class _AddReviewPageState extends State<AddReviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Container(
-          color: whiteColor,
+          color: backgroundColor,
           child: Column(
             children: [
               // Header
@@ -125,7 +141,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
@@ -163,7 +179,9 @@ class _AddReviewPageState extends State<AddReviewPage> {
                               SnackBar(
                                 content: Text(
                                     'review_submit_success'.tr()),
-                                backgroundColor: primaryColor,
+                                    style: whiteTextButtonStyle,
+                                ),
+                                backgroundColor: greenButtonColor,
                               ),
                             );
                             // User? user = FirebaseAuth.instance.currentUser;
@@ -180,7 +198,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
                         },
                         builder: (context, state) {
                           if (state is ReviewLoading) {
-                            return const Center(
+                            return Center(
                               child: CircularProgressIndicator(
                                 color: primaryColor,
                               ),

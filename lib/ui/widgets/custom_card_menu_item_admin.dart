@@ -10,25 +10,16 @@ import '/shared/theme.dart';
 
 class CustomCardMenuItemAdmin extends StatelessWidget {
   final MenuModel menu;
-  // final String title, image, tag, price;
-  // final double qtyLoved, qtyOrdered;
-  // final Function() onPressed;
 
   const CustomCardMenuItemAdmin(
     this.menu, {
     super.key,
-    // required this.title,
-    // required this.image,
-    // required this.tag,
-    // required this.price,
-    // required this.qtyLoved,
-    // required this.qtyOrdered,
-    // required this.onPressed,
   });
 
-  // void loadData(){
-  //   var id = menu.id;
-  // }
+  @override
+  void initState(){
+    initializeTheme(false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +38,7 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: isDarkMode ? backgroundColor.withOpacity(0.3) : Colors.grey.withOpacity(0.5),
             spreadRadius: 3,
             blurRadius: 7,
             offset: const Offset(1, 3),
@@ -143,13 +134,12 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                           title: 'update'.tr(),
                           fontSize: 14,
                           onPressed: () {
-                            // loadData();
-                            // Navigator.pushNamed(context, '/updatemenu');
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        UpdateMenuPageAdmin(inMenu: menu)));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateMenuPageAdmin(inMenu: menu),
+                              ),
+                            );
                           },
                         ),
                       ),
@@ -160,15 +150,6 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                         child: BlocConsumer<MenuCubit, MenuState>(
                           listener: (context, state) {
                             if(state is MenuSuccess){
-                              //Navigator.of(context).pop();
-                              // Navigator.pushNamed(context, '/home-admin');
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   const SnackBar(
-                              //     content: Text('Menu Successfully Deleted!'),
-                              //     backgroundColor: primaryColor,
-                              //   ),
-                                
-                              // );
                             }
                             else if(state is MenuFailed){
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -182,7 +163,7 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                           },
                           builder: (context, state) {
                             if (state is MenuLoading) {
-                              return const Center(
+                              return  Center(
                                 child: CircularProgressIndicator(
                                   color: primaryColor,
                                 ),
@@ -201,7 +182,10 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                                           "delete_menu_message".tr()),
                                       actions: [
                                         TextButton(
-                                          child: Text("cancel".tr()),
+                                          child: Text(
+                                            "cancel".tr(),
+                                            style: greenTextButtonStyle
+                                          ),
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
@@ -210,19 +194,16 @@ class CustomCardMenuItemAdmin extends StatelessWidget {
                                           child: Text("delete".tr()),
                                           onPressed: () {
                                             context
-                                                .read<MenuCubit>()
-                                                .deleteMenu(menu);
-                                                // Navigator.pushNamed(context, '/home-admin');
-                                                Navigator.of(context).pop();
-                                                ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("menu_delete_success".tr()),
-                                  backgroundColor: primaryColor,
-                                ),
-                                
-                              );
-
-                                            
+                                              .read<MenuCubit>()
+                                              .deleteMenu(menu);
+                                              // Navigator.pushNamed(context, '/home-admin');
+                                            Navigator.of(context).pop();
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text("menu_delete_success".tr()),
+                                                backgroundColor: greenButtonColor,
+                                              ),
+                                            );
                                           },
                                         ),
                                       ],

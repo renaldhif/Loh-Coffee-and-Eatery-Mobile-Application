@@ -67,39 +67,43 @@ class AuthService{
         password: password,
       );
       UserModel user = await UserService().getUserById(userCredential.user!.uid);
+      
+      if (user != null) {
+        await Hive.openBox<bool>('isDarkModeBox_${user.id}');
+      }
+      
       var user2 = FirebaseAuth.instance.currentUser;
       if (user2 != null) {
         await Hive.openBox<bool>('isLanguageEnglishBox_${user2.uid}');
       }
+      
       return user;
     }catch(e){
       throw e;
     }
   }
 
-
-  // Future<void> signOut() async{
-  //   try{
-  //     var user = FirebaseAuth.instance.currentUser;
-  //     if (user != null && Hive.isBoxOpen('isLanguageEnglishBox_${user.uid}')) {
-  //       await Hive.box<bool>('isLanguageEnglishBox_${user.uid}').close();
-  //   }
-  //     await _auth.signOut();
-  //   }catch(e){
-  //     throw e;
-  //   }
-  // }
     Future<void> signOut() async{
     try{
       var user = FirebaseAuth.instance.currentUser;
       if (user != null && Hive.isBoxOpen('isLanguageEnglishBox_${user.uid}')) {
         await Hive.box<bool>('isLanguageEnglishBox_${user.uid}').close();
       }
+      if (user != null && Hive.isBoxOpen('isDarkModeBox_${user.uid}')) {
+      await Hive.box<bool>('isDarkModeBox_${user.uid}').close();
+      }
       await _auth.signOut();
     }catch(e){
       throw e;
     }
+
+    // Sign out the user
+    await _auth.signOut();
+  } catch(e) {
+    throw e;
   }
+}
+
 
 
   Future<void> resetPassword(String email) async{

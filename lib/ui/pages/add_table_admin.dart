@@ -33,9 +33,10 @@ class _AddTablePageAdminState extends State<AddTablePageAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Container(
-          color: whiteColor,
+          color: backgroundColor,
           child: Column(
             children: [
               // Header
@@ -49,7 +50,7 @@ class _AddTablePageAdminState extends State<AddTablePageAdmin> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
@@ -113,7 +114,7 @@ class _AddTablePageAdminState extends State<AddTablePageAdmin> {
                   },
                   builder: (context, state) {
                     if (state is TableLoading) {
-                      return const Center(
+                      return Center(
                         child: CircularProgressIndicator(
                           color: primaryColor,
                         ),
@@ -156,9 +157,13 @@ class _AddTablePageAdminState extends State<AddTablePageAdmin> {
                             isBooked: false,
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
+
                           SnackBar(
                             content: Text('table_add_success'.tr()),
                             backgroundColor: primaryColor,
+                            style: whiteTextButtonStyle,
+                          ),
+                          backgroundColor: greenButtonColor,
                           ),
                         );
                         }

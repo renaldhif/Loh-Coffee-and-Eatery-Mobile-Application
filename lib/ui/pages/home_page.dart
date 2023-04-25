@@ -68,6 +68,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -154,7 +155,7 @@ class _HomePageState extends State<HomePage> {
         },
         label: Text(_shoppingBox.length.toString()),
         icon: const Icon(Icons.shopping_cart_rounded),
-        backgroundColor: primaryColor,
+        backgroundColor: greenButtonColor,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
@@ -179,6 +180,7 @@ class _HomePageState extends State<HomePage> {
             label: 'nav_profile'.tr(),
           ),
         ],
+        backgroundColor: whiteColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: primaryColor,
