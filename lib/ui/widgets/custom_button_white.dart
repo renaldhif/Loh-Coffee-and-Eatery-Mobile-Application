@@ -27,7 +27,7 @@ class CustomButtonWhite extends StatelessWidget {
         child: TextButton(
           onPressed: onPressed,
           style: TextButton.styleFrom(
-            side: const BorderSide(
+            side:  BorderSide(
               color: primaryColor,
             ),
             backgroundColor: whiteColor,

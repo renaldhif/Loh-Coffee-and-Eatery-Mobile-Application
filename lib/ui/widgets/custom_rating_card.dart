@@ -30,7 +30,7 @@ class CustomRatingCard extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
             spreadRadius: 3,
             blurRadius: 7,
             offset: const Offset(1, 3),
@@ -64,7 +64,7 @@ class CustomRatingCard extends StatelessWidget {
                       // Rating
                       Row(
                         children: [
-                          const Icon(
+                           Icon(
                             Icons.star,
                             color: primaryColor,
                           ),

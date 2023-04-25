@@ -36,15 +36,15 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
       switch (index) {
-        // case 1:
-        //   Navigator.pushNamed(context, '/addmenu');
-        //   break;
+        case 1:
+          Navigator.pushNamed(context, '/reservation');
+          break;
         case 2:
           Navigator.pushNamed(context, '/orderlist');
           break;
-        // case 3:
-        //   Navigator.pushNamed(context, '/notification');
-        //   break;
+        case 3:
+          Navigator.pushNamed(context, '/promo');
+          break;
         case 4:
           Navigator.pushNamed(context, '/profilemenu');
           _selectedIndex = 0;
@@ -77,6 +77,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -163,7 +164,7 @@ class _HomePageState extends State<HomePage> {
         },
         label: Text(_shoppingBox.length.toString()),
         icon: const Icon(Icons.shopping_cart_rounded),
-        backgroundColor: primaryColor,
+        backgroundColor: greenButtonColor,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -188,6 +189,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Profile',
           ),
         ],
+        backgroundColor: whiteColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: primaryColor,

@@ -13,6 +13,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  void initState() {
+    super.initState();
+    initializeTheme(false);
+  }
+
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   // show hide password
@@ -39,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
       },
       builder: (context, state) {
         if(state is AuthLoading){
-          return const Center(
+          return Center(
             child: CircularProgressIndicator(
               color: primaryColor,
             ),
@@ -61,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteColor,
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -119,22 +124,34 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
+                      style: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                       decoration: InputDecoration(
                         labelText: 'Email',
+                        labelStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         hintText: 'Enter your email',
+                        hintStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                             width: 1.5,
                           ),
@@ -161,9 +178,21 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextFormField(
                       controller: _passwordController,
                       obscureText: _isObsecure,
+                      style: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                       decoration: InputDecoration(
                         labelText: 'Password',
+                        labelStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         hintText: 'Enter your password',
+                        hintStyle: mainTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: medium,
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         suffixIcon: IconButton(
                           onPressed: () {
@@ -183,13 +212,13 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(defaultRadius),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(defaultRadius),
-                          borderSide: const BorderSide(
+                          borderSide:  BorderSide(
                             color: primaryColor,
                             width: 1.5,
                           ),

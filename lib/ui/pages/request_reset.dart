@@ -8,8 +8,10 @@ class RequestResetPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       resizeToAvoidBottomInset: false,
       body: Container(
+        color: backgroundColor,
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -24,7 +26,7 @@ class RequestResetPage extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'Just one more step, \nlet’s check your email',
+              'Just one more step, \nlet\'s check your email',
               style: greenTextStyle.copyWith(
                 fontSize: 28,
                 fontWeight: black,

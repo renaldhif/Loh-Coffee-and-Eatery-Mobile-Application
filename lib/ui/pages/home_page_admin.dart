@@ -14,10 +14,6 @@ class HomePageAdmin extends StatefulWidget {
 }
 
 class _HomePageAdminState extends State<HomePageAdmin> {
-  // Initial Selected Value
-  String dropdownvalue = 'All Menu';
-  // List of items in our dropdown menu
-  var items = ['All Menu', 'Based on most loved menu'];
 
   // To change the selected value of bottom navigation bar
   int _selectedIndex = 0;
@@ -29,9 +25,9 @@ class _HomePageAdminState extends State<HomePageAdmin> {
           // Navigator.pushReplacementNamed(context, '/home-admin');
           _selectedIndex = 0;
           break;
-        // case 1:
-        //   Navigator.pushNamed(context, '/addmenu');
-        //   break;
+        case 1:
+          Navigator.pushNamed(context, '/reservation-admin');
+          break;
         case 2:
           Navigator.pushNamed(context, '/orderlist-admin');
           break;
@@ -52,6 +48,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
   void initState() {
     context.read<MenuCubit>().getMenus();
     super.initState();
+    initializeTheme(false);
   }
 
   Widget menuCard(List<MenuModel> menus) {
@@ -63,6 +60,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
         children: menus.map((MenuModel menu) {
           return CustomCardMenuItemAdmin(menu);
         }).toList(),
+        
       ),
     );
   }
@@ -70,6 +68,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -81,48 +80,25 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Filter Menu',
-                      style: greenTextStyle.copyWith(
-                        fontSize: 22,
-                        fontWeight: black,
-                      ),
-                    ),
                     const SizedBox(height: 15),
-
-                    // Dropdown Menu
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-                      child: DropdownButton(
-                        value: dropdownvalue,
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: primaryColor,
-                        ),
-                        items: items.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownvalue = newValue!;
-                          });
-                        },
-                        isExpanded: true,
-                        underline: Container(
-                          height: 1,
-                          color: primaryColor,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Text(
+                        'Welcome, Loh Administrator!',
+                        style: greenTextStyle.copyWith(
+                          fontSize: 22,
+                          fontWeight: black,
                         ),
                       ),
                     ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
 
               // Menu List
-              BlocConsumer<MenuCubit, MenuState>(listener: (context, state) {
+              BlocConsumer<MenuCubit, MenuState>(
+                listener: (context, state) {
                 if (state is MenuFailed) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -140,6 +116,8 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                   );
                 }
               }),
+
+              const SizedBox(height: 70),
             ],
           ),
         ),
@@ -150,7 +128,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
         },
         label: const Text('Add Menu'),
         icon: const Icon(Icons.add),
-        backgroundColor: primaryColor,
+        backgroundColor: greenButtonColor,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -179,6 +157,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
             label: 'Profile',
           ),
         ],
+        backgroundColor: whiteColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: primaryColor,

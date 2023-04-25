@@ -72,7 +72,7 @@ class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
+              color: isDarkMode ? backgroundColor :  Colors.grey.withOpacity(0.3),
               spreadRadius: 3,
               blurRadius: 7,
               offset: const Offset(1, 3),
@@ -162,7 +162,7 @@ class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
                         // Loved
                         Row(
                           children: [
-                            const Icon(
+                             Icon(
                               Icons.favorite,
                               color: primaryColor,
                               size: 20,
@@ -179,7 +179,7 @@ class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
 
                             // Ordered
                             const SizedBox(width: 50),
-                            const Icon(
+                             Icon(
                               Icons.shopping_cart,
                               color: primaryColor,
                               size: 20,
@@ -216,7 +216,7 @@ class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(
+                                 Icon(
                                   Icons.add,
                                   color: primaryColor,
                                 ),
@@ -270,7 +270,7 @@ class _CustomCardMenuItemState extends State<CustomCardMenuItem> {
                           },
                           builder: (context, state) {
                             if (state is MenuLoading) {
-                              return const Center(
+                              return  Center(
                                 child: CircularProgressIndicator(
                                   color: primaryColor,
                                 ),

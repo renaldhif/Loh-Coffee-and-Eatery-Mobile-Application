@@ -221,7 +221,7 @@ class _CartPageState extends State<CartPage> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
             spreadRadius: 3,
             blurRadius: 7,
             offset: const Offset(1, 3),
@@ -321,7 +321,7 @@ class _CartPageState extends State<CartPage> {
                           children: [
                             //* Minus Button
                             GestureDetector(
-                              child: const Icon(
+                              child: Icon(
                                 Icons.remove,
                                 color: primaryColor,
                               ),
@@ -357,7 +357,7 @@ class _CartPageState extends State<CartPage> {
 
                             //* Plus Button
                             GestureDetector(
-                              child: const Icon(
+                              child: Icon(
                                 Icons.add,
                                 color: primaryColor,
                               ),
@@ -383,7 +383,7 @@ class _CartPageState extends State<CartPage> {
 
                       //* Delete Button
                       GestureDetector(
-                        child: const Icon(
+                        child: Icon(
                           Icons.delete,
                           color: primaryColor,
                           size: 28,
@@ -420,6 +420,7 @@ class _CartPageState extends State<CartPage> {
     // bool isDineIn = false;
 
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -480,7 +481,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
+                      color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
                       spreadRadius: 3,
                       blurRadius: 7,
                       offset: const Offset(1, 3),
@@ -551,7 +552,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
+                      color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
                       spreadRadius: 3,
                       blurRadius: 7,
                       offset: const Offset(1, 3),
@@ -624,7 +625,7 @@ class _CartPageState extends State<CartPage> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
+                        color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
                         spreadRadius: 3,
                         blurRadius: 7,
                         offset: const Offset(1, 3),
@@ -665,44 +666,42 @@ class _CartPageState extends State<CartPage> {
                                 child: Center(
                                   child: ButtonTheme(
                                     alignedDropdown: true,
-
                                     //* Dropdown
-                                    child: //* Dropdown
-DropdownButton(
-  // value: dropdownvalue,
-  hint: Text(
-    dropdownvalue,
-    style: greenTextStyle.copyWith(
-      fontWeight: semiBold,
-      fontSize: 15,
-    ),
-  ),
-  menuMaxHeight: 150,
-  icon: const Icon(
-    Icons.keyboard_arrow_down,
-    color: primaryColor,
-  ),
-  items: List.generate(snapshot.data!,
-      (index) {
-    return DropdownMenuItem(
-      value: index + 1,
-      child: Text((index + 1).toString()),
-    );
-  }).toList(),
-  onChanged: (int? newValue) {
-    setState(() {
-      dropdownvalue = newValue!.toString();
-      print('dropdownvalue ${dropdownvalue}');
-      tableChoosen = newValue!;
-      print('tableChoosen $tableChoosen');
-    });
-  },
-  // isExpanded: true,
-  underline: Container(
-    height: 1,
-    color: primaryColor,
-  ),
-),
+                                    child: DropdownButton(
+                                      // value: dropdownvalue,
+                                      hint: Text(
+                                        dropdownvalue,
+                                        style: greenTextStyle.copyWith(
+                                          fontWeight: semiBold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      menuMaxHeight: 150,
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: primaryColor,
+                                      ),
+                                      items: List.generate(snapshot.data!,
+                                          (index) {
+                                        return DropdownMenuItem(
+                                          value: index + 1,
+                                          child: Text((index + 1).toString()),
+                                        );
+                                      }).toList(),
+                                      onChanged: (int? newValue) {
+                                        setState(() {
+                                          dropdownvalue = newValue!.toString();
+                                          print('dropdownvalue ${dropdownvalue}');
+                                          tableChoosen = newValue!;
+                                          print('tableChoosen $tableChoosen');
+                                        });
+                                      },
+                                      // isExpanded: true,
+                                      underline: Container(
+                                        height: 1,
+                                        color: primaryColor,
+                                      ),
+                                    ),
 
                                   ),
                                 ),
@@ -753,7 +752,7 @@ DropdownButton(
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
+                      color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.3),
                       spreadRadius: 3,
                       blurRadius: 7,
                       offset: const Offset(1, 3),
@@ -900,6 +899,7 @@ DropdownButton(
             label: 'Profile',
           ),
         ],
+        backgroundColor: whiteColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: primaryColor,

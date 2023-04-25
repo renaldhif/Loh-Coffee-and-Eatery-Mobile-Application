@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:loh_coffee_eatery/models/user_model.dart';
 import 'package:loh_coffee_eatery/services/auth_service.dart';
 import 'package:loh_coffee_eatery/services/user_service.dart';

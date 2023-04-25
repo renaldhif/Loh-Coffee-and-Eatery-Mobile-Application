@@ -45,24 +45,36 @@ class CustomTextFormField extends StatelessWidget {
             child: TextFormField(
               // minLines: 3,
               // maxLines: 6,
+              style: mainTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: regular,
+              ),
               readOnly: readOnly,
               controller: controller,
               decoration: InputDecoration(
                 labelText: label, // this field is required
+                labelStyle: mainTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: regular,
+                ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 hintText: hintText, // this field is required
+                hintStyle: mainTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: regular,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
+                  borderSide:  BorderSide(
                     color: primaryColor,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
+                  borderSide:  BorderSide(
                     color: primaryColor,
                     width: 1.5,
                   ),
