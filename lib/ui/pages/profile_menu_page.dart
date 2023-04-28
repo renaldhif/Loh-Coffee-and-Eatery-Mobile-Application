@@ -22,19 +22,17 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
   // boolean for switch language
   bool _isSwitched = false;
 
-
   @override
   void initState() {
     super.initState();
-    initializeTheme(false); 
+    initializeTheme(false);
     // Call the initializeTheme function here
   }
-  
+
   // void initState() {
   //   super.initState();
   //   final user = FirebaseAuth.instance.currentUser;
   //   print(user!.uid);
-
 
   //   setState(() {
   //         Box<bool> isLanguageEnglishBox =
@@ -103,13 +101,14 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    Box<bool> isLanguageEnglishBox =
-        Hive.box<bool>('isLanguageEnglishBox_${user!.uid}');
-    _isSwitched = isLanguageEnglishBox.get('isLanguageEnglish')!;
-    print('isSwitched: $_isSwitched');
-    EasyLocalization.of(context)!.setLocale(
-      _isSwitched ? Locale('id', 'ID') : Locale('en', 'US'));
-      
+    Box<bool> isLanguageEnglishBox = Hive.box<bool>('isLanguageEnglishBox_${user!.uid}');
+      // _isSwitched = isLanguageEnglishBox.get('isLanguageEnglish')!;
+      _isSwitched = isLanguageEnglishBox.get('isLanguageEnglish') ?? false;
+      print('isSwitched: $_isSwitched');
+    EasyLocalization.of(context)!
+    .setLocale(_isSwitched ? Locale('id', 'ID') : Locale('en', 'US'));
+    // _isSwitched = isLanguageEnglish;
+
     Box<bool> isDarkModeBox = Hive.box<bool>('isDarkModeBox_${user!.uid}');
     bool _isDarkMode = isDarkModeBox.get('isDarkMode') ?? false;
 
@@ -133,7 +132,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
@@ -213,7 +212,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/update-profile');
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_forward_ios_rounded,
                         color: primaryColor,
                         size: 20,
@@ -255,7 +254,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                   children: [
                     Row(
                       children: [
-                         Icon(
+                        Icon(
                           Icons.fastfood_rounded,
                           color: primaryColor,
                           size: 26,
@@ -275,7 +274,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/custpreferences');
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_forward,
                         color: primaryColor,
                       ),
@@ -300,7 +299,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                   children: [
                     Row(
                       children: [
-                         Icon(
+                        Icon(
                           Icons.rate_review_rounded,
                           size: 26,
                           color: primaryColor,
@@ -320,7 +319,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/submit-review');
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_forward,
                         color: primaryColor,
                       ),
@@ -361,7 +360,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                   children: [
                     Row(
                       children: [
-                         Icon(
+                        Icon(
                           Icons.dark_mode_rounded,
                           size: 26,
                           color: primaryColor,
@@ -409,7 +408,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                   children: [
                     Row(
                       children: [
-                         Icon(
+                        Icon(
                           Icons.translate_rounded,
                           size: 26,
                           color: primaryColor,
@@ -426,7 +425,6 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       ],
                     ),
                     Switch(
-                      // * TODO: Iteration 3: Implement Switch Language
                       onChanged: (value) async {
                         final user = FirebaseAuth.instance.currentUser;
                         if (user != null) {
@@ -443,7 +441,6 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                         } else {
                           await EasyLocalization.of(context)!
                               .setLocale(Locale('en', 'US'));
-
                         }
                         // if (value) {
                         //   await EasyLocalization.of(context)!.setLocale(
@@ -476,7 +473,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                   children: [
                     Row(
                       children: [
-                         Icon(
+                        Icon(
                           Icons.help_rounded,
                           size: 26,
                           color: primaryColor,
@@ -496,7 +493,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/howtouse');
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_forward,
                         color: primaryColor,
                       ),
@@ -513,7 +510,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: whiteColor,
+          backgroundColor: whiteColor,
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),

@@ -159,11 +159,11 @@ class _AddTablePageAdminState extends State<AddTablePageAdmin> {
                           ScaffoldMessenger.of(context).showSnackBar(
 
                           SnackBar(
-                            content: Text('table_add_success'.tr()),
-                            backgroundColor: primaryColor,
-                            style: whiteTextButtonStyle,
-                          ),
-                          backgroundColor: greenButtonColor,
+                            content: Text(
+                              'table_add_success'.tr(),
+                              style: whiteTextButtonStyle,
+                            ),
+                            backgroundColor: greenButtonColor,
                           ),
                         );
                         }

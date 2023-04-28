@@ -91,8 +91,8 @@ class _AddReviewPageState extends State<AddReviewPage> {
                   fontSize: 16,
                   fontWeight: regular,
                 ),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                hintText: 'submit_your_review_here'.tr(), // this field is required
+                hintText:
+                    'submit_your_review_here'.tr(), // this field is required
                 hintStyle: mainTextStyle.copyWith(
                   fontSize: 16,
                   fontWeight: regular,
@@ -177,11 +177,11 @@ class _AddReviewPageState extends State<AddReviewPage> {
                           if (state is ReviewSuccess) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
-                                    'review_submit_success'.tr()),
-                                    style: whiteTextButtonStyle,
-                                ),
                                 backgroundColor: greenButtonColor,
+                                content: Text(
+                                  'review_submit_success'.tr(),
+                                  style: whiteTextButtonStyle,
+                                ),
                               ),
                             );
                             // User? user = FirebaseAuth.instance.currentUser;

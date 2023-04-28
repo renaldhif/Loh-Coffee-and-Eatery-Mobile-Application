@@ -53,14 +53,13 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
   Future<void> changeOrderListToDescending() async {
     await orderList.orderBy('number', descending: true).get();
   }
-  
+
   //get order length
   Future<int> orderLength() async {
     AggregateQuerySnapshot query = await orderList.count().get();
     print('The number of order: ${query.count}');
     return query.count;
   }
-
 
   //get order number by index
   Future<int> getOrderNumberByIndex(int index) async {
@@ -232,22 +231,22 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Container(
-                        width: 0.8 * MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: whiteColor,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 1,
-                              offset: const Offset(0, 1),
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Column(
+                          width: 0.8 * MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: whiteColor,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 1,
+                                offset: const Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                              child: Column(
                             children: [
                               const SizedBox(
                                 height: 20,
@@ -257,20 +256,9 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                                 height: 10,
                               ),
                             ],
-                          ),
-                          child: Center(
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                snapshot.data!,
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          ));
+                          )
+                        )
+                      );
                     } else {
                       return const Center(
                         child: CircularProgressIndicator(),
@@ -297,7 +285,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     String time = await formatTime(payment);
 
     String orderStatus = await getOrderStatusByOrderNumber(orderNumber);
-    if(orderStatus == 'Pending'){
+    if (orderStatus == 'Pending') {
       isConfirm = false;
     } else {
       isConfirm = true;
@@ -306,7 +294,6 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     // String customerName = await getCustomerNameByOrderNumber(orderNumber + 1);
     return GestureDetector(
       onTap: () async {
-
         // String name = await getCustomerNameByIndex(orderNumber);
         // print('Customer Name: $name');
         getCustomerNameByOrderNumber(orderNumber + 1);
@@ -548,13 +535,13 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
               title: 'Confirm order',
               onPressed: () {
                 setState(() {
-                  print('confirm button');
-                  print('isConfirm then: ${isConfirm}');
-                  print('pay status then: ${orderStatus}');
+                  // print('confirm button');
+                  // print('isConfirm then: ${isConfirm}');
+                  // print('pay status then: ${orderStatus}');
                   isConfirm = true;
                   orderStatus = 'Confirmed';
-                  print('isConfirm now: ${isConfirm}');
-                  print('pay status now: ${orderStatus}');
+                  // print('isConfirm now: ${isConfirm}');
+                  // print('pay status now: ${orderStatus}');
                 });
               }),
         ),
@@ -567,13 +554,13 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
             title: 'Reject order',
             onPressed: () {
               setState(() {
-                print('reject button');
-                print('isConfirm then: ${isConfirm}');
-                print('pay status then: ${orderStatus}');
+                // print('reject button');
+                // print('isConfirm then: ${isConfirm}');
+                // print('pay status then: ${orderStatus}');
                 isConfirm = true;
                 orderStatus = 'Rejected';
-                print('isConfirm now: ${isConfirm}');
-                print('pay status now: ${orderStatus}');
+                // print('isConfirm now: ${isConfirm}');
+                // print('pay status now: ${orderStatus}');
               });
             },
           ),
@@ -648,7 +635,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,

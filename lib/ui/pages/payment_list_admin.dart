@@ -33,7 +33,7 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
 
   Future<int> paymentLength() async {
     AggregateQuerySnapshot query = await paymentList.count().get();
-    print('The number of payment: ${query.count}');
+    // print('The number of payment: ${query.count}');
     return query.count;
   }
 
@@ -53,7 +53,7 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
     List<DateTime> paymentDateTimeList2 = await paymentDateTimeList();
     paymentDateTimeList2.sort();
     for (int i = 0; i < paymentDateTimeList2.length; i++) {
-      print(paymentDateTimeList2[i]);
+      // print(paymentDateTimeList2[i]);
     }
     return paymentDateTimeList2;
   }
@@ -81,12 +81,15 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
   Future<String> getCustomerNameByIndex(int index) async {
     String name =
         await context.read<PaymentCubit>().getCustomerNameByIndex(index: index);
-    print('Customer Name: $name');
+    // print('Customer Name: $name');
     return name.toString();
   }
 
   //getTimeByIndex string from paymentCubit
   Future<String> getTimeByIndex(int index) async {
+    if (!mounted) {
+      return ''; // or handle the case where the State object is already disposed of
+    }
     Timestamp time =
         (await context.read<PaymentCubit>().getTimestampByIndex(index: index));
     DateTime dateTime =
@@ -99,26 +102,29 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
 
 //getPaymentReceiptByIndex string from paymentCubit
   Future<String> getPaymentReceiptByIndex(int index) async {
+    if (!mounted) {
+      return ''; // or handle the case where the State object is already disposed of
+    }
     String paymentReceipt = await context
         .read<PaymentCubit>()
         .getPaymentReceiptByIndex(index: index);
-    print('Payment Receipt: $paymentReceipt');
     return paymentReceipt.toString();
   }
+
 
 // get payment status from paymentCubit
   Future<String> getPaymentStatusByIndex(int index) async {
     String paymentStatus = await context
         .read<PaymentCubit>()
         .getPaymentStatusByIndex(index: index);
-    print('Payment Status: $paymentStatus');
+    // print('Payment Status: $paymentStatus');
     return paymentStatus.toString();
   }
 
   Future<int> getTotalPriceByIndex(int index) async {
     int totalPrice =
         (await context.read<PaymentCubit>().getTotalPriceByIndex(index: index));
-    print('Total Price: $totalPrice');
+    // print('Total Price: $totalPrice');
     return totalPrice;
   }
 
@@ -126,7 +132,7 @@ class _PaymentListAdminPageState extends State<PaymentListAdminPage> {
   Future<PaymentModel> getPaymentByIndex(int index) async {
     PaymentModel payment =
         await context.read<PaymentCubit>().getPaymentByIndex(index: index);
-    print('Payment: $payment');
+    // print('Payment: $payment');
     return payment;
   }
 

@@ -34,7 +34,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
 
   Future<int> getReservationListLength() async {
     AggregateQuerySnapshot query = await reserveList.count().get();
-    print('length: ${query.count}');
+
     return query.count;
   } // sudah work
 
@@ -43,7 +43,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await reserveList.get();
     String reservationId = querySnapshot.docs[index].id;
-    print('reservationId: $reservationId');
+
     return reservationId;
   } // sudah work
 
@@ -118,8 +118,12 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
     Timestamp dateCreated = data['dateCreated'];
     //convert timestamp to string and the time to three digits
     String dateCreated2 = dateCreated.toDate().toString().substring(0, 19);
-    print('dateCreated: $dateCreated2');
-    return dateCreated2;
+    //convert date format from yyyy-MM-dd hh:mm to dd MM yyyy hh:mm
+    DateTime dateTime = DateTime.parse(dateCreated2);
+    String formattedDate = DateFormat('dd-MM-yyyy hh:mm').format(dateTime);
+
+    print('dateCreated: $formattedDate');
+    return formattedDate;
   } // sudah work
 
 
@@ -142,7 +146,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
     String email = userModel.email;
     List<String> reserveIDList = await getReservationIds2(email);
     int length = reserveIDList.length;
-    print('length: $length');
+
     return length;
   }
 
@@ -157,7 +161,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
         await reserveList.doc(reserveIDList[index]).get();
     Map<String, dynamic> data = documentSnapshot.data()!;
     String date = data['date'];
-    print('date: $date');
+
     return date;
   }
 
@@ -172,7 +176,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
         await reserveList.doc(reserveIDList[index]).get();
     Map<String, dynamic> data = documentSnapshot.data()!;
     String time = data['time'];
-    print('time: $time');
+
     return time;
   }
 
@@ -187,7 +191,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
         await reserveList.doc(reserveIDList[index]).get();
     Map<String, dynamic> data = documentSnapshot.data()!;
     String location = data['location'];
-    print('location: $location');
+
     return location;
   }
 
@@ -202,7 +206,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
         await reserveList.doc(reserveIDList[index]).get();
     Map<String, dynamic> data = documentSnapshot.data()!;
     int tableNumber = data['tableNum'];
-    print('tableNumber: $tableNumber');
+
     return tableNumber;
   }
 
@@ -217,7 +221,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
         await reserveList.doc(reserveIDList[index]).get();
     Map<String, dynamic> data = documentSnapshot.data()!;
     int numOfPeople = data['sizeOfPeople'];
-    print('numOfPeople: $numOfPeople');
+
     return numOfPeople;
   }
 
@@ -234,8 +238,12 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
     Timestamp dateCreated = data['dateCreated'];
     //convert timestamp to string and the time to three digits
     String dateCreated2 = dateCreated.toDate().toString().substring(0, 19);
-    print('dateCreated: $dateCreated2');
-    return dateCreated2;
+    //convert date format from yyyy-MM-dd hh:mm to dd MM yyyy hh:mm
+    DateTime dateTime = DateTime.parse(dateCreated2);
+    String formattedDate = DateFormat('dd-MM-yyyy hh:mm').format(dateTime);
+
+    print('dateCreated: $formattedDate');
+    return formattedDate;
   }
 
   //get reservatio id by index
@@ -246,7 +254,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
     String email = userModel.email;
     List<String> reserveIDList = await getReservationIds2(email);
     String reservationId = reserveIDList[index];
-    print('reservationId Idx: $reservationId');
+
     return reservationId;
   }
 
@@ -682,16 +690,29 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_circle_left_rounded,
+                  color: primaryColor,
+                  size: 55,
+                ),
+              ),
               const SizedBox(
                 height: 20,
               ),
-              Text(
-                'Customer\'s Reservation History',
-                style: greenTextStyle.copyWith(
-                  fontSize: 24,
-                  fontWeight: semiBold,
-                )
+              Center(
+                child: Text(
+                  'Customer\'s Reservation History',
+                  style: greenTextStyle.copyWith(
+                    fontSize: 24,
+                    fontWeight: semiBold,
+                  )
+                ),
               ),
               const SizedBox(
                 height: 10,

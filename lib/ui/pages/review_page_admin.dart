@@ -95,7 +95,10 @@ class _ReviewPageAdminState extends State<ReviewPageAdmin> {
                       ),
                     );
                   } else if (state is ReviewSuccess) {
-                    return reviewCard(state.reviews);
+                    List<ReviewModel> reviews = state.reviews;
+                    reviews.sort((a, b) => -a.timestamp.compareTo(b.timestamp));
+                    return reviewCard(reviews);
+                    // return reviewCard(state.reviews);
                   } else {
                     return Center(
                       child: Text('something_wrong'.tr()),

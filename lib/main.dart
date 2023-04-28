@@ -1,10 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:loh_coffee_eatery/models/menu_adapter.dart';
-// import 'package:loh_coffee_eatery/ui/pages/add_promo_page.dart';
+import 'package:loh_coffee_eatery/ui/pages/add_promo_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/cart_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/confirm_payment_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/delete_table_admin_page.dart';
@@ -16,6 +17,7 @@ import 'package:loh_coffee_eatery/ui/pages/payment_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/profile_menu_admin_page.dart';
 import 'package:loh_coffee_eatery/models/menu_model.dart';
 import 'package:loh_coffee_eatery/ui/pages/update_profile_page.dart';
+import 'cubit/announce_cubit.dart';
 import 'cubit/auth_cubit.dart';
 import 'cubit/menu_cubit.dart';
 import 'cubit/order_cubit.dart';
@@ -23,7 +25,7 @@ import 'cubit/payment_cubit.dart';
 import 'cubit/review_cubit.dart';
 import 'cubit/table_cubit.dart';
 import 'cubit/theme_cubit.dart';
-// import 'cubit/announce_cubit.dart';
+import 'cubit/announce_cubit.dart';
 import 'cubit/reservation_cubit.dart';
 import 'firebase_options.dart';
 import '/ui/pages/add_menu_admin.dart';
@@ -38,7 +40,7 @@ import 'ui/pages/faq_account_management_page.dart';
 import 'ui/pages/faq_order_management_page.dart';
 import 'ui/pages/faq_reservation_management_page.dart';
 import 'ui/pages/forgotpass_page.dart';
-// import 'ui/pages/promo_page.dart';
+import 'ui/pages/promo_page.dart';
 import 'ui/pages/home_page.dart';
 import 'ui/pages/howtouse_page.dart';
 import 'ui/pages/login_page.dart';
@@ -60,6 +62,18 @@ import 'splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await EasyLocalization.ensureInitialized();
+  runApp(
+    EasyLocalization(
+      supportedLocales: [Locale('en', 'US'), Locale('id', 'ID')],
+      path: 'assets/translations',
+      fallbackLocale: Locale('en', 'US'),
+      // startLocale: Locale('en', 'US'), 
+      child: MyApp(),
+    ),
+  );
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -83,9 +97,8 @@ void main() async {
   //   Hive.box('isDarkModeBox_${user!.uid}').close();
   // }
   
-
-  runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
 
@@ -103,11 +116,14 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => OrderCubit()),
         BlocProvider(create: (context) => ThemeCubit()),
         BlocProvider(create: (context) => ReservationCubit()),
-        // BlocProvider(create: (context) => AnnounceCubit()),
+        BlocProvider(create: (context) => AnnounceCubit()),
 
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         routes: {
           //* Customer Routes
           '/': (context) => const SplashScreen(),
@@ -137,7 +153,7 @@ class MyApp extends StatelessWidget {
           '/privacy-policy':(context) => const PrivacyPolicyPage(),
           '/reservation':(context) => const ReservationPage(),
           '/reservation-success':(context) => const ReservationSuccessPage(),
-          // '/promo':(context) => const PromoPage(),
+          '/promo':(context) => const PromoPage(),
           
           //* Admin Routes
           '/home-admin': (context) => const HomePageAdmin(),
@@ -152,7 +168,7 @@ class MyApp extends StatelessWidget {
           '/reviews': (context) => const ReviewPageAdmin(),
           '/payment-admin':(context) => const PaymentListAdminPage(),
           '/reservation-admin':(context) => const ReservationAdminPage(),
-          // '/addpromo':(context) => const AddPromoPage(),
+          '/addpromo':(context) => const AddPromoPage(),
         },
       ),
     );
