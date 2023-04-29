@@ -104,102 +104,116 @@ class _PromoPageState extends State<PromoPage> {
   Future<Widget> promoCard(int index) async {
     String? title = await AnnounceCubit().getOrderedAnnounceTitle(index);
     String? announce = await AnnounceCubit().getOrderedAnnounceString(index);
-    String? dateAvail =
-        await AnnounceCubit().getOrderedAnnounceDateAvail(index);
+    String? dateAvail = await AnnounceCubit().getOrderedAnnounceDateAvail(index);
     String? image = await AnnounceCubit().getOrderedAnnounceImage(index);
-    Timestamp? timestamp =
-        await AnnounceCubit().getOrderedAnnounceTimestamp(index);
+    Timestamp? timestamp = await AnnounceCubit().getOrderedAnnounceTimestamp(index);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
-        width: double.infinity,
-        height: 150,
-        decoration: BoxDecoration(
-          color: whiteColor,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color:
-                  isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 7,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //* IMAGE
-            Center(
-              child: Container(
-                margin: const EdgeInsets.only(left: 10),
-                width: 0.3 * MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(defaultRadius),
-                  border: Border.all(
-                    color: Colors.grey.withOpacity(0.3),
-                    width: 1,
-                  ),
-                ),
-                child: AspectRatio(
-                  aspectRatio: 1 / 1,
-                  child: ClipRRect(
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context, 
+          '/promodetail', 
+          arguments: {
+            'title': title,
+            'announce': announce,
+            'dateAvail': dateAvail,
+            'image': image,
+            'timestamp': timestamp,
+            // 'index' : index,
+          }
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Container(
+          width: double.infinity,
+          height: 150,
+          decoration: BoxDecoration(
+            color: whiteColor,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 7,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              
+              //* IMAGE
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  width: 0.3 * MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(defaultRadius),
-                    child: Image.network(
-                      image!,
-                      width: 0.2 * MediaQuery.of(context).size.width,
-                      fit: BoxFit.cover,
+                    border: Border.all(
+                      color: Colors.grey.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: AspectRatio(
+                    aspectRatio: 1 / 1,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                      child: Image.network(
+                        image!,
+                        width: 0.2 * MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-
-            //* DETAILS
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    //* TITLE
-                    Text(
-                      title,
-                      style: greenTextStyle.copyWith(
-                        fontSize: 16,
-                        fontWeight: black,
+    
+              //* DETAILS
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      //* TITLE
+                      Text(
+                        title,
+                        style: greenTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: black,
+                        ),
                       ),
-                    ),
-
-                    //* DESCRIPTION
-                    Text(
-                      announce,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: greenTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: light,
+    
+                      //* DESCRIPTION
+                      Text(
+                        announce,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: greenTextStyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: light,
+                        ),
                       ),
-                    ),
-
-                    const SizedBox(height: 8),
-
-                    //* PROMO DATE
-                    Text(
-                      dateAvail,
-                      style: orangeTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: light,
+    
+                      const SizedBox(height: 8),
+    
+                      //* PROMO DATE
+                      Text(
+                        dateAvail,
+                        style: orangeTextStyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: light,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -40,6 +40,7 @@ import 'ui/pages/faq_account_management_page.dart';
 import 'ui/pages/faq_order_management_page.dart';
 import 'ui/pages/faq_reservation_management_page.dart';
 import 'ui/pages/forgotpass_page.dart';
+import 'ui/pages/promo_detail_page.dart';
 import 'ui/pages/promo_page.dart';
 import 'ui/pages/home_page.dart';
 import 'ui/pages/howtouse_page.dart';
@@ -154,6 +155,7 @@ class MyApp extends StatelessWidget {
           '/reservation':(context) => const ReservationPage(),
           '/reservation-success':(context) => const ReservationSuccessPage(),
           '/promo':(context) => const PromoPage(),
+          '/promodetail':(context) => PromoDetailPage(),
           
           //* Admin Routes
           '/home-admin': (context) => const HomePageAdmin(),

@@ -29,9 +29,10 @@ class _PromoDetailPageState extends State<PromoDetailPage> {
     String timestampFormatted = DateFormat('dd MMMM yyyy').format(date);
     
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Container(
-          color: whiteColor,
+          color: backgroundColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -74,7 +75,7 @@ class _PromoDetailPageState extends State<PromoDetailPage> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(image),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
@@ -99,7 +100,7 @@ class _PromoDetailPageState extends State<PromoDetailPage> {
                   children: [
                     Expanded(
                       child: Text(
-                        'promo_available'.tr() + ': $dateAvail',
+                        'promo_available'.tr() + ': \n$dateAvail',
                         style: orangeTextStyle.copyWith(
                           fontSize: 16,
                           fontWeight: medium,
@@ -109,7 +110,7 @@ class _PromoDetailPageState extends State<PromoDetailPage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 30),
 
               Text(
                 'date_posted'.tr() + ': $timestampFormatted',
