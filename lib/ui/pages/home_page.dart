@@ -48,6 +48,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     context.read<MenuCubit>().getMenus();
     super.initState();
+    initializeTheme(false);
   }
 
   Widget menuCard(List<MenuModel> menus) {

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -231,8 +232,8 @@ class _ReservationPageState extends State<ReservationPage>
           );
         } else {
           //return no payments
-          return const Center(
-            child: Text('No Reservations'),
+          return Center(
+            child: Text('no_reservation'.tr()),
           );
         }
       },
@@ -305,7 +306,7 @@ class _ReservationPageState extends State<ReservationPage>
                                 width: 20,
                               ),
                               Text(
-                                'Date: ',
+                                'date'.tr() + ': ',
                                 style: greenTextStyle.copyWith(
                                   fontSize: 14,
                                   fontWeight: semiBold,
@@ -335,7 +336,7 @@ class _ReservationPageState extends State<ReservationPage>
                                 width: 20,
                               ),
                               Text(
-                                'Time:',
+                                'time'.tr() + ':',
                                 style: greenTextStyle.copyWith(
                                   fontSize: 14,
                                   fontWeight: semiBold,
@@ -362,7 +363,7 @@ class _ReservationPageState extends State<ReservationPage>
                           width: MediaQuery.of(context).size.width * 0.2,
                           height: 40,
                           child: CustomButtonRed(
-                            title: 'Cancel',
+                            title: 'cancel'.tr(),
                             fontSize: 16,
                             onPressed: () {
                               setState(() {
@@ -412,7 +413,7 @@ class _ReservationPageState extends State<ReservationPage>
                         width: 20,
                       ),
                       Text(
-                        'Table Number:',
+                        'table_number'.tr() + ':',
                         style: greenTextStyle.copyWith(
                           fontSize: 14,
                           fontWeight: semiBold,
@@ -442,7 +443,7 @@ class _ReservationPageState extends State<ReservationPage>
                         width: 20,
                       ),
                       Text(
-                        'Number of People:',
+                        'number_of_people'.tr() + ':',
                         style: greenTextStyle.copyWith(
                           fontSize: 14,
                           fontWeight: semiBold,
@@ -472,7 +473,7 @@ class _ReservationPageState extends State<ReservationPage>
                         width: 20,
                       ),
                       Text(
-                        'Location:',
+                        'location'.tr() + ':',
                         style: greenTextStyle.copyWith(
                           fontSize: 14,
                           fontWeight: semiBold,
@@ -516,7 +517,7 @@ class _ReservationPageState extends State<ReservationPage>
                     width: 20,
                   ),
                   Text(
-                    'Reservation Created:',
+                    'reservation_created'.tr() + ':',
                     style: mainTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: medium,
@@ -560,7 +561,7 @@ class _ReservationPageState extends State<ReservationPage>
             children: [
               Center(
                 child: Text(
-                  'Reservation Form',
+                  'reservation_form'.tr(),
                   style: greenTextStyle.copyWith(
                     fontSize: 24,
                     fontWeight: semiBold,
@@ -579,7 +580,7 @@ class _ReservationPageState extends State<ReservationPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Reservation Date',
+                'reservation_date'.tr(),
                 style: greenTextStyle.copyWith(
                   fontSize: 18,
                   fontWeight: bold,
@@ -646,12 +647,12 @@ class _ReservationPageState extends State<ReservationPage>
                     Icons.calendar_today,
                     color: primaryColor,
                   ),
-                  labelText: 'Reservation Date',
+                  labelText: 'reservation_date'.tr(),
                   labelStyle: mainTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: medium,
                   ),
-                  hintText: 'Enter reservation date',
+                  hintText: 'enter_reservation_date'.tr(),
                   hintStyle: mainTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: medium,
@@ -687,7 +688,7 @@ class _ReservationPageState extends State<ReservationPage>
             children: [
               const SizedBox(height: 20),
               Text(
-                'Reservation Time (10 AM - 9 PM)',
+                'reservation_time'.tr() + '(10 AM - 9 PM)',
                 style: greenTextStyle.copyWith(
                   fontSize: 18,
                   fontWeight: bold,
@@ -754,12 +755,12 @@ class _ReservationPageState extends State<ReservationPage>
                     Icons.access_time,
                     color: primaryColor,
                   ),
-                  labelText: 'Reservation Time',
+                  labelText: 'reservation_time'.tr(),
                   labelStyle: mainTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: medium,
                   ),
-                  hintText: 'Enter reservation time',
+                  hintText: 'enter_reservation_time'.tr(),
                   hintStyle: mainTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: medium,
@@ -796,7 +797,7 @@ class _ReservationPageState extends State<ReservationPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Table Number Available',
+                'table_number_available'.tr(),
                 style: greenTextStyle.copyWith(
                   fontSize: 18,
                   fontWeight: bold,
@@ -855,12 +856,12 @@ class _ReservationPageState extends State<ReservationPage>
                         }
                       },
                       decoration: InputDecoration(
-                        labelText: 'Tap to get available table number',
+                        labelText: 'tap_to_get_table'.tr(),
                         labelStyle: mainTextStyle.copyWith(
                           fontSize: 16,
                           fontWeight: medium,
                         ),
-                        hintText: 'Tap to get available table number',
+                        hintText: 'tap_to_get_table'.tr(),
                         hintStyle: mainTextStyle.copyWith(
                           fontSize: 16,
                           fontWeight: medium,
@@ -898,7 +899,7 @@ class _ReservationPageState extends State<ReservationPage>
         _sizeOfPeople != null
             ? Center(
                 child: Text(
-                  'Size of people: $_sizeOfPeople',
+                  'size_of_people'.tr() +': $_sizeOfPeople',
                   style: greenTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: semiBold,
@@ -914,7 +915,7 @@ class _ReservationPageState extends State<ReservationPage>
         _location != null
             ? Center(
                 child: Text(
-                  'Location: $_location',
+                  'location'.tr() + ': $_location',
                   style: greenTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: semiBold,
@@ -927,14 +928,14 @@ class _ReservationPageState extends State<ReservationPage>
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 35, 20, 70),
           child: CustomButton(
-            title: 'Reserve Now',
+            title: 'reserve_now.'.tr(),
             onPressed: () async {
               //* Validate date
               String dateInputted = _dateInputController.text;
               if (dateInputted.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please select a date'),
+                  SnackBar(
+                    content: Text('please_select_date'.tr()),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -943,8 +944,8 @@ class _ReservationPageState extends State<ReservationPage>
               DateTime dateTime = DateFormat('dd-MM-yyyy').parse(dateInputted);
               if (dateTime.isBefore(DateTime.now())) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please input a future date and time'),
+                  SnackBar(
+                    content: Text('please_input_future_date_time'.tr()),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -955,8 +956,8 @@ class _ReservationPageState extends State<ReservationPage>
               String timeInputted = _timeController.text;
               if (timeInputted.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please select a reservation time'),
+                  SnackBar(
+                    content: Text('please_select_reservation_time'.tr()),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -977,9 +978,9 @@ class _ReservationPageState extends State<ReservationPage>
                   selectedDateTime
                       .isAfter(DateTime(now.year, now.month, now.day, 21))) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
+                  SnackBar(
                     content:
-                        Text('Please select a time between 10 AM and 9 PM'),
+                        Text('please_select_time_between'.tr()),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -989,8 +990,8 @@ class _ReservationPageState extends State<ReservationPage>
               if (_tableNumController.text.contains(RegExp(r'[a-zA-Z]')) ||
                   _numOfPeopleController.text.contains(RegExp(r'[a-zA-Z]'))) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please input a valid table number'),
+                  SnackBar(
+                    content: Text('validation_table_number'.tr()),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -1002,8 +1003,8 @@ class _ReservationPageState extends State<ReservationPage>
                   _numOfPeopleController.text.isEmpty ||
                   _locationController.text.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please fill all the fields'),
+                  SnackBar(
+                    content: Text('validation_all_field'.tr()),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -1035,7 +1036,7 @@ class _ReservationPageState extends State<ReservationPage>
                   Navigator.pushNamed(context, '/reservation-success');
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Reservation success!'),
+                      content: Text('reservation_success'.tr()),
                       backgroundColor: primaryColor,
                     ),
                   );
@@ -1058,7 +1059,7 @@ class _ReservationPageState extends State<ReservationPage>
               height: 20,
             ),
             Text(
-              'Your Reservation History',
+              'your_reservation_history'.tr(),
               style: greenTextStyle.copyWith(
                 fontSize: 18,
                 fontWeight: semiBold,
@@ -1084,7 +1085,7 @@ class _ReservationPageState extends State<ReservationPage>
         backgroundColor: greenButtonColor,
         automaticallyImplyLeading: true,
         title: Text(
-          'Reservation',
+          'reservation'.tr(),
           style: whiteTextButtonStyle.copyWith(
             fontSize: 18,
             fontWeight: semiBold,
@@ -1100,9 +1101,9 @@ class _ReservationPageState extends State<ReservationPage>
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: secondaryColor,
-          tabs: const [
-            Tab(text: 'Form'),
-            Tab(text: 'History'),
+          tabs: [
+            Tab(text: 'form'.tr()),
+            Tab(text: 'history'.tr()),
           ],
         ),
       ),
