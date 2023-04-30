@@ -135,6 +135,34 @@
     "limited_time_offer": "Limited Time Offer",
     "text_promo": "Don't Miss Our Exclusive Promotions!",
     "promo_available": "Promo Available",
-    "date_posted": "Date Posted"
+    "date_posted": "Date Posted",
+
+    "no_reservation": "No reservation",
+    "reservation": "Reservation",
+    "form": "Form",
+    "history": "History",
+    "reservation_form": "Reservation Form",
+    "reservation_date": "Reservation Date",
+    "enter_reservation_date": "Enter reservation date",
+    "reservation_time": "Reservation Time",
+    "enter_reservation_time": "Enter reservation time",
+    "table_number_available": "Table Number Available",
+    "tap_to_get_table": "Tap to get available table number",
+    "size_of_people": "Size of People",
+    "reserve_now": "Reserve Now",
+    "please_select_date": "Please select a date",
+    "please_input_future_date_time": "Please input future date and time",
+    "please_select_reservation_time": "Please select reservation time",
+    "please_select_time_between": "Please select time between 10 AM and 9 PM",
+    "your_reservation_history": "Your Reservation History",
+    "date": "Date",
+    "time": "Time",
+    "number_of_people": "Number of People",
+    "reservation_created": "Reservation Created",
+    "reservation_success": "Reservation Success"
+    
+
+
+
 
 }
