@@ -9,8 +9,10 @@ class ReservationSuccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: backgroundColor,
       body: Container(
         width: double.infinity,
+        color: backgroundColor,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [

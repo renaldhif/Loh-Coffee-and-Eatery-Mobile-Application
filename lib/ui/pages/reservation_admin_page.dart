@@ -33,7 +33,10 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
       FirebaseFirestore.instance.collection('reservations');
 
   Future<int> getReservationListLength() async {
-    AggregateQuerySnapshot query = await reserveList.count().get();
+    AggregateQuerySnapshot query = await 
+    reserveList.orderBy('dateCreated', descending: true)
+    .count()
+    .get();
 
     return query.count;
   } // sudah work
@@ -41,7 +44,9 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
   //get reservation id by index
   Future<String> getReservationId(int index) async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await reserveList.get();
+        await reserveList
+        .orderBy('dateCreated', descending: true)
+        .get();
     String reservationId = querySnapshot.docs[index].id;
 
     return reservationId;
@@ -119,8 +124,9 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
     //convert timestamp to string and the time to three digits
     String dateCreated2 = dateCreated.toDate().toString().substring(0, 19);
     //convert date format from yyyy-MM-dd hh:mm to dd MM yyyy hh:mm
-    DateTime dateTime = DateTime.parse(dateCreated2);
-    String formattedDate = DateFormat('dd-MM-yyyy hh:mm').format(dateTime);
+    // DateTime dateTime = DateTime.parse(dateCreated2);
+    DateTime dateTime = DateTime.parse(dateCreated2).toLocal();
+    String formattedDate = DateFormat('dd-MM-yyyy HH:mm').format(dateTime);
 
     print('dateCreated: $formattedDate');
     return formattedDate;
@@ -432,7 +438,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
                           width: MediaQuery.of(context).size.width * 0.35,
                           height: 40,
                           child: CustomButtonWhite(
-                            title: 'Pending',
+                            title: 'On Going',
                             fontSize: 14,
                             onPressed: () {
                               setState(() {

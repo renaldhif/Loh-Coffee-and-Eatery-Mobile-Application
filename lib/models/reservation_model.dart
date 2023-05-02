@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:loh_coffee_eatery/models/user_model.dart';
 
@@ -10,7 +11,7 @@ class ReservationModel extends Equatable {
   final String location;
   final int sizeOfPeople;
   final int tableNum;
-  final DateTime dateCreated;
+  final Timestamp dateCreated;
 
   const ReservationModel({
     required this.id,

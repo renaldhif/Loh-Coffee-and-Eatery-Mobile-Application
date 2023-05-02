@@ -60,15 +60,22 @@ class _ReservationPageState extends State<ReservationPage>
       FirebaseFirestore.instance.collection('reservations');
 
   Future<int> getReservationListLength() async {
-    AggregateQuerySnapshot query = await reserveList.count().get();
+    AggregateQuerySnapshot query = await reserveList
+        .orderBy('dateCreated', descending: true)
+        .count()
+        .get();
     print('length: ${query.count}');
     return query.count;
   } // sudah work
 
   //get reservation id list by customer email
   Future<List<String>> getReservationIds2(String email) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await reserveList.where('customerEmail', isEqualTo: email).get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await reserveList
+        .orderBy('dateCreated', descending: true)
+        .where('customerEmail', isEqualTo: email)
+        .get();
+    // QuerySnapshot<Map<String, dynamic>> querySnapshot =
+    //     await reserveList.where('customerEmail', isEqualTo: email).get();
     List<String> reservationIds = [];
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       reservationIds.add(querySnapshot.docs[i].id);
@@ -192,6 +199,18 @@ class _ReservationPageState extends State<ReservationPage>
     return reservationId;
   }
 
+  //get index by reservation id
+  Future<int> getIndexByReservationId(String reservationId) async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    final String id = user!.uid;
+    UserModel userModel = await context.read<AuthCubit>().getCurrentUser(id);
+
+    String email = userModel.email;
+    List<String> reserveIDList = await getReservationIds2(email);
+    int index = reserveIDList.indexOf(reservationId);
+    return index;
+  }
+
   //call the reservationHistoryCard() widget while looping through the list of reservations length
   Widget reservationHistoryList() {
     return FutureBuilder<int>(
@@ -202,32 +221,32 @@ class _ReservationPageState extends State<ReservationPage>
           return Column(
             children: [
               for (int i = 0; i < snapshot.data!; i++)
-                if (i != _deletedIndex) 
-                FutureBuilder<Widget>(
-                  future: reservationHistCard(i),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return SizedBox(
-                          child: Center(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            snapshot.data!,
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                      ));
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                ),
+                if (i != _deletedIndex)
+                  FutureBuilder<Widget>(
+                    future: reservationHistCard(i),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return SizedBox(
+                            child: Center(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              snapshot.data!,
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                        ));
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
             ],
           );
         } else {
@@ -246,13 +265,29 @@ class _ReservationPageState extends State<ReservationPage>
     UserModel userModel = await context.read<AuthCubit>().getCurrentUser(id);
     String email = userModel.email;
     getReservationIds2(email);
-    String date = await getDateByIndex(index);
-    String time = await getTimeByIndex(index);
-    String location = await getLocationByIndex(index);
-    int tableNumber = await getTableNumberByIndex(index);
-    int numOfPeople = await getNumOfPeopleByIndex(index);
-    String dateCreated = await getDateCreatedByIndex(index);
-    String reservationId = await getReservationIdByIndex(index);
+
+    List<String> reserveIDList = await getReservationIds2(email);
+    if (index < 0 || index >= reserveIDList.length) {
+      // If the index is out of range, return an empty Container
+      return Container();
+    }
+    String reservationId = reserveIDList[index];
+
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await reserveList.doc(reservationId).get();
+    if (!documentSnapshot.exists) {
+        return Text('Document does not exist');
+    }
+
+    Map<String, dynamic> data = documentSnapshot.data()!;
+    ReservationModel reservation = ReservationModel.fromJson(reservationId, data);
+    
+    String date = reservation.date;
+    String time = reservation.time;
+    String location = reservation.location;
+    int tableNumber = reservation.tableNum;
+    int numOfPeople = reservation.sizeOfPeople;
+    Timestamp dateCreated = reservation.dateCreated;
+    String dateCreated2 = dateCreated.toDate().toString().substring(0, 19);
     bool isCanceled = false;
 
     DateFormat dateFormat = DateFormat('dd-MM-yyyy HH:mm');
@@ -275,7 +310,8 @@ class _ReservationPageState extends State<ReservationPage>
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: isDarkMode? backgroundColor : Colors.grey.withOpacity(0.5),
+                color:
+                    isDarkMode ? backgroundColor : Colors.grey.withOpacity(0.5),
                 spreadRadius: 1,
                 blurRadius: 7,
                 offset: const Offset(0, 3),
@@ -285,7 +321,7 @@ class _ReservationPageState extends State<ReservationPage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 10,
               ),
 
@@ -365,14 +401,21 @@ class _ReservationPageState extends State<ReservationPage>
                           child: CustomButtonRed(
                             title: 'cancel'.tr(),
                             fontSize: 16,
-                            onPressed: () {
+                            onPressed: () async {
                               setState(() {
-                                context
-                                    .read<ReservationCubit>()
-                                    .cancelReservation(reservationId);
-                                _deletedIndex = index;
-                                isCanceled = true;
-                                // Navigator.of(context).pushNamed('/home'); 
+                                context.read<ReservationCubit>().cancelReservation(reservationId);
+                                // FirebaseFirestore.instance
+                                //     .collection('reservations')
+                                //     .doc(reservationId)
+                                //     .delete();
+                                    
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: greenButtonColor,
+                                    content: Text('Reservation cancelled!'),
+                                    duration: Duration(seconds: 3),
+                                  ),
+                                );
                               });
                             },
                           ),
@@ -525,7 +568,7 @@ class _ReservationPageState extends State<ReservationPage>
                   ),
                   const Spacer(),
                   Text(
-                    '$dateCreated',
+                    '$dateCreated2',
                     style: mainTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: medium,
@@ -592,8 +635,8 @@ class _ReservationPageState extends State<ReservationPage>
                 keyboardType: TextInputType.datetime,
                 readOnly: true,
                 style: mainTextStyle.copyWith(
-                    fontSize: 16,
-                    fontWeight: medium,
+                  fontSize: 16,
+                  fontWeight: medium,
                 ),
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(
@@ -604,20 +647,20 @@ class _ReservationPageState extends State<ReservationPage>
                     builder: (context, child) {
                       return FittedBox(
                         child: Theme(
-                          data: isDarkMode 
-                          ? ThemeData.dark().copyWith(
-                            colorScheme: ColorScheme.dark(
-                              primary: primaryColor,
-                            ),
-                          )
-                          : ThemeData.light().copyWith(
-                            colorScheme: ColorScheme.light(
-                              primary: primaryColor,
-                            ),
-                            buttonTheme: const ButtonThemeData(
-                              textTheme: ButtonTextTheme.primary,
-                            ),
-                          ),
+                          data: isDarkMode
+                              ? ThemeData.dark().copyWith(
+                                  colorScheme: ColorScheme.dark(
+                                    primary: primaryColor,
+                                  ),
+                                )
+                              : ThemeData.light().copyWith(
+                                  colorScheme: ColorScheme.light(
+                                    primary: primaryColor,
+                                  ),
+                                  buttonTheme: const ButtonThemeData(
+                                    textTheme: ButtonTextTheme.primary,
+                                  ),
+                                ),
                           child: child!,
                         ),
                       );
@@ -710,20 +753,20 @@ class _ReservationPageState extends State<ReservationPage>
                     builder: (context, child) {
                       return FittedBox(
                         child: Theme(
-                          data: isDarkMode 
-                          ? ThemeData.dark().copyWith(
-                            colorScheme: ColorScheme.dark(
-                              primary: primaryColor,
-                            ),
-                          )
-                          : ThemeData.light().copyWith(
-                            colorScheme: ColorScheme.light(
-                              primary: primaryColor,
-                            ),
-                            buttonTheme: const ButtonThemeData(
-                              textTheme: ButtonTextTheme.primary,
-                            ),
-                          ),
+                          data: isDarkMode
+                              ? ThemeData.dark().copyWith(
+                                  colorScheme: ColorScheme.dark(
+                                    primary: primaryColor,
+                                  ),
+                                )
+                              : ThemeData.light().copyWith(
+                                  colorScheme: ColorScheme.light(
+                                    primary: primaryColor,
+                                  ),
+                                  buttonTheme: const ButtonThemeData(
+                                    textTheme: ButtonTextTheme.primary,
+                                  ),
+                                ),
                           child: child!,
                         ),
                       );
@@ -825,8 +868,8 @@ class _ReservationPageState extends State<ReservationPage>
                           value: tableNumber,
                           child: Text(
                             tableNumber.toString(),
-                              style: greenTextStyle.copyWith(
-                                fontSize: 16,
+                            style: greenTextStyle.copyWith(
+                              fontSize: 16,
                             ),
                           ),
                         );
@@ -899,7 +942,7 @@ class _ReservationPageState extends State<ReservationPage>
         _sizeOfPeople != null
             ? Center(
                 child: Text(
-                  'size_of_people'.tr() +': $_sizeOfPeople',
+                  'size_of_people'.tr() + ': $_sizeOfPeople',
                   style: greenTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: semiBold,
@@ -979,8 +1022,7 @@ class _ReservationPageState extends State<ReservationPage>
                       .isAfter(DateTime(now.year, now.month, now.day, 21))) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content:
-                        Text('please_select_time_between'.tr()),
+                    content: Text('please_select_time_between'.tr()),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -1037,7 +1079,7 @@ class _ReservationPageState extends State<ReservationPage>
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('reservation_success'.tr()),
-                      backgroundColor: primaryColor,
+                      backgroundColor: greenButtonColor,
                     ),
                   );
                 }

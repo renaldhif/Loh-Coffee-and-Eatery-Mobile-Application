@@ -79,13 +79,6 @@ class ReservationService {
   Future<List<ReservationModel>> getReservationByCustomerName(
       String customerName) async {
     try {
-      // QuerySnapshot querySnapshot = await _reservationCollection.get();
-      // List<ReservationModel> reservations = querySnapshot.docs
-      //     .map((e) => ReservationModel.fromJson(e.id, e.data() as Map<String, dynamic>))
-      //     .where((reservation) => reservation.customerName == customerName)
-      //     .toList();
-      // return reservations;
-
       QuerySnapshot querySnapshot = await _reservationCollection
           .where('customerName', isEqualTo: customerName)
           .get();
@@ -129,8 +122,7 @@ class ReservationService {
   //cancel reservation
   Future<void> cancelReservation(String id) async {
     try {
-      DocumentSnapshot documentSnapshot =
-          await _reservationCollection.doc(id).get();
+      DocumentSnapshot documentSnapshot = await _reservationCollection.doc(id).get();
       //get table number from document snapshot
       Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
       int tableNum = data['tableNum'];
