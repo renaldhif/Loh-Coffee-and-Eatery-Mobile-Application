@@ -296,12 +296,12 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
       onTap: () async {
         // String name = await getCustomerNameByIndex(orderNumber);
         // print('Customer Name: $name');
-        getCustomerNameByOrderNumber(orderNumber + 1);
-        getTableNumberByOrderNumber(orderNumber + 1);
-        getOrderStatusByOrderNumber(orderNumber + 1);
-        getMenuIdByOrderNumber(orderNumber + 1);
-        getMenuByOrderNumber(orderNumber + 1);
-        getUserIdByOrderNumber(orderNumber + 1);
+        // getCustomerNameByOrderNumber(orderNumber + 1);
+        // getTableNumberByOrderNumber(orderNumber + 1);
+        // getOrderStatusByOrderNumber(orderNumber + 1);
+        // getMenuIdByOrderNumber(orderNumber + 1);
+        // getMenuByOrderNumber(orderNumber + 1);
+        // getUserIdByOrderNumber(orderNumber + 1);
 
         setState(() {
           // Navigator.pushNamed(context, '/order-details');
@@ -309,7 +309,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      OrderDetailsPage(orderNumber: orderNumber + 1)));
+                      OrderDetailsPage(orderNumber: orderNumber)));
         });
       },
       child: Center(
@@ -317,7 +317,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'nav_orders'.tr() + ' No: ${orderNumber + 1}',
+              'nav_orders'.tr() + ' No: ${orderNumber}',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               softWrap: false,

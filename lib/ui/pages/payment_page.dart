@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -103,14 +104,14 @@ late Timer _timer;
         if (isLoading == true) {
           ScaffoldMessenger.of(context).showSnackBar(
              SnackBar(
-              content: Text('Uploading Image. Please wait for a moment...'),
+              content: Text('loading_upload_image'.tr()),
               backgroundColor: secondaryColor,
             ),
           );
         }
       });
     } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+      print('failed_upload_image'.tr() + ': $e');
     }
 
 
@@ -128,7 +129,7 @@ late Timer _timer;
         ScaffoldMessenger.of(context).showSnackBar(
            SnackBar(
             content: Text(
-              'Image Uploaded',
+              'success_upload_image'.tr(),
               style: whiteTextButtonStyle
             ),
             backgroundColor: greenButtonColor,
@@ -152,7 +153,7 @@ late Timer _timer;
           child: Column(
             children: [
               Text(
-                'Payment',
+                'payment'.tr(),
                 style: greenTextStyle.copyWith(
                   fontSize: 20,
                   fontWeight: bold,
@@ -184,7 +185,7 @@ late Timer _timer;
                 height: 20,
               ),
               Text(
-                'Scan the QRIS code below to pay your order',
+                'scan_text'.tr(),
                 style: mainTextStyle.copyWith(
                   fontWeight: semiBold,
                 ),
@@ -202,7 +203,7 @@ late Timer _timer;
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Text(
-                  'After you scan the QRIS code, please attach the payment receipt to process your order.',
+                  'scan_text_2'.tr(),
                   style: mainTextStyle.copyWith(
                     fontWeight: semiBold,
                   ),
@@ -219,7 +220,7 @@ late Timer _timer;
                     horizontal: 20,
                   ),
                   child: CustomButton(
-                    title: 'Upload Payment Receipt',
+                    title: 'upload_payment_receipt'.tr(),
                     onPressed: () {
                       getImage();
                     },
@@ -255,7 +256,7 @@ late Timer _timer;
                         );
                       }
                       return CustomButton(
-                        title: 'Confirm Payment',
+                        title: 'confirm_payment'.tr(),
                         onPressed: () async {
                           Timestamp now = Timestamp.now();
                           int num = await orderLength();
@@ -291,7 +292,7 @@ late Timer _timer;
                             ScaffoldMessenger.of(context).showSnackBar(
                                SnackBar(
                                 content: Text(
-                                  'Payment Uploaded',
+                                  'payment_uploaded'.tr(),
                                   style: whiteTextButtonStyle
                                 ),
                                 backgroundColor: greenButtonColor,

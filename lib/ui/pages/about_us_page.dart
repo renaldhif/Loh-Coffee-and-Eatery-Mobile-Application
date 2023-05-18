@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '/shared/theme.dart';
 
@@ -30,7 +31,7 @@ class AboutUsPage extends StatelessWidget {
               const SizedBox(height: 20), 
               Center(
                 child: Text(
-                  'About Us', 
+                  'about_us'.tr(), 
                   style: greenTextStyle.copyWith(
                     fontSize: 22, 
                     fontWeight: bold,
@@ -45,7 +46,7 @@ class AboutUsPage extends StatelessWidget {
                     const SizedBox(height: 20),
                     // APP OVERVIEW
                     Text(
-                      'About Loh Coffee and Eatery',
+                      'about_loh'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -53,7 +54,7 @@ class AboutUsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Loh Coffee and Eatery is a cafe that serves coffee, tea, and various food items such as sandwiches, salads, and pastries.',
+                      'about_loh_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -61,7 +62,7 @@ class AboutUsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'About Loh Coffee and Eatery Mobile Application',
+                      'about_mobile'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -69,7 +70,7 @@ class AboutUsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'The Loh Coffee and Eatery mobile application is designed to streamline the order and reservation process for customers, making it easier and more convenient to place orders and reserve tables at the cafe.',
+                      'about_mobile_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -77,7 +78,7 @@ class AboutUsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Features of Loh Coffee and Eatery Mobile Application',
+                      'about_features'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -85,7 +86,7 @@ class AboutUsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'The Loh Coffee and Eatery mobile application includes features such as registration and password reset, managing user information and preferences, managing the cafe\'s menu and reviews, placing and managing orders, making payments, reserving tables, and receiving announcements and recommendations from the cafe.',
+                      'about_features_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -93,7 +94,7 @@ class AboutUsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Loh Coffee and Eatery Mobile Application Availability',
+                      'about_availability'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -101,7 +102,7 @@ class AboutUsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'The Loh Coffee and Eatery mobile application is available on both Android and iOS devices.',
+                      'about_availability_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),

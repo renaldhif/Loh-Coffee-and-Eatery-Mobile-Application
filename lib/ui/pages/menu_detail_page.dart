@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loh_coffee_eatery/cubit/menu_cubit.dart';
@@ -47,7 +48,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
 
               // The detail of the menu selected
               Text(
-                'Menu Detail',
+                'menu_detail'.tr(),
                 style: greenTextStyle.copyWith(
                   fontSize: 22,
                   fontWeight: black,
@@ -107,7 +108,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
               const SizedBox(height: 30),
               // tag
               Text(
-                'Tag: ${widget.inMenu!.tag}',
+                'tag'.tr() +': ${widget.inMenu!.tag}',
                 style: greenTextStyle.copyWith(
                   fontSize: 16,
                   fontWeight: medium,
@@ -116,7 +117,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
               const SizedBox(height: 15),
               // total loved
               Text(
-                'Total Loved: ${widget.inMenu!.totalLoved}',
+                'total_loved'.tr() + ': ${widget.inMenu!.totalLoved}',
                 style: greenTextStyle.copyWith(
                   fontSize: 16,
                   fontWeight: medium,
@@ -125,7 +126,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
               const SizedBox(height: 15),
               // total ordered
               Text(
-                'Total Ordered: ${widget.inMenu!.totalOrdered}',
+                'total_ordered'.tr() + ': ${widget.inMenu!.totalOrdered}',
                 style: greenTextStyle.copyWith(
                   fontSize: 16,
                   fontWeight: medium,

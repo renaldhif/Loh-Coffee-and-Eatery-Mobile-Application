@@ -9,6 +9,7 @@ import 'package:loh_coffee_eatery/ui/pages/add_promo_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/cart_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/confirm_payment_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/delete_table_admin_page.dart';
+import 'package:loh_coffee_eatery/ui/pages/faq_general_questions_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/home_page_recommend.dart';
 import 'package:loh_coffee_eatery/ui/pages/order_details_customer_page.dart';
 import 'package:loh_coffee_eatery/ui/pages/order_details_page.dart';
@@ -151,6 +152,7 @@ class MyApp extends StatelessWidget {
           '/faq-account': (context) => const FAQAccountManagement(),
           '/faq-order'  : (context) => const FAQOrderManagement(),
           '/faq-reservation' : (context) => const FAQReservationManagement(),
+          '/faq-general' : (context) => const FAQGeneralQuestions(),
           '/privacy-policy':(context) => const PrivacyPolicyPage(),
           '/reservation':(context) => const ReservationPage(),
           '/reservation-success':(context) => const ReservationSuccessPage(),

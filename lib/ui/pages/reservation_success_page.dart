@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../widgets/custom_button.dart';
 import '/shared/theme.dart';
@@ -26,7 +27,7 @@ class ReservationSuccessPage extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'Reservation Sent!',
+              'reservation_sent'.tr(),
               style: greenTextStyle.copyWith(
                 fontSize: 28,
                 fontWeight: black,
@@ -39,7 +40,7 @@ class ReservationSuccessPage extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'Thank you for your reservation. \nWe look forward to seeing you soon!',
+              'reservation_sent_text'.tr(),
               style: mainTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: semiBold,
@@ -52,7 +53,7 @@ class ReservationSuccessPage extends StatelessWidget {
               height: 50,
             ),
             CustomButton(
-              title: 'Back to homepage', 
+              title: 'back_to_home'.tr(), 
               onPressed: (){
                 Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
               }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../widgets/custom_button.dart';
 import '/shared/theme.dart';
@@ -26,7 +27,7 @@ class RequestResetPage extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'Just one more step, \nlet\'s check your email',
+              'check_email_text'.tr(),
               style: greenTextStyle.copyWith(
                 fontSize: 28,
                 fontWeight: black,
@@ -39,7 +40,7 @@ class RequestResetPage extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'We already send a password recover instructions to your email.\nIf you have not received the email after a few minutes, please check your spam folder.',
+              'check_email_text_2'.tr(),
               style: mainTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: semiBold,
@@ -52,7 +53,7 @@ class RequestResetPage extends StatelessWidget {
               height: 50,
             ),
             CustomButton(
-              title: 'Sign In', 
+              title: 'sign_in'.tr(), 
               onPressed: (){
                 Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
               }

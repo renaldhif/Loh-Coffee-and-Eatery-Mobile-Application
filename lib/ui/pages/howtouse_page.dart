@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -16,10 +17,9 @@ class HowToUsePage extends StatefulWidget {
 }
 
 class _HowToUsePageState extends State<HowToUsePage> {
-
   void initState() {
     super.initState();
-    initializeTheme(false); 
+    initializeTheme(false);
   }
 
   @override
@@ -48,16 +48,16 @@ class _HowToUsePageState extends State<HowToUsePage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_circle_left_rounded,
                         color: primaryColor,
                         size: 55,
                       ),
                     ),
-                    const SizedBox(height: 20), 
+                    const SizedBox(height: 20),
                     Center(
                       child: Text(
-                        'How to Use',
+                        'how_to_use'.tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 28,
                           fontWeight: bold,
@@ -72,7 +72,7 @@ class _HowToUsePageState extends State<HowToUsePage> {
               Padding(
                 padding: const EdgeInsets.only(left: 15, bottom: 10),
                 child: Text(
-                  'About Us',
+                  'about_us'.tr(),
                   style: greenTextStyle.copyWith(
                     fontSize: 14,
                     fontWeight: bold,
@@ -97,14 +97,14 @@ class _HowToUsePageState extends State<HowToUsePage> {
                   children: [
                     Row(
                       children: [
-                         Icon(
+                        Icon(
                           Icons.description,
                           color: primaryColor,
                           size: 26,
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "About Us",
+                          "about_us".tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -117,7 +117,7 @@ class _HowToUsePageState extends State<HowToUsePage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/aboutus');
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_forward,
                         color: primaryColor,
                       ),
@@ -126,13 +126,12 @@ class _HowToUsePageState extends State<HowToUsePage> {
                 ),
               ),
 
-
               // FAQ
               const SizedBox(height: 25),
               Padding(
                 padding: const EdgeInsets.only(left: 15, bottom: 10),
                 child: Text(
-                  'Frequently Asked Questions (FAQ)',
+                  'frequently_asked_questions'.tr(),
                   style: greenTextStyle.copyWith(
                     fontSize: 14,
                     fontWeight: bold,
@@ -140,7 +139,6 @@ class _HowToUsePageState extends State<HowToUsePage> {
                   textAlign: TextAlign.left,
                 ),
               ),
-              
 
               // FAQ Managing Account
               Container(
@@ -158,14 +156,14 @@ class _HowToUsePageState extends State<HowToUsePage> {
                   children: [
                     Row(
                       children: [
-                         Icon(
+                        Icon(
                           Icons.manage_accounts_rounded,
                           color: primaryColor,
                           size: 26,
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Managing Account",
+                          "managing_your_account".tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -178,7 +176,7 @@ class _HowToUsePageState extends State<HowToUsePage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/faq-account');
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_forward,
                         color: primaryColor,
                       ),
@@ -203,14 +201,14 @@ class _HowToUsePageState extends State<HowToUsePage> {
                   children: [
                     Row(
                       children: [
-                         Icon(
+                        Icon(
                           Icons.restaurant_menu_rounded,
                           color: primaryColor,
                           size: 26,
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Ordering Food and Payment",
+                          "ordering_food_and_payment".tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -223,7 +221,7 @@ class _HowToUsePageState extends State<HowToUsePage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/faq-order');
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_forward,
                         color: primaryColor,
                       ),
@@ -248,14 +246,14 @@ class _HowToUsePageState extends State<HowToUsePage> {
                   children: [
                     Row(
                       children: [
-                         Icon(
+                        Icon(
                           Icons.book_online_rounded,
                           color: primaryColor,
                           size: 26,
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Make a Reservation",
+                          "make_a_reservation".tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -268,7 +266,7 @@ class _HowToUsePageState extends State<HowToUsePage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/faq-reservation');
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_forward,
                         color: primaryColor,
                       ),
@@ -293,14 +291,14 @@ class _HowToUsePageState extends State<HowToUsePage> {
                   children: [
                     Row(
                       children: [
-                         Icon(
+                        Icon(
                           Icons.question_answer_rounded,
                           color: primaryColor,
                           size: 26,
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "General Questions",
+                          "general_questions".tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -313,7 +311,7 @@ class _HowToUsePageState extends State<HowToUsePage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/faq-general');
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_forward,
                         color: primaryColor,
                       ),
@@ -321,14 +319,13 @@ class _HowToUsePageState extends State<HowToUsePage> {
                   ],
                 ),
               ),
-              
 
               // Privacy Policy
               const SizedBox(height: 25),
               Padding(
                 padding: const EdgeInsets.only(left: 15, bottom: 10),
                 child: Text(
-                  'Privacy Policy',
+                  'privacy_policy'.tr(),
                   style: greenTextStyle.copyWith(
                     fontSize: 14,
                     fontWeight: bold,
@@ -353,14 +350,14 @@ class _HowToUsePageState extends State<HowToUsePage> {
                   children: [
                     Row(
                       children: [
-                         Icon(
+                        Icon(
                           Icons.privacy_tip_rounded,
                           size: 26,
                           color: primaryColor,
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "Privacy Policy",
+                          "privacy_policy".tr(),
                           style: greenTextStyle.copyWith(
                             fontSize: 17,
                             fontWeight: bold,
@@ -373,7 +370,7 @@ class _HowToUsePageState extends State<HowToUsePage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/privacy-policy');
                       },
-                      icon:  Icon(
+                      icon: Icon(
                         Icons.arrow_forward,
                         color: primaryColor,
                       ),
