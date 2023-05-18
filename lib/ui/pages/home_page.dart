@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -68,6 +69,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    Box<bool> isLanguageEnglishBox = Hive.box<bool>('isLanguageEnglishBox_${user!.uid}');
+    //call the EasyLocalization based on the hiveBox
+    bool _isSwitched = isLanguageEnglishBox.get('isLanguageEnglish') ?? false;
+    EasyLocalization.of(context)!
+    .setLocale(_isSwitched ? Locale('id', 'ID') : Locale('en', 'US'));
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(

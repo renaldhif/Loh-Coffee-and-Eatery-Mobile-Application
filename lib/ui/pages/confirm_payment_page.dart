@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../widgets/custom_button.dart';
 import '/shared/theme.dart';
@@ -25,7 +26,7 @@ class ConfirmPaymentPage extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'Thank you',
+              'thank_you'.tr(),
               style: greenTextStyle.copyWith(
                 fontSize: 28,
                 fontWeight: black,
@@ -38,7 +39,7 @@ class ConfirmPaymentPage extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'Thankyou for confirming your order. Your order will be processed after your payment accepted by the cashier.',
+              'thank_you_text'.tr(),
               style: mainTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: semiBold,
@@ -51,7 +52,7 @@ class ConfirmPaymentPage extends StatelessWidget {
               height: 50,
             ),
             CustomButton(
-              title: 'Back to Home Page', 
+              title: 'back_to_home'.tr(), 
               onPressed: (){
                 Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
               }

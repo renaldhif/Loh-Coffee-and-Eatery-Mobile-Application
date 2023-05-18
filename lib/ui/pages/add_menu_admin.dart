@@ -1,4 +1,5 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,14 +45,14 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
         if (isLoading == true) {
           ScaffoldMessenger.of(context).showSnackBar(
              SnackBar(
-              content: Text('Uploading Image. Please wait for a moment...'),
+              content: Text('upload_image'.tr()),
               backgroundColor: secondaryColor,
             ),
           );
         }
       });
     } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+      print('failed_upload_image'.tr() + ': $e');
     }
 
     Reference refStorage =
@@ -66,7 +67,7 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
         ScaffoldMessenger.of(context).showSnackBar(
            SnackBar(
             content: Text(
-              'Image Uploaded',
+              'success_upload_image'.tr(),
                style: whiteTextButtonStyle
             ),
             backgroundColor: greenButtonColor,
@@ -106,7 +107,7 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
-                        'Add Menu',
+                        'add_menu'.tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 40,
                           fontWeight: bold,
@@ -121,35 +122,35 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
 
               //* Menu Name
               CustomTextFormField(
-                  title: 'Menu Name',
-                  label: 'Menu Name',
-                  hintText: 'input menu name',
+                  title: 'menu_name'.tr(),
+                  label: 'menu_name'.tr(),
+                  hintText: 'text_menu_name'.tr(),
                   controller: _menuNameController),
               //* Description
               CustomTextFormField(
-                  title: 'Menu Description',
-                  label: 'Menu Description',
-                  hintText: 'input menu description',
+                  title: 'menu_description'.tr(),
+                  label: 'menu_description'.tr(),
+                  hintText: 'text_menu_description'.tr(),
                   controller: _descriptionController),
               //* Price
               CustomTextFormField(
-                  title: 'Menu Price',
-                  label: 'Menu Price',
-                  hintText: 'input menu price',
+                  title: 'menu_price'.tr(),
+                  label: 'menu_price'.tr(),
+                  hintText: 'text_menu_price'.tr(),
                   controller: _priceController),
               //* Tag
               CustomTextFormField(
                   readOnly: true,
-                  title: 'Menu Tag',
-                  label: 'Menu Tag',
-                  hintText: 'Choose the menu tags below',
+                  title: 'menu_tag'.tr(),
+                  label: 'menu_tag'.tr(),
+                  hintText: 'choose_tag'.tr(),
                   controller: _tagController),
               //* Checkboxes
               const SizedBox(
                 height: 25,
               ),
               Text(
-                'Please choose the menu tag below:',
+                'choose_tag'.tr(),
                 style: greenTextStyle.copyWith(
                   fontSize: 18,
                   fontWeight: bold,
@@ -219,7 +220,7 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                 height: 15,
               ),
               Text(
-                'Upload menu image',
+                'upload_image'.tr(),
                 style: greenTextStyle.copyWith(
                   fontSize: 18,
                   fontWeight: bold,
@@ -229,7 +230,7 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                 height: 15,
               ),
               CustomButtonWhite(
-                title: _imageController.text.isEmpty ? 'Choose an Image' : image!.path.split('/').last,
+                title: _imageController.text.isEmpty ? 'choose_image' .tr(): image!.path.split('/').last,
                 fontSize: _imageController.text.isEmpty ? 18 : 12,
                 onPressed: () {
                   getImage();
@@ -262,12 +263,12 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                       );
                     }
                     return CustomButton(
-                      title: 'Add Menu',
+                      title: 'add_menu'.tr(),
                       onPressed: () {
                         if(_priceController.text.contains(RegExp(r'[a-zA-Z]'))) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Please input a valid price'),
+                            SnackBar(
+                              content: Text('validation_price'.tr()),
                               backgroundColor: Colors.red,
                             ),
                           );
@@ -278,8 +279,8 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                             _tagController.text.isEmpty ||
                             _imageController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Please fill all the fields'),
+                            SnackBar(
+                              content: Text('validation_all_field'.tr()),
                               backgroundColor: Colors.red,
                             ),
                           );
@@ -297,7 +298,7 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                           ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'Menu Successfully Added!',
+                              'menu_add_success'.tr(),
                               style: whiteTextButtonStyle
                             ),
                             backgroundColor: greenButtonColor,

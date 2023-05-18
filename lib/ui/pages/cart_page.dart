@@ -1,5 +1,6 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -175,11 +176,14 @@ class _CartPageState extends State<CartPage> {
       isCartEmpty = true;
       return Visibility(
       visible: isCartEmpty,
-      child: Text(
-        'Your cart is empty. Please add some items.',
-        style: greenTextStyle.copyWith(
-          fontSize: 16,
-          fontWeight: medium,
+      child: Center(
+        child: Text(
+          'cart_empty'.tr(),
+          style: greenTextStyle.copyWith(
+            fontSize: 16,
+            fontWeight: medium,
+          ),
+          textAlign: TextAlign.center,
         ),
       ),
     );
@@ -433,7 +437,7 @@ class _CartPageState extends State<CartPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Your Cart 🛒',
+                      'your_cart'.tr() + '🛒',
                       style: greenTextStyle.copyWith(
                         fontSize: 28,
                         fontWeight: black,
@@ -460,7 +464,15 @@ class _CartPageState extends State<CartPage> {
               ),
 
               //* Widget Cart Empty Text
-              TextCartEmpty(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: TextCartEmpty(),
+                  ),
+                ],
+              ),
 
               const SizedBox(
                 height: 20,
@@ -496,7 +508,7 @@ class _CartPageState extends State<CartPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Choose your Payment Option',
+                        'choose_payment_option'.tr(),
                         style: greenTextStyle.copyWith(
                           fontWeight: bold,
                           fontSize: 15,
@@ -505,7 +517,7 @@ class _CartPageState extends State<CartPage> {
                       const SizedBox(height: 10),
                       SimpleGroupedCheckbox<String>(
                         controller: paymentController,
-                        itemsTitle: const ["QRIS", "Pay to the Cashier"],
+                        itemsTitle: ["QRIS", "pay_at_cashier".tr()],
                         values: const ["qris", "cashier"],
                         groupStyle: GroupStyle(
                           activeColor: primaryColor,
@@ -567,7 +579,7 @@ class _CartPageState extends State<CartPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Dining Option',
+                        'dining_option'.tr(),
                         style: greenTextStyle.copyWith(
                           fontWeight: bold,
                           fontSize: 15,
@@ -576,7 +588,7 @@ class _CartPageState extends State<CartPage> {
                       const SizedBox(height: 10),
                       SimpleGroupedCheckbox<String>(
                         controller: diningController,
-                        itemsTitle: const ["Dine in", "Takeaway"],
+                        itemsTitle: ["dine_in".tr(), "take_away".tr()],
                         values: const ["dinein", "takeaway"],
                         groupStyle: GroupStyle(
                           activeColor: primaryColor,
@@ -640,7 +652,7 @@ class _CartPageState extends State<CartPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Choose your Table Number',
+                          'choose_table_num'.tr(),
                           style: greenTextStyle.copyWith(
                             fontWeight: bold,
                             fontSize: 15,
@@ -720,7 +732,7 @@ class _CartPageState extends State<CartPage> {
                           future: getTableIndex(int.parse(dropdownvalue)),
                           builder: (context, snapshot) => Center(
                             child: Text(
-                              'Location: ${snapshot.hasData ? snapshot.data! : 'Loading...'}',
+                              'location'.tr() + ': ${snapshot.hasData ? snapshot.data! : 'loading'.tr()}',
                               style: greenTextStyle.copyWith(
                                 fontWeight: semiBold,
                                 fontSize: 15,
@@ -767,7 +779,7 @@ class _CartPageState extends State<CartPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Total Price',
+                        'total_price'.tr(),
                         style: greenTextStyle.copyWith(
                           fontWeight: bold,
                           fontSize: 15,
@@ -792,7 +804,7 @@ class _CartPageState extends State<CartPage> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   child: CustomButton(
-                    title: 'Pay Now',
+                    title: 'pay_now'.tr(),
                     onPressed: () async {
                       
                       if (FirebaseAuth.instance.currentUser != null) {
@@ -876,26 +888,26 @@ class _CartPageState extends State<CartPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'nav_home'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_rounded),
-            label: 'Reserve',
+            label: 'nav_reservations'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.format_list_bulleted_rounded),
-            label: 'Order List',
+            label: 'nav_orders'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications_rounded),
-            label: 'Notification',
+            label: 'nav_promo'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'nav_profile'.tr(),
           ),
         ],
         backgroundColor: whiteColor,

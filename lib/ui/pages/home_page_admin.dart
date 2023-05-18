@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:loh_coffee_eatery/cubit/menu_cubit.dart';
 import 'package:loh_coffee_eatery/shared/theme.dart';
 import 'package:loh_coffee_eatery/ui/widgets/custom_card_menu_item_admin.dart';
@@ -47,9 +49,10 @@ class _HomePageAdminState extends State<HomePageAdmin> {
 
   @override
   void initState() {
+    initializeTheme(false);
     context.read<MenuCubit>().getMenus();
     super.initState();
-    initializeTheme(false);
+
   }
 
 
@@ -69,6 +72,12 @@ class _HomePageAdminState extends State<HomePageAdmin> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    Box<bool> isLanguageEnglishBox = Hive.box<bool>('isLanguageEnglishBox_${user!.uid}');
+    //call the EasyLocalization based on the hiveBox
+    bool _isSwitched = isLanguageEnglishBox.get('isLanguageEnglish') ?? false;
+    EasyLocalization.of(context)!
+    .setLocale(_isSwitched ? Locale('id', 'ID') : Locale('en', 'US'));
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -86,7 +95,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Text(
-                        'Welcome, Loh Administrator!',
+                        'welcome_admin'.tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 22,
                           fontWeight: black,

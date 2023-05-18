@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loh_coffee_eatery/cubit/auth_cubit.dart';
@@ -55,7 +56,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 12),
                           child: Text(
-                            'Update Profile',
+                            'update_profile'.tr(),
                             style: greenTextStyle.copyWith(
                               fontSize: 40,
                               fontWeight: bold,
@@ -66,15 +67,15 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                     ),
                   ),
                   CustomTextFormField(
-                    title: 'Name',
+                    title: 'name'.tr(),
                     label: '${state.user.name}',
-                    hintText: 'Update name',
+                    hintText: 'update_name'.tr(),
                     controller: _fullnameController,
                   ),
                   CustomTextFormField(
-                    title: 'Email',
+                    title: 'email'.tr(),
                     label: '${state.user.email}',
-                    hintText: 'Update email',
+                    hintText: 'update_email'.tr(),
                     controller: _emailController,
                   ),
                   // CustomTextFormField(
@@ -87,7 +88,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20,),
                     child: Text(
-                      'Date of Birth',
+                      'date_of_birth'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -135,7 +136,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           decoration: InputDecoration(
                             labelText: '${state.user.dob}',
                             floatingLabelBehavior: FloatingLabelBehavior.never,
-                            hintText: 'Enter your date of birth',
+                            hintText: 'enter_dob'.tr(),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -163,7 +164,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: CustomButton(
-                      title: 'Update',
+                      title: 'update'.tr(),
                       onPressed: () {
                         User ? user = FirebaseAuth.instance.currentUser;
                         Future<UserModel> userNow = context.read<AuthCubit>().getCurrentUser(user!.uid);

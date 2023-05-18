@@ -223,7 +223,11 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     return status;
   }
 
-  List<MenuModel> listMenu2 = [];
+  //here
+
+    Future<int> listMenuLength() async {
+    return listMenu.length;
+  }
 
   //get list of menuModel in orderList by orderNumber
   Future<List<MenuModel>> getMenuList2(int orderNumber) async {
@@ -231,16 +235,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await orderList.doc(orderId).get();
     List<MenuModel> menu = documentSnapshot.data()!['menu'];
-    listMenu2 = menu;
     return menu;
   }
-
-  //get lenght of list menu
-  Future<int> listMenuLength() async {
-    return listMenu2.length;
-  }
-
-
 
   //get menu quantity by index
   Future<int> getMenuQuantityByOrderNumber(int orderNumber, int index) async {
@@ -253,11 +249,66 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     return menuQuantity;
   }
 
-  //update totalOrdered in list menu based on order number
-  Future<void> incrementTotalOrdered(
-      int orderNumber, List<MenuModel> menu, int quantity) async {
-    List<MenuModel> menu = await getMenuList2(orderNumber);
+    Future<int> getMenuPriceByOrderNumber(int orderNumber, int index) async {
+    String orderId = await getOrderIdByOrderNumber(orderNumber);
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await orderList.doc(orderId).get();
+    List<dynamic> menuListHere = documentSnapshot.data()!['menu'];
+    int menuPrice = menuListHere[index]['price'];
+
+    return menuPrice;
   }
+
+    Future<String> getMenuImageByOrderNumber(int orderNumber, int index) async {
+    String orderId = await getOrderIdByOrderNumber(orderNumber);
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await orderList.doc(orderId).get();
+    List<dynamic> menuListHere = documentSnapshot.data()!['menu'];
+    String menuImage = menuListHere[index]['image'];
+
+    return menuImage;
+  }
+
+  // List<MenuModel> listMenu2 = [];
+
+  // //get list of menuModel in orderList by orderNumber
+  // Future<List<MenuModel>> getMenuList2(int orderNumber) async {
+  //   String orderId = await getOrderIdByOrderNumber(orderNumber);
+  //   DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+  //       await orderList.doc(orderId).get();
+  //   List<MenuModel> menu = documentSnapshot.data()!['menu'];
+  //   listMenu2 = menu;
+  //   print('List Menu 2: $listMenu2');
+  //   return menu;
+  // }
+
+  // //get lenght of list menu
+  // Future<int> listMenuLength() async {
+  //   return listMenu2.length;
+  // }
+
+
+
+
+
+  // //get menu quantity by index
+  // Future<int> getMenuQuantityByOrderNumber(int orderNumber, int index) async {
+  //   String orderId = await getOrderIdByOrderNumber(orderNumber);
+  //   DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+  //       await orderList.doc(orderId).get();
+  //   List<dynamic> menuListHere = documentSnapshot.data()!['menu'];
+  //   int menuQuantity = menuListHere[index]['quantity'];
+
+  //   return menuQuantity;
+  // }
+
+  // //update totalOrdered in list menu based on order number
+  // Future<void> incrementTotalOrdered(
+  //     int orderNumber, List<MenuModel> menu, int quantity) async {
+  //   List<MenuModel> menu = await getMenuList2(orderNumber);
+  // }
+
+
 
   //method to get menus by lopping through listMenu length and call orderContent
   Widget getMenus() {
@@ -304,7 +355,43 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
   bool isConfirm = false;
 
+    Future<Widget> orderContent(int index) async {
+    String name = listMenu[index].title;
+    int qty = await getMenuQuantityByOrderNumber(widget.orderNumber!, index);
+    return Column(
+      // crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 10),
+        //* Order Name
+        Text(
+          '$name',
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          softWrap: false,
+          style: greenTextStyle.copyWith(
+            fontSize: 16,
+            fontWeight: black,
+          ),
+        ),
+        const SizedBox(height: 5),
+
+        Text(
+          'quantity'.tr() + ': $qty',
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          softWrap: false,
+          style: greenTextStyle.copyWith(
+            fontSize: 14,
+            fontWeight: medium,
+          ),
+        ),
+        const SizedBox(height: 10),
+      ],
+    );
+  }
+
   Future<Widget> orderDetails() async {
+    getMenuList2(widget.orderNumber!);
     String orderNumber = widget.orderNumber.toString();
     String customerName =
         await getCustomerNameByOrderNumber(widget.orderNumber!);
@@ -601,40 +688,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     );
   }
 
-  Future<Widget> orderContent(int index) async {
-    String name = listMenu[index].title;
-    int qty = await getMenuQuantityByOrderNumber(widget.orderNumber!, index);
-    return Column(
-      // crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 10),
-        //* Order Name
-        Text(
-          '$name',
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          softWrap: false,
-          style: greenTextStyle.copyWith(
-            fontSize: 16,
-            fontWeight: black,
-          ),
-        ),
-        const SizedBox(height: 5),
 
-        Text(
-          'quantity'.tr() + ': $qty',
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          softWrap: false,
-          style: greenTextStyle.copyWith(
-            fontSize: 14,
-            fontWeight: medium,
-          ),
-        ),
-        const SizedBox(height: 10),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

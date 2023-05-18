@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/auth_cubit.dart';
@@ -30,13 +31,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           );
         }
         return CustomButton(
-          title: 'Send Email',
+          title: 'send_email'.tr(),
           onPressed: () {
             if (_emailController.text.isEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
+                SnackBar(
                   backgroundColor: Colors.red,
-                  content: Text('Email cannot be empty'),
+                  content: Text('email_cant_be_empty'.tr()),
                 ),
               );
             } else {
@@ -99,7 +100,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Title
-                    Text('Forgot Password?',
+                    Text('forgot_password'.tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 36,
                           fontWeight: extraBold,
@@ -107,7 +108,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     // Subtitle
                     const SizedBox(height: 10),
                     Text(
-                      'Don\'t worry! It happens. Please enter your email address associated with your account and we\'ll send an email with instructions to reset your password.',
+                      'reset_pass_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 16,
                         fontWeight: medium,
@@ -117,7 +118,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     const SizedBox(height: 30),
                     // Email Text Field
                     Text(
-                      'Email address',
+                      'email_address'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 16,
                         fontWeight: bold,
@@ -134,13 +135,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           fontWeight: medium,
                         ),
                         decoration: InputDecoration(
-                          labelText: 'Email',
+                          labelText: 'email'.tr(),
                           labelStyle: mainTextStyle.copyWith(
                             fontSize: 16,
                             fontWeight: medium,
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
-                          hintText: 'Enter your email',
+                          hintText: 'enter_your_email'.tr(),
                           hintStyle: mainTextStyle.copyWith(
                             fontSize: 16,
                             fontWeight: medium,
@@ -169,7 +170,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'Remember your account?',
+                          'remember_account'.tr(),
                           style: orangeTextStyle.copyWith(
                             fontWeight: medium,
                           ),
@@ -179,7 +180,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             Navigator.pop(context);
                           },
                           child: Text(
-                            'Back to Login',
+                            'back_to_login'.tr(),
                             style: mainTextStyle.copyWith(
                               fontWeight: bold,
                               color: primaryColor,

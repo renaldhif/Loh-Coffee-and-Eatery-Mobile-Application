@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '/shared/theme.dart';
 
@@ -30,7 +31,7 @@ class PrivacyPolicyPage extends StatelessWidget {
               const SizedBox(height: 20), 
               Center(
                 child: Text(
-                  'Privacy Policy', 
+                  'privacy_policy'.tr(), 
                   style: greenTextStyle.copyWith(
                     fontSize: 22, 
                     fontWeight: bold,
@@ -45,7 +46,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     const SizedBox(height: 20),
                     // APP OVERVIEW
                     Text(
-                      '1. App Overview',
+                      '1. ' + 'app_overview'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -53,7 +54,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'The Loh Coffee and Eatery mobile application is designed to streamline the order and reservation process for customers, making it easier and more convenient to place orders and reserve tables at the cafe.',
+                      'app_overview_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -63,7 +64,7 @@ class PrivacyPolicyPage extends StatelessWidget {
 
                     // TYPES OF DATA COLLECTED
                     Text(
-                      '2. Types of Data We Collect',
+                      '2. ' + 'data_type_collect'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -71,7 +72,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'When you use the Loh Coffee and Eatery application, we may collect the following types of data:',
+                      'data_type_collect_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -91,14 +92,14 @@ class PrivacyPolicyPage extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'Personal Information: ',
+                            text: 'personal_information'.tr()+ ': ',
                             style: mainTextStyle.copyWith(
                               fontSize: 14,
                               fontWeight: black,
                             ),
                           ),
                           TextSpan(
-                            text: 'This includes your name and email address. We collect this information when you register for an account, make a reservation, or place an order.',
+                            text: 'personal_information_text'.tr(),
                             style: mainTextStyle.copyWith(
                               fontSize: 14,
                             ),
@@ -120,14 +121,14 @@ class PrivacyPolicyPage extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'Order and Reservation Information: ',
+                            text: 'order_and_reservation_information'.tr() +': ',
                             style: mainTextStyle.copyWith(
                               fontSize: 14,
                               fontWeight: black,
                             ),
                           ),
                           TextSpan(
-                            text: 'This includes the items you order, the time and date of your reservation, and the number of people in your party. We collect this information to process your orders and reservations.',
+                            text: 'order_and_reservation_information_text'.tr(),
                             style: mainTextStyle.copyWith(
                               fontSize: 14,
                             ),
@@ -149,14 +150,14 @@ class PrivacyPolicyPage extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'Payment Information: ',
+                            text: 'payment_information'.tr() + ': ',
                             style: mainTextStyle.copyWith(
                               fontSize: 14,
                               fontWeight: black,
                             ),
                           ),
                           TextSpan(
-                            text: 'This includes your payment details, such as your bank account information. We collect this information to process your payments.',
+                            text: 'payment_information_text'.tr(),
                             style: mainTextStyle.copyWith(
                               fontSize: 14,
                             ),
@@ -167,7 +168,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     const SizedBox(height: 20),
                     // USE OF YOUR DATA
                     Text(
-                      '3. Use of Your Data',
+                      '3. ' + 'use_of_your_data'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -175,7 +176,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'We use your data to provide you with the best possible experience when using the Loh Coffee and Eatery application. Specifically, we use your data for the following purposes:',
+                      'use_of_your_data_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -197,13 +198,13 @@ class PrivacyPolicyPage extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'Facilitate the creation of and secure your Account', 
+                            text: 'facilitate'.tr() + ': ', 
                             style: mainTextStyle.copyWith(
                               fontWeight: black,
                             )
                           ),
                           TextSpan(
-                            text: ' (Registered Users only)',
+                            text: 'facilitate_text'.tr(),
                             style: mainTextStyle.copyWith(
                               fontWeight: medium,
                             ),
@@ -225,14 +226,14 @@ class PrivacyPolicyPage extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'To process your orders and reservations: ',
+                            text: 'process_order_reserve'.tr(),
                             style: mainTextStyle.copyWith(
                               fontWeight: black,
                             ),
                           ),
                           TextSpan(
                             text:
-                              'We use your personal information, order and reservation information, and payment information to process your orders and reservations.',
+                              'process_order_reserve_text'.tr(),
                               style: mainTextStyle.copyWith(
                               fontWeight: medium,
                             ),
@@ -254,14 +255,14 @@ class PrivacyPolicyPage extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'To improve our services: ',
+                            text: 'improve_our_service'.tr(),
                             style: mainTextStyle.copyWith(
                               fontWeight: black,
                             ),
                           ),
                           TextSpan(
                             text:
-                              'We may use your data to analyze customer behavior and preferences, which helps us improve our menu offerings and overall customer experience.',
+                              'improve_our_service_text'.tr(),
                               style: mainTextStyle.copyWith(
                               fontWeight: medium,
                             ),
@@ -284,14 +285,14 @@ class PrivacyPolicyPage extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'To communicate with you: ',
+                            text: 'communicate_with_you'.tr(),
                             style: mainTextStyle.copyWith(
                               fontWeight: black,
                             ),
                           ),
                           TextSpan(
                             text:
-                              'We may use your email address to send you updates about your orders and reservations, as well as promotional offers and other relevant information.',
+                              'communicate_with_you_text'.tr(),
                               style: mainTextStyle.copyWith(
                               fontWeight: medium,
                             ),
@@ -303,7 +304,7 @@ class PrivacyPolicyPage extends StatelessWidget {
 
                     //Data security
                     Text(
-                      '4. Data Security',
+                      '4. ' + 'data_security'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -311,7 +312,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'We take the security of your data very seriously. We use industry-standard encryption technologies when transferring and receiving customer data exchanged with our application. Firebase implements industry-standard security measures, such as encryption in transit and at rest, to protect user data. We also limit access to user data to authorized personnel who require access to provide services.',
+                      'data_security_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -320,7 +321,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     const SizedBox(height:20),
                     //Account
                     Text(
-                      '5. Account',
+                      '5. ' + 'account'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -328,7 +329,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Registered users of the Loh Coffee and Eatery mobile application can access and manage their account information, including personal data, by clicking on the "Profile" button in the application.',
+                      'account_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -337,7 +338,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     const SizedBox(height:20),
                     //Changes to this privacy policy 
                     Text(
-                      '6. Changes to this Privacy Policy',
+                      '6. ' + 'changes'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -345,7 +346,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'We may update this Privacy Policy from time to time to reflect changes in our practices or the law. We encourage you to review this Privacy Policy periodically to stay informed about our data collection and usage practices.',
+                      'changes_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -354,7 +355,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     const SizedBox(height:20),
                     //Contact us
                     Text(
-                      '7. Contact Us',
+                      '7. ' + 'contact_us'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -362,7 +363,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'If you have any questions about this Privacy Policy, please contact us at: ',
+                      'contact_us_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -370,7 +371,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Email: support@lohcoffeeandeatery.com',
+                      'email_loh'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -378,7 +379,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Phone: +62 812-3848-2109',
+                      'phone_loh'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -386,7 +387,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Address: Jl. Tukad Musi I No.9A, Renon, Denpasar Selatan, Kota Denpasar, Bali 80226',
+                      'address_loh'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -395,7 +396,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     const SizedBox(height: 10),
                     //operating hours
                     Text(
-                      '8. Operating Hours',
+                      '8. ' + 'operating_hours'.tr(),
                       style: greenTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,
@@ -403,16 +404,16 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Our operating hours are from 10:00 AM to 9:00 PM, Monday to Sunday.',
+                      'operating_hours_text'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),
                       textAlign: TextAlign.justify,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 50),
                     //date of last revision
                     Text(
-                      'Date of Last Revision: March, 30th 2023',
+                      'revision'.tr(),
                       style: mainTextStyle.copyWith(
                         fontSize: 14,
                       ),

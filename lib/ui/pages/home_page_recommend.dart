@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -145,7 +146,7 @@ class _HomePageRecommendState extends State<HomePageRecommend> {
                     const SizedBox(height: 25),
                     Center(
                       child: Text(
-                        'Our Recommendation Menu',
+                        'our_rec_menu'.tr(),
                         style: greenTextStyle.copyWith(
                           fontSize: 22,
                           fontWeight: black,
@@ -168,7 +169,7 @@ class _HomePageRecommendState extends State<HomePageRecommend> {
                               child: Padding(
                                 padding: const EdgeInsets.all(24),
                                 child: Text(
-                                  'We are sorry, we cannot provide the recommendation menu due to your menu preferences do not match with our recommendation menu.\n\n To get our recommended menu, you can either update your menu preferences or empty the your menu preferences.\n\nThank you.',
+                                  'recommendation_sorry'.tr(),
                                   style: mainTextStyle.copyWith(
                                     fontSize: 14,
                                   ),
@@ -207,26 +208,26 @@ class _HomePageRecommendState extends State<HomePageRecommend> {
         backgroundColor: greenButtonColor,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'nav_home'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_rounded),
-            label: 'Reserve',
+            label: 'nav_reservations'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.format_list_bulleted_rounded),
-            label: 'Order List',
+            label: 'nav_orders'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.local_post_office_sharp),
-            label: 'Promo',
+            label: 'nav_promo'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'nav_profile'.tr(),
           ),
         ],
         backgroundColor: whiteColor,
