@@ -236,6 +236,8 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
 
     List<int> orderListNew = await getOrderListNumberByUserEmail(userEmail);
     int orderNumber = orderListNew[index];
+    // orderListNew.sort((a, b) => b.compareTo(a));
+    // int orderNumber = orderListNew[index];
     print('Order Number retrieve: $orderNumber');
     return orderNumber;
   }
@@ -249,7 +251,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
           //call paymentHeader without using ListView.builder
           return Column(
             children: [
-              for (int i = 0; i < snapshot.data!; i++)
+              for (int i = snapshot.data! - 1; i >= 0; i--)
                 FutureBuilder<Widget>(
                   future: orderHeader(i),
                   builder: (context, snapshot) {

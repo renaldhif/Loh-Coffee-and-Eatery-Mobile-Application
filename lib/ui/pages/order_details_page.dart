@@ -229,14 +229,14 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     return listMenu.length;
   }
 
-  //get list of menuModel in orderList by orderNumber
-  Future<List<MenuModel>> getMenuList2(int orderNumber) async {
-    String orderId = await getOrderIdByOrderNumber(orderNumber);
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-        await orderList.doc(orderId).get();
-    List<MenuModel> menu = documentSnapshot.data()!['menu'];
-    return menu;
-  }
+  // //get list of menuModel in orderList by orderNumber
+  // Future<List<MenuModel>> getMenuList2(int orderNumber) async {
+  //   String orderId = await getOrderIdByOrderNumber(orderNumber);
+  //   DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+  //       await orderList.doc(orderId).get();
+  //   List<MenuModel> menu = documentSnapshot.data()!['menu'];
+  //   return menu;
+  // }
 
   //get menu quantity by index
   Future<int> getMenuQuantityByOrderNumber(int orderNumber, int index) async {
@@ -391,7 +391,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   }
 
   Future<Widget> orderDetails() async {
-    getMenuList2(widget.orderNumber!);
+    //getMenuList2(widget.orderNumber!);
     String orderNumber = widget.orderNumber.toString();
     String customerName =
         await getCustomerNameByOrderNumber(widget.orderNumber!);
