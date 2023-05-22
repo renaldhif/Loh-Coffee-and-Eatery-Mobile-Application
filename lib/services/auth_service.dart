@@ -34,7 +34,12 @@ class AuthService{
         foodPreference: foodPreference,
       );
       await UserService().addUser(user);
+      if(user != null){
+        await Hive.openBox<bool>('isDarkModeBox_${user.id}');
+        await Hive.openBox<bool>('isLanguageEnglishBox_${user.id}');
+      }
       return user;
+      
     }catch(e){
       throw e;
     }
