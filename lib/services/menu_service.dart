@@ -68,175 +68,102 @@ class MenuService {
     }
   }
 
-  //* Refix the queries
-  // Future<List<MenuModel>> getRecommendedMenus(String userId) async {
-  //   try {
-  //     List<String> userPrefMenu = [];
-  //     List<String> tagArrayMenu = [];
-
-  //     final userDoc = await FirebaseFirestore.instance
-  //         .collection('users')
-  //         .doc(userId)
-  //         .get();
-
-  //     if (userDoc.exists) {
-  //       print('user doc exist');
-  //       final userData = userDoc.data();
-  //       if (userData != null && userData.containsKey('foodPreference')) {
-  //         userPrefMenu = List<String>.from(userData['foodPreference']);
-  //         print('userPrefMenu block if: $userPrefMenu');
-  //       }
-  //     }
-
-  //     QuerySnapshot querySnapshot;
-
-  //     querySnapshot = await _menuCollection.get();
-  //     final menuDocs = querySnapshot.docs;
-  //     for (var doc in menuDocs) {
-  //       var data = doc.data() as Map<String, dynamic>;
-  //       var tag = data['tag'] as String;
-  //       if (tag != null && tag.isNotEmpty) {
-  //         tagArrayMenu
-  //             .addAll(tag.split(',')); // assigned in the array separated by ","
-  //       }
-  //       print('printing array of tag menu:');
-  //       print(tagArrayMenu);
-  //     }
-  //     // if userPrefMenu is not empty, then get recommended menu based on userPrefMenu
-  //     if (userPrefMenu.isNotEmpty) {
-  //       // convert userPrefMenu into a regex pattern
-  //       final userPrefMenuStr = userPrefMenu.join('|');
-  //       final regex = RegExp(userPrefMenuStr, caseSensitive: false);
-
-  //       querySnapshot = await FirebaseFirestore.instance
-  //           .collection('menus')
-  //           .where('tag', arrayContainsAny: userPrefMenu)
-  //           // .orderBy('tag')
-  //           .orderBy('totalLoved', descending: true)
-  //           .orderBy('totalOrdered', descending: true)
-  //           .limit(3)
-  //           .get();
-
-  //       print('This is block if userPrefMenu is NOT empty');
-  //       print('querySnapshot if userPrefMenu is NOT empty: $querySnapshot');
-  //     }
-  //     // else get recommended menu based on totalLoved and totalOrdered and limit to 3 menus
-  //     else {
-  //       querySnapshot = await _menuCollection
-  //           .orderBy('totalLoved', descending: true)
-  //           .orderBy('totalOrdered', descending: true)
-  //           .limit(3)
-  //           .get();
-  //       print('this else block is executed means it is empty');
-  //       print('querySnapshot if userPrefMenu is empty: $querySnapshot');
-  //     }
-
-  //     print('Number of documents returned: ${querySnapshot.docs.length}');
-  //     print('getRecommendedMenus executed in menu service');
-
-  //     final menuDocs = querySnapshot.docs;
-  //     final recommendedMenus = menuDocs
-  //         .map((doc) =>
-  //             MenuModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
-  //         .toList();
-
-  //     return recommendedMenus;
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
-
-  //* BACKUP CODE getRecommendedMenus()
+  // get recommended menu from user's preference and menu's tag
   Future<List<MenuModel>> getRecommendedMenus(String userId) async {
     try {
       List<String> userPrefMenu = [];
+      List<MenuModel> recommendedMenu = [];
+      Set<String> addedMenuIds = {}; // Set to store already added menu IDs
       final userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .get();
 
       if (userDoc.exists) {
-        print('user doc exist');
         final userData = userDoc.data();
         if (userData != null && userData.containsKey('foodPreference')) {
           userPrefMenu = List<String>.from(userData['foodPreference']);
-          // print('userPrefMenu block if: $userPrefMenu');
+        }
+
+        // If there is only one food preference, store it in a single-element list
+        if (userPrefMenu.length == 1) {
+          userPrefMenu = [userPrefMenu.first];
         }
       }
 
+      // Get the length of userPrefMenu
+      int userPrefMenuLength = userPrefMenu.length;
       QuerySnapshot querySnapshot;
-      if (userPrefMenu.isNotEmpty) {
-        String userPrefMenuStr = userPrefMenu.join(',');
-        querySnapshot = await FirebaseFirestore.instance
-            .collection('menus')
-            .where('tag', whereIn: userPrefMenu)
-            .orderBy('totalLoved', descending: true)
-            .orderBy('totalOrdered', descending: true)
-            .limit(3)
-            .get();
-      } else {
-        querySnapshot = await FirebaseFirestore.instance
-            .collection('menus')
-            .orderBy('totalLoved', descending: true)
-            .orderBy('totalOrdered', descending: true)
-            .limit(3)
-            .get();
+
+      //loop through the userPrefMenuLength
+      for (int i = 0; i < userPrefMenuLength; i++) {
+        //get the i index of the userPrefMenu
+        String userPrefMenuIndex = userPrefMenu[i];
+
+        if (userPrefMenu.isNotEmpty) {
+          querySnapshot = await FirebaseFirestore.instance
+              .collection('menus')
+              .orderBy('totalLoved', descending: true)
+              .orderBy('totalOrdered', descending: true)
+              .limit(3) // limit 3 for each menu tag
+              .get();
+
+          // Iterate through each menu document
+          querySnapshot.docs.forEach((doc) {
+            Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+
+            if (data != null && data.containsKey('tag')) {
+              // Extract the tag string from the menu document and split it into individual tags
+              String tagString = data['tag'] as String;
+              List<String> tags =
+                  tagString.split(',').map((tag) => tag.trim()).toList();
+
+              // Check if any of the tags partially match with the user's food preference
+              bool hasPartialMatch =
+                  tags.any((tag) => userPrefMenuIndex.contains(tag));
+              // if (hasPartialMatch) {
+              //   // Create a MenuModel object and add it to the recommendedMenu list
+              //   recommendedMenu.add(MenuModel.fromJson(doc.id, data));
+              // }
+
+               // Check if menu ID is not already added and has a partial match
+               // so it won't add the same menu twice
+              if (!addedMenuIds.contains(doc.id) && hasPartialMatch) {
+                recommendedMenu.add(MenuModel.fromJson(doc.id, data));
+                addedMenuIds.add(doc.id); // Add the menu ID to the set
+              }
+            }
+          });
+        }
       }
 
-      final menuDocs = querySnapshot.docs;
-      final recommendedMenus = menuDocs
-          .map((doc) =>
-              MenuModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
-          .toList();
+      // However,
+      // if user's menu preference is empty, return the most loved menu and ordered menu
+      if (userPrefMenu.isEmpty) {
+        querySnapshot = await FirebaseFirestore.instance
+            .collection('menus')
+            .orderBy('totalLoved', descending: true)
+            .orderBy('totalOrdered', descending: true)
+            .limit(5)
+            .get();
 
+        // then add to recommendedMenu list
+        querySnapshot.docs.forEach((doc) {
+          Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
 
-      // final menuDocs = querySnapshot.docs;
-      // List<MenuModel> recommendedMenus;
-      // if (menuDocs.isNotEmpty) {
-      //   recommendedMenus = menuDocs
-      //       .map((doc) =>
-      //           MenuModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
-      //       .toList();
-      // } else {
-      //   recommendedMenus = await getTop3MenusBasedOnTotalLovedAndOrdered();
-      // }
+          if (data != null && data.containsKey('tag')) {
+            recommendedMenu.add(MenuModel.fromJson(doc.id, data));
+          }
+        });
+      }
 
-      return recommendedMenus;
+      //return recommendedMenu limit to 5 menus
+      return recommendedMenu.take(5).toList();
+      // return recommendedMenu.toList();
     } catch (e) {
       throw e;
     }
   }
-
-  // Future<List<MenuModel>> getTop3MenusBasedOnTotalLovedAndOrdered() async {
-  //   bool isTop3Menus = true;
-  //   try {
-  //     final querySnapshot = await FirebaseFirestore.instance
-  //         .collection('menus')
-  //         .orderBy('totalLoved', descending: true)
-  //         .orderBy('totalOrdered', descending: true)
-  //         .limit(3)
-  //         .get();
-
-  //     final menuDocs = querySnapshot.docs;
-  //     final recommendedMenus = menuDocs
-  //         .map((doc) =>
-  //             MenuModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
-  //         .toList();
-
-  //     // return true if function is executed and recommendedMenus is not empty
-  //     return recommendedMenus;
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
-
-  // Future<bool> isTop3Menus() async {
-  //   try {
-  //     bool isTop3Menus = _getTop3MenusBasedOnTotalLovedAndOrdered().isNotEmpty;
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
 
   Future<MenuModel> getMenuById(String id) async {
     try {
