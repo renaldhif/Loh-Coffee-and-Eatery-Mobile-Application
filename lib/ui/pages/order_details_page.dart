@@ -269,95 +269,14 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     return menuImage;
   }
 
-  // List<MenuModel> listMenu2 = [];
 
-  // //get list of menuModel in orderList by orderNumber
-  // Future<List<MenuModel>> getMenuList2(int orderNumber) async {
-  //   String orderId = await getOrderIdByOrderNumber(orderNumber);
-  //   DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-  //       await orderList.doc(orderId).get();
-  //   List<MenuModel> menu = documentSnapshot.data()!['menu'];
-  //   listMenu2 = menu;
-  //   print('List Menu 2: $listMenu2');
-  //   return menu;
-  // }
-
-  // //get lenght of list menu
-  // Future<int> listMenuLength() async {
-  //   return listMenu2.length;
-  // }
-
-
-
-
-
-  // //get menu quantity by index
-  // Future<int> getMenuQuantityByOrderNumber(int orderNumber, int index) async {
-  //   String orderId = await getOrderIdByOrderNumber(orderNumber);
-  //   DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-  //       await orderList.doc(orderId).get();
-  //   List<dynamic> menuListHere = documentSnapshot.data()!['menu'];
-  //   int menuQuantity = menuListHere[index]['quantity'];
-
-  //   return menuQuantity;
-  // }
-
-  // //update totalOrdered in list menu based on order number
-  // Future<void> incrementTotalOrdered(
-  //     int orderNumber, List<MenuModel> menu, int quantity) async {
-  //   List<MenuModel> menu = await getMenuList2(orderNumber);
-  // }
-
-
-
-  //method to get menus by lopping through listMenu length and call orderContent
-  Widget getMenus() {
-    return FutureBuilder<int>(
-      future: listMenuLength(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          //call paymentHeader without using ListView.builder
-          return Column(
-            children: [
-              for (int i = 0; i < snapshot.data!; i++)
-                FutureBuilder<Widget>(
-                  future: orderContent(i),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Container(
-                          width: 0.8 * MediaQuery.of(context).size.width,
-                          margin: const EdgeInsets.all(10),
-                          child: Center(
-                            child: Column(
-                              children: [
-                                snapshot.data!,
-                              ],
-                            ),
-                          ));
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                ),
-            ],
-          );
-        } else {
-          //return no payments
-          return Center(
-            child: Text('no_order'.tr()),
-          );
-        }
-      },
-    );
-  }
 
   bool isConfirm = false;
 
-    Future<Widget> orderContent(int index) async {
+  Widget orderContent(int index){
     String name = listMenu[index].title;
-    int qty = await getMenuQuantityByOrderNumber(widget.orderNumber!, index);
+    // int qty = await getMenuQuantityByOrderNumber(widget.orderNumber!, index);
+    int qty = listMenu[index].quantity;
     return Column(
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -502,7 +421,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           color: kUnavailableColor,
         ),
         //* Order Content
-        getMenus(),
+        for(int i = 0; i < menuList2.length; i++)
+        orderContent(i),
+        
 
         // spacer line
         Container(
@@ -646,14 +567,19 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                             orderNumber: widget.orderNumber!,
                             orderStatus: 'Confirmed',
                           );
-                      context
+                      // context
+                      //     .read<OrderCubit>()
+                      //     .updateTotalOrdered(widget.orderNumber!, menuList2);
+                      //   isConfirm = true;
+                      //   orderStatus = 'Confirmed';
+
+                        // Navigator.pushReplacementNamed(context, '/home-admin');
+                      });
+                       context
                           .read<OrderCubit>()
                           .updateTotalOrdered(widget.orderNumber!, menuList2);
                         isConfirm = true;
                         orderStatus = 'Confirmed';
-
-                        // Navigator.pushReplacementNamed(context, '/home-admin');
-                      });
                     });
               },
             ),
