@@ -84,7 +84,10 @@ class UserService{
   Future<List<String>> getUserPreferences(String id) async {
     try {
       DocumentSnapshot documentSnapshot = await _userCollection.doc(id).get();
-      return documentSnapshot['foodPreference'].cast<String>();
+      List<String> preferences = documentSnapshot['foodPreference'].cast<String>();
+      List<String> preferencesWithoutSpaces = preferences.map((preference) => preference.replaceAll(RegExp(r'\s+'), '')).toList();
+      return preferencesWithoutSpaces;
+      
     } catch (e) {
       throw e;
     }

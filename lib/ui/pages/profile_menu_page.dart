@@ -29,20 +29,6 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
     // Call the initializeTheme function here
   }
 
-  // void initState() {
-  //   super.initState();
-  //   final user = FirebaseAuth.instance.currentUser;
-  //   print(user!.uid);
-
-  //   setState(() {
-  //         Box<bool> isLanguageEnglishBox =
-  //       Hive.box<bool>('isLanguageEnglishBox_${user!.uid}');
-  //     _isSwitched = isLanguageEnglishBox.get('isLanguageEnglish')!;
-  //     print(_isSwitched);
-  //       EasyLocalization.of(context)!.setLocale(
-  //     _isSwitched ? Locale('en', 'US') : Locale('id', 'ID'));
-  //   });
-  // }
 
   // To change the selected value of bottom navigation bar
   int _selectedIndex = 4;
@@ -52,16 +38,18 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
       switch (index) {
         case 0:
           Navigator.pushReplacementNamed(context, '/home');
-          // Navigator.pop(context);
           break;
-        // case 2:
-        //   Navigator.pushNamed(context, '/order');
-        //   break;
-        // case 3:
-        //   Navigator.pushNamed(context, '/notification');
-        //   break;
+        case 1:
+          Navigator.pushReplacementNamed(context, '/reservation');
+          break;
+        case 2:
+          Navigator.pushReplacementNamed(context, '/orderlist');
+          break;
+        case 3:
+          Navigator.pushNamed(context, '/promo');
+          break;
         // case 4:
-        //   Navigator.pushNamed(context, '/profilemenu');
+        //   Navigator.pushReplacementNamed(context, '/profilemenu');
         //   break;
       }
     });
@@ -512,26 +500,26 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
       bottomNavigationBar: BottomNavigationBar(
           backgroundColor: whiteColor,
           items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'nav_home'.tr(),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month_rounded),
-              label: 'nav_reservations'.tr(),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_rounded),
-              label: 'nav_orders'.tr(),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_rounded),
-              label: 'nav_posts'.tr(),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'nav_profile'.tr(),
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'nav_home'.tr(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_rounded),
+            label: 'nav_reservations'.tr(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.format_list_bulleted_rounded),
+            label: 'nav_orders'.tr(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_post_office_sharp),
+            label: 'nav_promo'.tr(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'nav_profile'.tr(),
+          ),
           ],
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,

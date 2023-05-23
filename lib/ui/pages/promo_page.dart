@@ -16,13 +16,14 @@ class PromoPage extends StatefulWidget {
 
 class _PromoPageState extends State<PromoPage> {
   // To change the selected value of bottom navigation bar
-  int _selectedIndex = 0;
+  int _selectedIndex = 3;
   void _changeSelectedIndex(int index) {
     setState(() {
       _selectedIndex = index;
       switch (index) {
         case 0:
           Navigator.pushReplacementNamed(context, '/home');
+          // _selectedIndex = 0;
           break;
         case 1:
           Navigator.pushReplacementNamed(context, '/reservation');
@@ -35,7 +36,6 @@ class _PromoPageState extends State<PromoPage> {
         //   break;
         case 4:
           Navigator.pushReplacementNamed(context, '/profilemenu');
-          _selectedIndex = 0;
           break;
       }
     });

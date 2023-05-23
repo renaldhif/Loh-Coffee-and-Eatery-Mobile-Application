@@ -34,15 +34,15 @@ class _CartPageState extends State<CartPage> {
         case 0:
           Navigator.pushNamed(context, '/home');
           break;
-        // case 1:
-        //   Navigator.pushNamed(context, '/addmenu');
-        //   break;
-        // case 2:
-        //   Navigator.pushNamed(context, '/home-admin');
-        //   break;
-        // case 3:
-        //   Navigator.pushNamed(context, '/notification');
-        //   break;
+        case 1:
+          Navigator.pushNamed(context, '/reservation');
+          break;
+        case 2:
+          Navigator.pushNamed(context, '/orderlist');
+          break;
+        case 3:
+          Navigator.pushNamed(context, '/promo');
+          break;
         case 4:
           Navigator.pushNamed(context, '/profilemenu');
           _selectedIndex = 0;

@@ -45,7 +45,7 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
     List<String> preferences = await UserService().getUserPreferences(uid);
     print(preferences);
     // _tagController.text = preferences.join(', ');
-    return preferences.join(', ');
+    return preferences.join(',');
   }
 
   @override
@@ -230,32 +230,20 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
                     return CustomButton(
                       title: 'edit_preferences'.tr(),
                       onPressed: () {
-                        // User ? user = FirebaseAuth.instance.currentUser;
                         String uid = user!.uid;
-
-                        // if (_tagController.text.isEmpty) {
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     const SnackBar(
-                        //       content: Text('Please fill the preferences'),
-                        //       backgroundColor: Colors.red,
-                        //     ),
-                        //   );
-                        // }
-                        // else{
-                          context.read<AuthCubit>().updateFoodPreferences(
-                            id: uid, 
-                            foodPreference: newPreferences,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('preferences_update_success'.tr(),
-                                style: whiteTextButtonStyle,
+                        context.read<AuthCubit>().updateFoodPreferences(
+                          id: uid, 
+                          foodPreference: newPreferences,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('preferences_update_success'.tr(),
+                              style: whiteTextButtonStyle,
                             ),
                             backgroundColor: greenButtonColor,
                           ),
                         );
                       }
-                      // },
                     );
                   },
                 ),

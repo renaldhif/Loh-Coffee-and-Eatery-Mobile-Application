@@ -295,7 +295,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
             ],
           );
         } else {
-          //return no payments
+          //return new column with text 'No order found'
           return Center(
             child: Text('no_order'.tr()),
           );

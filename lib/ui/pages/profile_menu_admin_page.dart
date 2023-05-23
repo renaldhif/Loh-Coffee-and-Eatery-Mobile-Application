@@ -42,24 +42,21 @@ class _ProfileMenuAdminPageState extends State<ProfileMenuAdminPage> {
           Navigator.pushReplacementNamed(context, '/home-admin');
           _selectedIndex = 0;
           break;
-        // case 1:
-        //   Navigator.pushNamed(context, '/addmenu');
-        //   break;
+        case 1:
+          Navigator.pushNamed(context, '/reservation-admin');
+          break;
         case 2:
           Navigator.pushNamed(context, '/orderlist-admin');
-          _selectedIndex = 2;
           break;
         case 3:
           Navigator.pushNamed(context, '/payment-admin');
-          _selectedIndex = 3;
           break;
-        // case 4:
+        case 4:
+          Navigator.pushNamed(context, '/addpromo');
+          break;
+        // case 5:
+        //   Navigator.pushNamed(context, '/profile-admin');
         //   break;
-        case 5:
-          Navigator.pushNamed(context, '/profile-admin');
-          _selectedIndex = 5;
-          // _selectedIndex = 0;
-          break;
       }
     });
   }

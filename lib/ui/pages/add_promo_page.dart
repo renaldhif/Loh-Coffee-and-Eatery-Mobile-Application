@@ -452,7 +452,7 @@ class AddPromoPageState extends State<AddPromoPage>
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('promo_add_success'.tr()),
-                            backgroundColor: primaryColor,
+                            backgroundColor: greenButtonColor,
                           ),
                         );
                       }
