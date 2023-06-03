@@ -54,7 +54,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
   //get order length
   Future<int> orderLength() async {
     AggregateQuerySnapshot query = await orderList.count().get();
-    print('The number of order: ${query.count}');
+    // print('The number of order: ${query.count}');
     return query.count;
   }
 
@@ -118,7 +118,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await orderList.doc(orderId).get();
     int tableNumber = documentSnapshot.data()!['tableNum'];
-    print('Table Number: $tableNumber');
+    // print('Table Number: $tableNumber');
     return tableNumber;
   }
 
@@ -128,7 +128,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await orderList.doc(orderId).get();
     String orderStatus = documentSnapshot.data()!['orderStatus'];
-    print('Order Status: $orderStatus');
+    // print('Order Status: $orderStatus');
     return orderStatus;
   }
 
@@ -153,7 +153,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
         throw Exception("No menu found with title $menuTitle");
       }
     }
-    print('Menu ID List: $menuIdList');
+    // print('Menu ID List: $menuIdList');
     return menuIdList;
   }
 
@@ -180,7 +180,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
       );
       menuModelList.add(menuModel);
     }
-    print('Menu Model List: $menuModelList');
+    // print('Menu Model List: $menuModelList');
     return menuModelList;
   }
 
@@ -212,7 +212,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       int orderNumber = querySnapshot.docs[i].data()['number'];
       orderListNew.add(orderNumber);
-      print('Order Number: $orderNumber');
+      // print('Order Number: $orderNumber');
     }
     orderListNew.sort();
     return orderListNew;
@@ -225,7 +225,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
 
     List<int> orderListNew = await getOrderListNumberByUserEmail(userEmail);
     int orderListNewLength = orderListNew.length;
-    print('Order List New Length: $orderListNewLength');
+    // print('Order List New Length: $orderListNewLength');
     return orderListNewLength;
   }
 
@@ -238,7 +238,7 @@ class _OrderListCustomerPageState extends State<OrderListCustomerPage> {
     int orderNumber = orderListNew[index];
     // orderListNew.sort((a, b) => b.compareTo(a));
     // int orderNumber = orderListNew[index];
-    print('Order Number retrieve: $orderNumber');
+    // print('Order Number retrieve: $orderNumber');
     return orderNumber;
   }
 

@@ -128,7 +128,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
     DateTime dateTime = DateTime.parse(dateCreated2).toLocal();
     String formattedDate = DateFormat('dd-MM-yyyy HH:mm').format(dateTime);
 
-    print('dateCreated: $formattedDate');
+    // print('dateCreated: $formattedDate');
     return formattedDate;
   } // sudah work
 
@@ -248,7 +248,7 @@ class _ReservationAdminPageState extends State<ReservationAdminPage>{
     DateTime dateTime = DateTime.parse(dateCreated2);
     String formattedDate = DateFormat('dd-MM-yyyy hh:mm').format(dateTime);
 
-    print('dateCreated: $formattedDate');
+    // print('dateCreated: $formattedDate');
     return formattedDate;
   }
 

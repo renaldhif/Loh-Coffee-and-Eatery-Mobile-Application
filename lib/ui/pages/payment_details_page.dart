@@ -20,7 +20,7 @@ class PaymentDetailsPage extends StatefulWidget {
 }
 
 class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
- 
+
   @override
   void initState() {
     context.read<PaymentCubit>().getPayments();
@@ -30,7 +30,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
   final CollectionReference<Map<String, dynamic>> paymentList =
       FirebaseFirestore.instance.collection('payments');
 
-   Future<int> paymentLength() async {
+    Future<int> paymentLength() async {
     AggregateQuerySnapshot query = await paymentList.count().get();
     // print('The number of payment: ${query.count}');
     return query.count;
@@ -250,7 +250,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                     listener: (context, state) {
 
                       if (state is PaymentSuccess) {
-                        print('payment success');
+                        // print('payment success');
                       } else if (state is PaymentFailed) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -265,9 +265,9 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                           title: 'confirm_payment'.tr(),
                           onPressed: () {
                             setState(() {
-                              print('confirm button');
-                              print('isConfirm then: ${isConfirm}');
-                              print('pay status then: ');
+                              // print('confirm button');
+                              // print('isConfirm then: ${isConfirm}');
+                              // print('pay status then: ');
                               isConfirm = true;
                               context
                                   .read<PaymentCubit>()
@@ -283,11 +283,6 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                     orderDateTime: timestamp,
                                     status: 'Confirmed',
                                   );
-              
-              
-                              // paymentStatus = 'Payment confirmed';
-                              print('isConfirm now: ');
-                              print('pay status now: ');
                             });
                           });
                     },
@@ -305,7 +300,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                     listener: (context, state) {
                       
                       if (state is PaymentSuccess) {
-                        print('payment success');
+                        // print('payment success');
                       } else if (state is PaymentFailed) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -320,11 +315,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                         title: 'reject_payment'.tr(),
                         onPressed: () {
                           setState(() {
-                            print('reject button');
-                            print('isConfirm then: ${isConfirm}');
-                            print('pay status then: ');
                             isConfirm = true;
-                            // paymentStatus = 'Payment rejected';
                             context
                                   .read<PaymentCubit>()
                                   .changePaymentStatusByIndex(
@@ -344,9 +335,6 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                               orderDateTime: timestamp,
                               orderStatus: 'Canceled',
                             );
-              
-                            print('isConfirm now: ');
-                            print('pay status now: ');
                           });
                         },
                       );

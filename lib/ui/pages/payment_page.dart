@@ -46,7 +46,7 @@ Box<MenuModel> localDBBox = Hive.box<MenuModel>('shopping_box');
   //method get how many order in orderlist
 Future<int> orderLength() async {
     AggregateQuerySnapshot query = await orderList.count().get();
-    print('The number of table: ${query.count}');
+    // print('The number of table: ${query.count}');
     return query.count;
   }
 
@@ -103,7 +103,7 @@ late Timer _timer;
         isLoading = true;
         if (isLoading == true) {
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
+              SnackBar(
               content: Text('loading_upload_image'.tr()),
               backgroundColor: secondaryColor,
             ),
@@ -119,7 +119,7 @@ late Timer _timer;
         FirebaseStorage.instance.ref().child('images/payments/${image!.path}');
     UploadTask uploadTask = refStorage.putFile(image!);
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {
-      print(fileName);
+      // print(fileName);
     });
     String urlImg = await taskSnapshot.ref.getDownloadURL();
     setState(() {
@@ -290,7 +290,7 @@ late Timer _timer;
                             );
                             localDBBox.clear();
                             ScaffoldMessenger.of(context).showSnackBar(
-                               SnackBar(
+                                SnackBar(
                                 content: Text(
                                   'payment_uploaded'.tr(),
                                   style: whiteTextButtonStyle

@@ -52,7 +52,6 @@ class _AddReviewPageState extends State<AddReviewPage> {
                 ),
                 onRatingUpdate: (rating) {
                   _initRating = rating;
-                  print(rating);
                 },
               ),
             ],

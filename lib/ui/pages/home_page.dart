@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                 }
               }, builder: (context, state) {
                 if (state is MenuSuccess) {
-                  print('state is menu success');
+                  // print('state is menu success');
                   return menuCard(state.menus);
                 } else {
                   return Center(

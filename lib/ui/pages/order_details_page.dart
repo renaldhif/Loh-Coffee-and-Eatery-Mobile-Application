@@ -544,9 +544,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
             visible: !isConfirm && paymentStatus == 'Confirmed',
             child: BlocConsumer<OrderCubit, OrderState>(
               listener: (context, state) {
-                // TODO: implement listener
                 if (state is OrderSuccess) {
-                        print('order success');
+                        // print('order success');
                 } else if (state is OrderFailed) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -560,22 +559,13 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 return CustomButton(
                     title: "confirm".tr(),
                     onPressed: () {
-                      
-
                       setState(() {
                         context.read<OrderCubit>().updateOrderStatusByNumber(
                             orderNumber: widget.orderNumber!,
                             orderStatus: 'Confirmed',
                           );
-                      // context
-                      //     .read<OrderCubit>()
-                      //     .updateTotalOrdered(widget.orderNumber!, menuList2);
-                      //   isConfirm = true;
-                      //   orderStatus = 'Confirmed';
-
-                        // Navigator.pushReplacementNamed(context, '/home-admin');
                       });
-                       context
+                        context
                           .read<OrderCubit>()
                           .updateTotalOrdered(widget.orderNumber!, menuList2);
                         isConfirm = true;

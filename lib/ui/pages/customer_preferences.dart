@@ -43,7 +43,7 @@ class _CustomerPreferencesPageState extends State<CustomerPreferencesPage> {
   Future<String> getPreferences(uid) async {
     String uid = user!.uid;
     List<String> preferences = await UserService().getUserPreferences(uid);
-    print(preferences);
+    // print(preferences);
     // _tagController.text = preferences.join(', ');
     return preferences.join(',');
   }

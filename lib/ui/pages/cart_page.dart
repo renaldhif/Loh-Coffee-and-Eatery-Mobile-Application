@@ -80,7 +80,6 @@ class _CartPageState extends State<CartPage> {
 
   Future<int> tableLength() async {
     AggregateQuerySnapshot query = await productList.count().get();
-    print('The number of table: ${query.count}');
     return query.count;
   }
 
@@ -97,7 +96,7 @@ class _CartPageState extends State<CartPage> {
 //get tableNum
   Future<int> getTableNum(int index) async {
     QuerySnapshot<Map<String, dynamic>> query = await productList.get();
-    print('The number of table: ${query.docs[index].data()['tableNum']}');
+    // print('The number of table: ${query.docs[index].data()['tableNum']}');
     return query.docs[index].data()['tableNum'];
   }
 
@@ -110,7 +109,7 @@ class _CartPageState extends State<CartPage> {
         index = i;
       }
     }
-    print('The number of table: $index');
+    // print('The number of table: $index');
 
     tableLocation = query.docs[index].data()['location'];
     return tableLocation;
@@ -131,8 +130,8 @@ class _CartPageState extends State<CartPage> {
       var cartModel = localDBBox.getAt(i) as MenuModel;
       int iprice = cartModel.price * cartModel.quantity;
       sum += iprice;
-      print(sum);
-      print('------');
+      // print(sum);
+      // print('------');
     }
 
     return sum;
@@ -340,9 +339,9 @@ class _CartPageState extends State<CartPage> {
                                         .read<MenuCubit>()
                                         .minusQuantity(menuModel);
                                     minusQty(menuModel);
-                                    print('iqty: $iQty');
-                                    print(
-                                        'quantity di menumodel: ${menuModel.quantity}');
+                                    // print('iqty: $iQty');
+                                    // print(
+                                    //     'quantity di menumodel: ${menuModel.quantity}');
                                   }
                                 });
                               },
@@ -372,9 +371,9 @@ class _CartPageState extends State<CartPage> {
                                       .addQuantity(menuModel);
                                   //update the quantity of the menu
                                   addQty(menuModel);
-                                  print('iqty: $iQty');
-                                  print(
-                                      'quantity di menumodel: ${menuModel.quantity}');
+                                  // print('iqty: $iQty');
+                                  // print(
+                                  //     'quantity di menumodel: ${menuModel.quantity}');
                                 });
                               },
                             ),
@@ -528,16 +527,16 @@ class _CartPageState extends State<CartPage> {
                         ),
                         checkFirstElement: true,
                         onItemSelected: (selected) => setState(() {
-                          print(selected);
+                          // print(selected);
                           if(selected == 'qris'){
                             paymentOption = 'QRIS';
-                            print('blok if payment opetion sleected: $paymentOption');
+                            // print('blok if payment opetion sleected: $paymentOption');
                           } else if(selected == 'cashier'){
                             paymentOption = 'Cashier';
-                            print('blok elseif payment opetion sleected: $paymentOption');
+                            // print('blok elseif payment opetion sleected: $paymentOption');
                           }
-                          print('--diluar--');
-                          print('payment opetion sleected: $paymentOption');
+                          // print('--diluar--');
+                          // print('payment opetion sleected: $paymentOption');
                         }),
                       ),
                     ],
@@ -600,16 +599,16 @@ class _CartPageState extends State<CartPage> {
                         checkFirstElement: true,
                         onItemSelected: (selected) => setState(() {
                           isDineIn = selected == 'takeaway' ? true : false;
-                          print(selected);
-                          print('isTakeAway?: ${isDineIn}');
+                          // print(selected);
+                          // print('isTakeAway?: ${isDineIn}');
                           if(selected == 'dinein'){
                             diningOption = 'Dine In';
-                            print('blok if dining opetion sleected: $diningOption');
+                            // print('blok if dining opetion sleected: $diningOption');
                           } else if(selected == 'takeaway'){
                             diningOption = 'Takeaway';
-                            print('blok elseif dining opetion sleected: $diningOption');
+                            // print('blok elseif dining opetion sleected: $diningOption');
                           }
-                          print('dining opetion sleected: $diningOption');
+                          // print('dining opetion sleected: $diningOption');
                         }),
                       ),
                     ],
@@ -703,9 +702,9 @@ class _CartPageState extends State<CartPage> {
                                       onChanged: (int? newValue) {
                                         setState(() {
                                           dropdownvalue = newValue!.toString();
-                                          print('dropdownvalue ${dropdownvalue}');
+                                          // print('dropdownvalue ${dropdownvalue}');
                                           tableChoosen = newValue!;
-                                          print('tableChoosen $tableChoosen');
+                                          // print('tableChoosen $tableChoosen');
                                         });
                                       },
                                       // isExpanded: true,

@@ -46,14 +46,14 @@ class _PromoPageState extends State<PromoPage> {
   //get announce length from announce_cubit
   Future<int> getAnnounceLength() async {
     int length = await AnnounceCubit().getOrderedAnnounceLength();
-    print('length: $length');
+    // print('length: $length');
     return length;
   }
 
   //get 'announce' title from announce_cubit
   Future<String> getAnnounceTitle(int index) async {
     String title = await AnnounceCubit().getOrderedAnnounceString(index);
-    print('title: $title');
+    // print('title: $title');
     return title;
   }
 

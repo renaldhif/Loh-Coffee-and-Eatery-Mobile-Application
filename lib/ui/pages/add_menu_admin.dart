@@ -208,7 +208,6 @@ class _AddMenuPageAdminState extends State<AddMenuPageAdmin> {
                     ),
                     onItemSelected: (selected) {
                       setState(() {
-                        // print(selected.join(','));
                         _tagController.text = selected.join(',');
                       });
                     },

@@ -64,7 +64,7 @@ class _ReservationPageState extends State<ReservationPage>
         .orderBy('dateCreated', descending: true)
         .count()
         .get();
-    print('length: ${query.count}');
+
     return query.count;
   } // sudah work
 
@@ -91,7 +91,7 @@ class _ReservationPageState extends State<ReservationPage>
     String email = userModel.email;
     List<String> reserveIDList = await getReservationIds2(email);
     int length = reserveIDList.length;
-    print('length: $length');
+
     return length;
   }
 
@@ -106,7 +106,7 @@ class _ReservationPageState extends State<ReservationPage>
         await reserveList.doc(reserveIDList[index]).get();
     Map<String, dynamic> data = documentSnapshot.data()!;
     String date = data['date'];
-    print('date: $date');
+
     return date;
   }
 
@@ -121,7 +121,7 @@ class _ReservationPageState extends State<ReservationPage>
         await reserveList.doc(reserveIDList[index]).get();
     Map<String, dynamic> data = documentSnapshot.data()!;
     String time = data['time'];
-    print('time: $time');
+
     return time;
   }
 
@@ -136,7 +136,7 @@ class _ReservationPageState extends State<ReservationPage>
         await reserveList.doc(reserveIDList[index]).get();
     Map<String, dynamic> data = documentSnapshot.data()!;
     String location = data['location'];
-    print('location: $location');
+
     return location;
   }
 
@@ -151,7 +151,7 @@ class _ReservationPageState extends State<ReservationPage>
         await reserveList.doc(reserveIDList[index]).get();
     Map<String, dynamic> data = documentSnapshot.data()!;
     int tableNumber = data['tableNum'];
-    print('tableNumber: $tableNumber');
+
     return tableNumber;
   }
 
@@ -166,7 +166,7 @@ class _ReservationPageState extends State<ReservationPage>
         await reserveList.doc(reserveIDList[index]).get();
     Map<String, dynamic> data = documentSnapshot.data()!;
     int numOfPeople = data['sizeOfPeople'];
-    print('numOfPeople: $numOfPeople');
+
     return numOfPeople;
   }
 
@@ -183,7 +183,7 @@ class _ReservationPageState extends State<ReservationPage>
     Timestamp dateCreated = data['dateCreated'];
     //convert timestamp to string and the time to three digits
     String dateCreated2 = dateCreated.toDate().toString().substring(0, 19);
-    print('dateCreated: $dateCreated2');
+
     return dateCreated2;
   }
 
@@ -195,7 +195,7 @@ class _ReservationPageState extends State<ReservationPage>
     String email = userModel.email;
     List<String> reserveIDList = await getReservationIds2(email);
     String reservationId = reserveIDList[index];
-    print('reservationId Idx: $reservationId');
+
     return reservationId;
   }
 
@@ -879,7 +879,6 @@ class _ReservationPageState extends State<ReservationPage>
                           setState(() {
                             _tableNumber = value;
                             _tableNumController.text = value.toString();
-                            print('the table number value is $_tableNumber');
                           });
 
                           int tableSize = await context
@@ -1052,14 +1051,11 @@ class _ReservationPageState extends State<ReservationPage>
                 );
               } else {
                 if (FirebaseAuth.instance.currentUser != null) {
-                  print('firebase auth success');
                   User? user = FirebaseAuth.instance.currentUser;
                   UserModel userNow =
                       await context.read<AuthCubit>().getCurrentUser(user!.uid);
                   String? customerName = userNow.name;
                   String? customerEmail = userNow.email;
-                  print(
-                      'reservation booked by $customerName with email ${user.email}');
 
                   context.read<ReservationCubit>().addReservation(
                         customerName: customerName,

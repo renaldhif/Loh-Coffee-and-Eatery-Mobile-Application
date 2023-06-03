@@ -57,7 +57,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
   //get order length
   Future<int> orderLength() async {
     AggregateQuerySnapshot query = await orderList.count().get();
-    print('The number of order: ${query.count}');
+    // print('The number of order: ${query.count}');
     return query.count;
   }
 
@@ -120,8 +120,8 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     Timestamp timestamp = await getOrderTimestampByOrderNumber(orderNumber);
     PaymentModel payment = await getPaymentByTimestamp(timestamp);
     String customerName = payment.customerName;
-    print('Customer Name ini: $customerName');
-    print('Order ID: $orderId');
+    // print('Customer Name ini: $customerName');
+    // print('Order ID: $orderId');
     return customerName;
   }
 
@@ -131,7 +131,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await orderList.doc(orderId).get();
     int tableNumber = documentSnapshot.data()!['tableNum'];
-    print('Table Number: $tableNumber');
+    // print('Table Number: $tableNumber');
     return tableNumber;
   }
 
@@ -141,7 +141,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await orderList.doc(orderId).get();
     String orderStatus = documentSnapshot.data()!['orderStatus'];
-    print('Order Status: $orderStatus');
+    // print('Order Status: $orderStatus');
     return orderStatus;
   }
 
@@ -193,7 +193,7 @@ class _OrderListAdminPageState extends State<OrderListAdminPage> {
       );
       menuModelList.add(menuModel);
     }
-    print('Menu Model List: $menuModelList');
+    // print('Menu Model List: $menuModelList');
     return menuModelList;
   }
 
